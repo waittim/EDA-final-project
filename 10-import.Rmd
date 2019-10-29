@@ -2,9 +2,24 @@
 title: "10-import"
 output: html_notebook
 ---
+## Load packages
+```{r eval=FALSE}
+library(tidyverse)
+library(janitor)
+```
 
-## import data
+
+## Import data
+```{r warning=FALSE}
+H1B18<-read.csv(unzip("data/h1b18.csv.zip")) %>% 
+  clean_names()
+file.remove("h1b18.csv")
+```
 
 ## data cleaning
+
+```{r}
+H1B18 <- na.omit(H1B18)
+```
 
 ## save data

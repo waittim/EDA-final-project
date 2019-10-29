@@ -1750,18 +1750,47 @@ summary {
 
 
 <!-- rnb-text-begin -->
+<div id="load-packages" class="section level2">
+<h2>Load packages</h2>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjpbImxpYnJhcnkodGlkeXZlcnNlKSIsImxpYnJhcnkoamFuaXRvcikiXX0= -->
+<pre class="r"><code>library(tidyverse)
+library(janitor)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
 <div id="import-data" class="section level2">
-<h2>import data</h2>
+<h2>Import data</h2>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZmlsZS5yZW1vdmUoXCJoMWIxOC5jc3ZcIilcblxuYGBgIn0= -->
+<pre class="r"><code>file.remove(&quot;h1b18.csv&quot;)
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFRSVUVcbiJ9 -->
+<pre><code>[1] TRUE</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
 </div>
 <div id="data-cleaning" class="section level2">
 <h2>data cleaning</h2>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuSDFCMTggPC0gbmEub21pdChIMUIxOClcbmBgYCJ9 -->
+<pre class="r"><code>H1B18 &lt;- na.omit(H1B18)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
 </div>
 <div id="save-data" class="section level2">
 <h2>save data</h2>
 <!-- rnb-text-end -->
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiMTAtaW1wb3J0IgpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sKLS0tCgojIyBpbXBvcnQgZGF0YQoKIyMgZGF0YSBjbGVhbmluZwoKIyMgc2F2ZSBkYXRhCg==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiMTAtaW1wb3J0IgpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sKLS0tCiMjIExvYWQgcGFja2FnZXMKYGBge3IgZXZhbD1GQUxTRX0KbGlicmFyeSh0aWR5dmVyc2UpCmxpYnJhcnkoamFuaXRvcikKYGBgCgoKIyMgSW1wb3J0IGRhdGEKYGBge3Igd2FybmluZz1GQUxTRX0KSDFCMTg8LXJlYWQuY3N2KHVuemlwKCJkYXRhL2gxYjE4LmNzdi56aXAiKSkgJT4lIAogIGNsZWFuX25hbWVzKCkKZmlsZS5yZW1vdmUoImgxYjE4LmNzdiIpCmBgYAoKIyMgZGF0YSBjbGVhbmluZwoKYGBge3J9CkgxQjE4IDwtIG5hLm9taXQoSDFCMTgpCmBgYAoKIyMgc2F2ZSBkYXRhCg==</div>
 
 
 
