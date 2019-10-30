@@ -6,10 +6,12 @@ output: html_notebook
 ```{r eval=FALSE}
 library(tidyverse)
 library(janitor)
+library(assertr)
 ```
 
 
 ## Import data
+
 ```{r warning=FALSE}
 H1B18<-read.csv(unzip("data/h1b18.csv.zip")) %>% 
   clean_names()
@@ -19,7 +21,15 @@ file.remove("h1b18.csv")
 ## data cleaning
 
 ```{r}
-H1B18 <- na.omit(H1B18)
+H1B18_test <- H1B18
+for(i in 1:ncol(H1B18_test)){
+  H1B18_test[i] <- gsub("^$",NA,H1B18_test[i])
+}
+H1B18_test <- na.omit(H1B18_test)
 ```
 
+
+```{r}
+H1B18 <- na.omit(H1B18)
+```
 ## save data
