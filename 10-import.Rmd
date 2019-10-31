@@ -20,10 +20,25 @@ file.remove("h1b18.csv")
 
 ## data cleaning
 
+**Todo list:**
+Filter H1B visa_class
+Remove all of missing value
+Uppercase -> lowercase
+Lubridate all of the date
+
 ```{r}
+unique(H1B18$visa_class)
+```
+
+
+```{r}
+H1B18 <- H1B18 %>% 
+  filter(visa_class=="H-1B")
+
+
 H1B18_test <- H1B18
 for(i in 1:ncol(H1B18_test)){
-  H1B18_test[i] <- gsub("^$",NA,H1B18_test[i])
+  H1B18_test[i] <- gsub("^$", NA,H1B18_test[i])
 }
 H1B18_test <- na.omit(H1B18_test)
 ```
