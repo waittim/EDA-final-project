@@ -1766,10 +1766,22 @@ library(assertr)</code></pre>
 <h2>Import data</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuSDFCMTg8LXJlYWQuY3N2KHVuemlwKFwiZGF0YS9oMWIxOC5jc3YuemlwXCIpKSAlPiUgXG4gIGNsZWFuX25hbWVzKClcbmZpbGUucmVtb3ZlKFwiaDFiMTguY3N2XCIpXG5gYGAifQ== -->
-<pre class="r"><code>H1B18&lt;-read.csv(unzip(&quot;data/h1b18.csv.zip&quot;)) %&gt;% 
-  clean_names()
-file.remove(&quot;h1b18.csv&quot;)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuSDFCMTg8LXJlYWRfY3N2KHVuemlwKFwiZGF0YS9oMWIxOC5jc3YuemlwXCIpKSAlPiUgXG4gIGNsZWFuX25hbWVzKClcbmBgYCJ9 -->
+<pre class="r"><code>H1B18&lt;-read_csv(unzip(&quot;data/h1b18.csv.zip&quot;)) %&gt;% 
+  clean_names()</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiUGFyc2VkIHdpdGggY29sdW1uIHNwZWNpZmljYXRpb246XG5jb2xzKFxuICAuZGVmYXVsdCA9IGNvbF9jaGFyYWN0ZXIoKSxcbiAgUFJFVkFJTElOR19XQUdFID0gXHUwMDFiWzMybWNvbF9udW1iZXIoKVx1MDAxYlszOW0sXG4gIFdBR0VfUkFURV9PRl9QQVlfRlJPTSA9IFx1MDAxYlszMm1jb2xfbnVtYmVyKClcdTAwMWJbMzltLFxuICBXQUdFX1JBVEVfT0ZfUEFZX1RPID0gXHUwMDFiWzMybWNvbF9udW1iZXIoKVx1MDAxYlszOW1cbilcblNlZSBzcGVjKC4uLikgZm9yIGZ1bGwgY29sdW1uIHNwZWNpZmljYXRpb25zLlxuIn0= -->
+<pre><code>Parsed with column specification:
+cols(
+  .default = col_character(),
+  PREVAILING_WAGE = [32mcol_number()[39m,
+  WAGE_RATE_OF_PAY_FROM = [32mcol_number()[39m,
+  WAGE_RATE_OF_PAY_TO = [32mcol_number()[39m
+)
+See spec(...) for full column specifications.</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZmlsZS5yZW1vdmUoXCJoMWIxOC5jc3ZcIilcbmBgYCJ9 -->
+<pre class="r"><code>file.remove(&quot;h1b18.csv&quot;)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiWzFdIFRSVUVcbiJ9 -->
 <pre><code>[1] TRUE</code></pre>
@@ -1779,14 +1791,13 @@ file.remove(&quot;h1b18.csv&quot;)</code></pre>
 </div>
 <div id="data-cleaning" class="section level2">
 <h2>data cleaning</h2>
+<p><strong>Todo list:</strong></p>
+<p>Filter H1B visa_class Remove all of missing value Uppercase -&gt; lowercase Lubridate all of the date</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuSDFCMThfdGVzdCA8LSBIMUIxOFxuZm9yKGkgaW4gMTpuY29sKEgxQjE4X3Rlc3QpKXtcbiAgSDFCMThfdGVzdFtpXSA8LSBnc3ViKFwiXiRcIixOQSxIMUIxOF90ZXN0W2ldKVxufVxuSDFCMThfdGVzdCA8LSBuYS5vbWl0KEgxQjE4X3Rlc3QpXG5gYGAifQ== -->
-<pre class="r"><code>H1B18_test &lt;- H1B18
-for(i in 1:ncol(H1B18_test)){
-  H1B18_test[i] &lt;- gsub(&quot;^$&quot;,NA,H1B18_test[i])
-}
-H1B18_test &lt;- na.omit(H1B18_test)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuSDFCMTggPC0gSDFCMTggJT4lIFxuICBmaWx0ZXIodmlzYV9jbGFzcz09XCJILTFCXCIpXG5gYGAifQ== -->
+<pre class="r"><code>H1B18 &lt;- H1B18 %&gt;% 
+  filter(visa_class==&quot;H-1B&quot;)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -1803,7 +1814,7 @@ H1B18_test &lt;- na.omit(H1B18_test)</code></pre>
 <!-- rnb-text-end -->
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiMTAtaW1wb3J0IgpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sKLS0tCiMjIExvYWQgcGFja2FnZXMKYGBge3IgZXZhbD1GQUxTRX0KbGlicmFyeSh0aWR5dmVyc2UpCmxpYnJhcnkoamFuaXRvcikKbGlicmFyeShhc3NlcnRyKQpgYGAKCgojIyBJbXBvcnQgZGF0YQoKYGBge3Igd2FybmluZz1GQUxTRX0KSDFCMTg8LXJlYWQuY3N2KHVuemlwKCJkYXRhL2gxYjE4LmNzdi56aXAiKSkgJT4lIAogIGNsZWFuX25hbWVzKCkKZmlsZS5yZW1vdmUoImgxYjE4LmNzdiIpCmBgYAoKIyMgZGF0YSBjbGVhbmluZwoKYGBge3J9CkgxQjE4X3Rlc3QgPC0gSDFCMTgKZm9yKGkgaW4gMTpuY29sKEgxQjE4X3Rlc3QpKXsKICBIMUIxOF90ZXN0W2ldIDwtIGdzdWIoIl4kIixOQSxIMUIxOF90ZXN0W2ldKQp9CkgxQjE4X3Rlc3QgPC0gbmEub21pdChIMUIxOF90ZXN0KQpgYGAKCgpgYGB7cn0KSDFCMTggPC0gbmEub21pdChIMUIxOCkKYGBgCiMjIHNhdmUgZGF0YQo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiMTAtaW1wb3J0IgpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sKLS0tCiMjIExvYWQgcGFja2FnZXMKYGBge3IgZXZhbD1GQUxTRX0KbGlicmFyeSh0aWR5dmVyc2UpCmxpYnJhcnkoamFuaXRvcikKbGlicmFyeShhc3NlcnRyKQpgYGAKCgojIyBJbXBvcnQgZGF0YQoKYGBge3Igd2FybmluZz1GQUxTRX0KSDFCMTg8LXJlYWRfY3N2KHVuemlwKCJkYXRhL2gxYjE4LmNzdi56aXAiKSkgJT4lIAogIGNsZWFuX25hbWVzKCkKZmlsZS5yZW1vdmUoImgxYjE4LmNzdiIpCmBgYAoKCgojIyBkYXRhIGNsZWFuaW5nCgoqKlRvZG8gbGlzdDoqKgoKRmlsdGVyIEgxQiB2aXNhX2NsYXNzClJlbW92ZSBhbGwgb2YgbWlzc2luZyB2YWx1ZQpVcHBlcmNhc2UgLT4gbG93ZXJjYXNlCkx1YnJpZGF0ZSBhbGwgb2YgdGhlIGRhdGUKCgoKYGBge3J9CkgxQjE4IDwtIEgxQjE4ICU+JSAKICBmaWx0ZXIodmlzYV9jbGFzcz09IkgtMUIiKQpgYGAKCgpgYGB7cn0KSDFCMTggPC0gbmEub21pdChIMUIxOCkKYGBgCiMjIHNhdmUgZGF0YQo=</div>
 
 
 
