@@ -41,23 +41,41 @@ Uppercase -> lowercase
 ```{r}
 H1B18 <- H1B18 %>% 
   mutate(case_status=tolower(case_status)) %>% 
+  mutate(visa_class = tolower(visa_class)) %>% 
   mutate(employer_name=tolower(employer_name)) %>% 
   mutate(employer_city=tolower(employer_city)) %>% 
   mutate(employer_state=tolower(employer_state)) %>% 
   mutate(job_title=tolower(job_title)) %>% 
-  mutate(soc_name=tolower(soc_name))
+  mutate(soc_name=tolower(soc_name)) %>%  
+  mutate(pw_unit_of_pay = tolower(pw_unit_of_pay)) %>% 
+  mutate(wage_unit_of_pay = tolower(wage_unit_of_pay))
 ```
 
 Lubridate all of the date
 ```{r}
-H1B18_test <- H1B18 %>% 
+H1B18 <- H1B18 %>% 
   mutate(case_submitted = mdy(case_submitted)) %>% 
   mutate(decision_date = mdy(decision_date)) %>% 
   mutate(employment_start_date = mdy(employment_start_date)) %>% 
   mutate(employment_end_date = mdy(employment_end_date)) 
 ```
 
+Logical column transfer
+```{r}
+H1B18 <- H1B18 %>% 
+  mutate(full_time_position = case_when(full_time_position=="Y"~TRUE,
+                                        full_time_position=="N"~FALSE))
+```
 
+factor column transfer
+```{r}
+# unique(H1B18$pw_unit_of_pay)
+# unique(H1B18$wage_unit_of_pay)
+
+H1B18 <- H1B18 %>% 
+  mutate(pw_unit_of_pay = factor(pw_unit_of_pay)) %>% 
+  mutate(wage_unit_of_pay = factor(wage_unit_of_pay))
+```
 
 
 ```{r}
