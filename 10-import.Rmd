@@ -80,9 +80,9 @@ H1B18_clean <- H1B18_clean %>%
 
 
 ```{r}
-str(H1B18_clean)
-head(H1B18_clean)
-unique(H1B18$job_title)
+# str(H1B18_clean)
+# head(H1B18_clean)
+# unique(H1B18$job_title)
 ```
 
 ## save data
