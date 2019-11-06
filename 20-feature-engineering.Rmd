@@ -4,4 +4,7 @@ output: html_notebook
 ---
 
 
+- soc-code: class
+- soc-code/name: STEM
+- location: 2l
 
