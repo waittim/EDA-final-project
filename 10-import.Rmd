@@ -63,8 +63,8 @@ H1B18_clean <- H1B18_clean %>%
 Logical column transfer
 ```{r}
 H1B18_clean <- H1B18_clean %>% 
-  mutate(full_time_position = case_when(full_time_position=="Y"~TRUE,
-                                        full_time_position=="N"~FALSE))
+  mutate(full_time_position = case_when(full_time_position=="Y"~1,
+                                        full_time_position=="N"~0))
 ```
 
 factor column transfer
@@ -81,6 +81,7 @@ H1B18_clean <- H1B18_clean %>%
 ```{r}
 str(H1B18_clean)
 head(H1B18_clean)
+unique(H1B18$job_title)
 ```
 
 ## save data
