@@ -3,7 +3,7 @@ title: "10-import"
 output: html_notebook
 ---
 ## Load packages
-```{r eval=FALSE}
+```{r}
 library(tidyverse)
 library(janitor)
 library(assertr)
