@@ -64,7 +64,8 @@ Logical column transfer
 ```{r}
 H1B18_clean <- H1B18_clean %>% 
   mutate(full_time_position = case_when(full_time_position=="Y"~1,
-                                        full_time_position=="N"~0))
+                                        full_time_position=="N"~0)) %>% 
+  mutate(full_time_position=factor(full_time_position))
 ```
 
 factor column transfer
