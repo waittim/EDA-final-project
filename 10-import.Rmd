@@ -28,18 +28,18 @@ file.remove("h1b18.csv")
 
 Filter H1B visa_class
 ```{r}
-H1B18 <- H1B18 %>% 
+H1B18_clean <- H1B18 %>% 
   filter(visa_class=="H-1B")
 ```
 
 Remove all of missing value 
 ```{r}
-H1B18 <- na.omit(H1B18)
+H1B18_clean <- na.omit(H1B18_clean)
 ```
 
 Uppercase -> lowercase 
 ```{r}
-H1B18 <- H1B18 %>% 
+H1B18_clean <- H1B18_clean %>% 
   mutate(case_status=tolower(case_status)) %>% 
   mutate(visa_class = tolower(visa_class)) %>% 
   mutate(employer_name=tolower(employer_name)) %>% 
@@ -53,7 +53,7 @@ H1B18 <- H1B18 %>%
 
 Lubridate all of the date
 ```{r}
-H1B18 <- H1B18 %>% 
+H1B18_clean <- H1B18_clean %>% 
   mutate(case_submitted = mdy(case_submitted)) %>% 
   mutate(decision_date = mdy(decision_date)) %>% 
   mutate(employment_start_date = mdy(employment_start_date)) %>% 
@@ -62,7 +62,7 @@ H1B18 <- H1B18 %>%
 
 Logical column transfer
 ```{r}
-H1B18 <- H1B18 %>% 
+H1B18_clean <- H1B18_clean %>% 
   mutate(full_time_position = case_when(full_time_position=="Y"~TRUE,
                                         full_time_position=="N"~FALSE))
 ```
@@ -72,15 +72,19 @@ factor column transfer
 # unique(H1B18$pw_unit_of_pay)
 # unique(H1B18$wage_unit_of_pay)
 
-H1B18 <- H1B18 %>% 
+H1B18_clean <- H1B18_clean %>% 
   mutate(pw_unit_of_pay = factor(pw_unit_of_pay)) %>% 
   mutate(wage_unit_of_pay = factor(wage_unit_of_pay))
 ```
 
 
 ```{r}
-str(H1B18)
-head(H1B18)
+str(H1B18_clean)
+head(H1B18_clean)
 ```
 
 ## save data
+```{r}
+H1B18 <- H1B18_clean
+```
+
