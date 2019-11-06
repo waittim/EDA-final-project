@@ -1754,10 +1754,12 @@ summary {
 <h2>Load packages</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbImxpYnJhcnkodGlkeXZlcnNlKSIsImxpYnJhcnkoamFuaXRvcikiLCJsaWJyYXJ5KGFzc2VydHIpIl19 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5saWJyYXJ5KGphbml0b3IpXG5saWJyYXJ5KGFzc2VydHIpXG5saWJyYXJ5KHN0cmluZ3IpXG5saWJyYXJ5KGx1YnJpZGF0ZSlcbmBgYCJ9 -->
 <pre class="r"><code>library(tidyverse)
 library(janitor)
-library(assertr)</code></pre>
+library(assertr)
+library(stringr)
+library(lubridate)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -1766,10 +1768,22 @@ library(assertr)</code></pre>
 <h2>Import data</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuSDFCMTg8LXJlYWQuY3N2KHVuemlwKFwiZGF0YS9oMWIxOC5jc3YuemlwXCIpKSAlPiUgXG4gIGNsZWFuX25hbWVzKClcbmZpbGUucmVtb3ZlKFwiaDFiMTguY3N2XCIpXG5gYGAifQ== -->
-<pre class="r"><code>H1B18&lt;-read.csv(unzip(&quot;data/h1b18.csv.zip&quot;)) %&gt;% 
-  clean_names()
-file.remove(&quot;h1b18.csv&quot;)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuSDFCMTg8LXJlYWRfY3N2KHVuemlwKFwiZGF0YS9oMWIxOC5jc3YuemlwXCIpKSAlPiUgXG4gIGNsZWFuX25hbWVzKClcbmBgYCJ9 -->
+<pre class="r"><code>H1B18&lt;-read_csv(unzip(&quot;data/h1b18.csv.zip&quot;)) %&gt;% 
+  clean_names()</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiUGFyc2VkIHdpdGggY29sdW1uIHNwZWNpZmljYXRpb246XG5jb2xzKFxuICAuZGVmYXVsdCA9IGNvbF9jaGFyYWN0ZXIoKSxcbiAgUFJFVkFJTElOR19XQUdFID0gXHUwMDFiWzMybWNvbF9udW1iZXIoKVx1MDAxYlszOW0sXG4gIFdBR0VfUkFURV9PRl9QQVlfRlJPTSA9IFx1MDAxYlszMm1jb2xfbnVtYmVyKClcdTAwMWJbMzltLFxuICBXQUdFX1JBVEVfT0ZfUEFZX1RPID0gXHUwMDFiWzMybWNvbF9udW1iZXIoKVx1MDAxYlszOW1cbilcblNlZSBzcGVjKC4uLikgZm9yIGZ1bGwgY29sdW1uIHNwZWNpZmljYXRpb25zLlxuIn0= -->
+<pre><code>Parsed with column specification:
+cols(
+  .default = col_character(),
+  PREVAILING_WAGE = [32mcol_number()[39m,
+  WAGE_RATE_OF_PAY_FROM = [32mcol_number()[39m,
+  WAGE_RATE_OF_PAY_TO = [32mcol_number()[39m
+)
+See spec(...) for full column specifications.</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZmlsZS5yZW1vdmUoXCJoMWIxOC5jc3ZcIilcbmBgYCJ9 -->
+<pre class="r"><code>file.remove(&quot;h1b18.csv&quot;)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiWzFdIFRSVUVcbiJ9 -->
 <pre><code>[1] TRUE</code></pre>
@@ -1779,31 +1793,130 @@ file.remove(&quot;h1b18.csv&quot;)</code></pre>
 </div>
 <div id="data-cleaning" class="section level2">
 <h2>data cleaning</h2>
+<p><strong>Todo list:</strong></p>
+<p>Filter H1B visa_class</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuSDFCMThfdGVzdCA8LSBIMUIxOFxuZm9yKGkgaW4gMTpuY29sKEgxQjE4X3Rlc3QpKXtcbiAgSDFCMThfdGVzdFtpXSA8LSBnc3ViKFwiXiRcIixOQSxIMUIxOF90ZXN0W2ldKVxufVxuSDFCMThfdGVzdCA8LSBuYS5vbWl0KEgxQjE4X3Rlc3QpXG5gYGAifQ== -->
-<pre class="r"><code>H1B18_test &lt;- H1B18
-for(i in 1:ncol(H1B18_test)){
-  H1B18_test[i] &lt;- gsub(&quot;^$&quot;,NA,H1B18_test[i])
-}
-H1B18_test &lt;- na.omit(H1B18_test)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuSDFCMThfY2xlYW4gPC0gSDFCMTggJT4lIFxuICBmaWx0ZXIodmlzYV9jbGFzcz09XCJILTFCXCIpXG5gYGAifQ== -->
+<pre class="r"><code>H1B18_clean &lt;- H1B18 %&gt;% 
+  filter(visa_class==&quot;H-1B&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Remove all of missing value</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuSDFCMThfY2xlYW4gPC0gbmEub21pdChIMUIxOF9jbGVhbilcbmBgYCJ9 -->
+<pre class="r"><code>H1B18_clean &lt;- na.omit(H1B18_clean)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Uppercase -&gt; lowercase</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuSDFCMThfY2xlYW4gPC0gSDFCMThfY2xlYW4gJT4lIFxuICBtdXRhdGUoY2FzZV9zdGF0dXM9dG9sb3dlcihjYXNlX3N0YXR1cykpICU+JSBcbiAgbXV0YXRlKHZpc2FfY2xhc3MgPSB0b2xvd2VyKHZpc2FfY2xhc3MpKSAlPiUgXG4gIG11dGF0ZShlbXBsb3llcl9uYW1lPXRvbG93ZXIoZW1wbG95ZXJfbmFtZSkpICU+JSBcbiAgbXV0YXRlKGVtcGxveWVyX2NpdHk9dG9sb3dlcihlbXBsb3llcl9jaXR5KSkgJT4lIFxuICBtdXRhdGUoZW1wbG95ZXJfc3RhdGU9dG9sb3dlcihlbXBsb3llcl9zdGF0ZSkpICU+JSBcbiAgbXV0YXRlKGpvYl90aXRsZT10b2xvd2VyKGpvYl90aXRsZSkpICU+JSBcbiAgbXV0YXRlKHNvY19uYW1lPXRvbG93ZXIoc29jX25hbWUpKSAlPiUgIFxuICBtdXRhdGUocHdfdW5pdF9vZl9wYXkgPSB0b2xvd2VyKHB3X3VuaXRfb2ZfcGF5KSkgJT4lIFxuICBtdXRhdGUod2FnZV91bml0X29mX3BheSA9IHRvbG93ZXIod2FnZV91bml0X29mX3BheSkpXG5gYGAifQ== -->
+<pre class="r"><code>H1B18_clean &lt;- H1B18_clean %&gt;% 
+  mutate(case_status=tolower(case_status)) %&gt;% 
+  mutate(visa_class = tolower(visa_class)) %&gt;% 
+  mutate(employer_name=tolower(employer_name)) %&gt;% 
+  mutate(employer_city=tolower(employer_city)) %&gt;% 
+  mutate(employer_state=tolower(employer_state)) %&gt;% 
+  mutate(job_title=tolower(job_title)) %&gt;% 
+  mutate(soc_name=tolower(soc_name)) %&gt;%  
+  mutate(pw_unit_of_pay = tolower(pw_unit_of_pay)) %&gt;% 
+  mutate(wage_unit_of_pay = tolower(wage_unit_of_pay))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Lubridate all of the date</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuSDFCMThfY2xlYW4gPC0gSDFCMThfY2xlYW4gJT4lIFxuICBtdXRhdGUoY2FzZV9zdWJtaXR0ZWQgPSBtZHkoY2FzZV9zdWJtaXR0ZWQpKSAlPiUgXG4gIG11dGF0ZShkZWNpc2lvbl9kYXRlID0gbWR5KGRlY2lzaW9uX2RhdGUpKSAlPiUgXG4gIG11dGF0ZShlbXBsb3ltZW50X3N0YXJ0X2RhdGUgPSBtZHkoZW1wbG95bWVudF9zdGFydF9kYXRlKSkgJT4lIFxuICBtdXRhdGUoZW1wbG95bWVudF9lbmRfZGF0ZSA9IG1keShlbXBsb3ltZW50X2VuZF9kYXRlKSkgXG5gYGAifQ== -->
+<pre class="r"><code>H1B18_clean &lt;- H1B18_clean %&gt;% 
+  mutate(case_submitted = mdy(case_submitted)) %&gt;% 
+  mutate(decision_date = mdy(decision_date)) %&gt;% 
+  mutate(employment_start_date = mdy(employment_start_date)) %&gt;% 
+  mutate(employment_end_date = mdy(employment_end_date)) </code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Logical column transfer</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuSDFCMThfY2xlYW4gPC0gSDFCMThfY2xlYW4gJT4lIFxuICBtdXRhdGUoZnVsbF90aW1lX3Bvc2l0aW9uID0gY2FzZV93aGVuKGZ1bGxfdGltZV9wb3NpdGlvbj09XCJZXCJ+VFJVRSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBmdWxsX3RpbWVfcG9zaXRpb249PVwiTlwifkZBTFNFKSlcbmBgYCJ9 -->
+<pre class="r"><code>H1B18_clean &lt;- H1B18_clean %&gt;% 
+  mutate(full_time_position = case_when(full_time_position==&quot;Y&quot;~TRUE,
+                                        full_time_position==&quot;N&quot;~FALSE))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>factor column transfer</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyB1bmlxdWUoSDFCMTgkcHdfdW5pdF9vZl9wYXkpXG4jIHVuaXF1ZShIMUIxOCR3YWdlX3VuaXRfb2ZfcGF5KVxuXG5IMUIxOF9jbGVhbiA8LSBIMUIxOF9jbGVhbiAlPiUgXG4gIG11dGF0ZShwd191bml0X29mX3BheSA9IGZhY3Rvcihwd191bml0X29mX3BheSkpICU+JSBcbiAgbXV0YXRlKHdhZ2VfdW5pdF9vZl9wYXkgPSBmYWN0b3Iod2FnZV91bml0X29mX3BheSkpXG5gYGAifQ== -->
+<pre class="r"><code># unique(H1B18$pw_unit_of_pay)
+# unique(H1B18$wage_unit_of_pay)
+
+H1B18_clean &lt;- H1B18_clean %&gt;% 
+  mutate(pw_unit_of_pay = factor(pw_unit_of_pay)) %&gt;% 
+  mutate(wage_unit_of_pay = factor(wage_unit_of_pay))</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuSDFCMTggPC0gbmEub21pdChIMUIxOClcbmBgYCJ9 -->
-<pre class="r"><code>H1B18 &lt;- na.omit(H1B18)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3RyKEgxQjE4X2NsZWFuKVxuYGBgIn0= -->
+<pre class="r"><code>str(H1B18_clean)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiQ2xhc3NlcyDigJh0YmxfZGbigJksIOKAmHRibOKAmSBhbmQgJ2RhdGEuZnJhbWUnOlx0NjM5MTcyIG9icy4gb2YgIDIwIHZhcmlhYmxlczpcbiAkIGNhc2VfbnVtYmVyICAgICAgICAgIDogY2hyICBcIkktMjAwLTE4MDI2LTMzODM3N1wiIFwiSS0yMDAtMTcyOTYtMzUzNDUxXCIgXCJJLTIwMC0xODI0Mi01MjQ0NzdcIiBcIkktMjAwLTE4MjQzLTg1MDUyMlwiIC4uLlxuICQgY2FzZV9zdGF0dXMgICAgICAgICAgOiBjaHIgIFwiY2VydGlmaWVkXCIgXCJjZXJ0aWZpZWRcIiBcImNlcnRpZmllZFwiIFwiY2VydGlmaWVkXCIgLi4uXG4gJCBjYXNlX3N1Ym1pdHRlZCAgICAgICA6IERhdGUsIGZvcm1hdDogXCIyMDE4LTAxLTI5XCIgXCIyMDE3LTEwLTIzXCIgXCIyMDE4LTA4LTMwXCIgXCIyMDE4LTA4LTMxXCIgLi4uXG4gJCBkZWNpc2lvbl9kYXRlICAgICAgICA6IERhdGUsIGZvcm1hdDogXCIyMDE4LTAyLTAyXCIgXCIyMDE3LTEwLTI3XCIgXCIyMDE4LTA5LTA2XCIgXCIyMDE4LTA5LTA3XCIgLi4uXG4gJCB2aXNhX2NsYXNzICAgICAgICAgICA6IGNociAgXCJoLTFiXCIgXCJoLTFiXCIgXCJoLTFiXCIgXCJoLTFiXCIgLi4uXG4gJCBlbXBsb3ltZW50X3N0YXJ0X2RhdGU6IERhdGUsIGZvcm1hdDogXCIyMDE4LTA3LTI4XCIgXCIyMDE3LTExLTA2XCIgXCIyMDE4LTA5LTEwXCIgXCIyMDE4LTA5LTA3XCIgLi4uXG4gJCBlbXBsb3ltZW50X2VuZF9kYXRlICA6IERhdGUsIGZvcm1hdDogXCIyMDIxLTA3LTI3XCIgXCIyMDIwLTExLTA2XCIgXCIyMDIxLTA5LTA5XCIgXCIyMDIxLTA5LTA2XCIgLi4uXG4gJCBlbXBsb3llcl9uYW1lICAgICAgICA6IGNociAgXCJtaWNyb3NvZnQgY29ycG9yYXRpb25cIiBcImVybnN0ICYgeW91bmcgdS5zLiBsbHBcIiBcImxvZ2l4aHViIGxsY1wiIFwiZWNsb3VkIGxhYnMsaW5jLlwiIC4uLlxuICQgZW1wbG95ZXJfY2l0eSAgICAgICAgOiBjaHIgIFwicmVkbW9uZFwiIFwic2VjYXVjdXNcIiBcImlydmluZ1wiIFwiaXNlbGluXCIgLi4uXG4gJCBlbXBsb3llcl9zdGF0ZSAgICAgICA6IGNociAgXCJ3YVwiIFwibmpcIiBcInR4XCIgXCJualwiIC4uLlxuICQgZW1wbG95ZXJfcG9zdGFsX2NvZGUgOiBjaHIgIFwiOTgwNTJcIiBcIjA3MDk0XCIgXCI3NTA2MlwiIFwiMDg4MzBcIiAuLi5cbiAkIGpvYl90aXRsZSAgICAgICAgICAgIDogY2hyICBcInNvZnR3YXJlIGVuZ2luZWVyXCIgXCJ0YXggc2VuaW9yXCIgXCJkYXRhYmFzZSBhZG1pbmlzdHJhdG9yXCIgXCJtaWNyb3NvZnQgZHluYW1pY3MgY3JtIGFwcGxpY2F0aW9uIGRldmVsb3BlclwiIC4uLlxuICQgc29jX2NvZGUgICAgICAgICAgICAgOiBjaHIgIFwiMTUtMTEzMlwiIFwiMTMtMjAxMVwiIFwiMTUtMTE0MVwiIFwiMTUtMTEzMlwiIC4uLlxuICQgc29jX25hbWUgICAgICAgICAgICAgOiBjaHIgIFwic29mdHdhcmUgZGV2ZWxvcGVycywgYXBwbGljYXRpb25zXCIgXCJhY2NvdW50YW50cyBhbmQgYXVkaXRvcnNcIiBcImRhdGFiYXNlIGFkbWluaXN0cmF0b3JzXCIgXCJzb2Z0d2FyZSBkZXZlbG9wZXJzLCBhcHBsaWNhdGlvbnNcIiAuLi5cbiAkIGZ1bGxfdGltZV9wb3NpdGlvbiAgIDogbG9naSAgVFJVRSBUUlVFIFRSVUUgVFJVRSBUUlVFIFRSVUUgLi4uXG4gJCBwcmV2YWlsaW5nX3dhZ2UgICAgICA6IG51bSAgMTEyNTQ5IDc5OTc2IDc3NzkyIDg3NzE0IDcxODY0IC4uLlxuICQgcHdfdW5pdF9vZl9wYXkgICAgICAgOiBGYWN0b3Igdy8gNSBsZXZlbHMgXCJiaS13ZWVrbHlcIixcImhvdXJcIiwuLjogNSA1IDUgNSA1IDUgNSA1IDUgNSAuLi5cbiAkIHdhZ2VfcmF0ZV9vZl9wYXlfZnJvbTogbnVtICAxNDM5MTUgMTAwMDAwIDc4MjQwIDk1MDAwIDc0MDAwIC4uLlxuICQgd2FnZV9yYXRlX29mX3BheV90byAgOiBudW0gIDAgMCAwIDAgMCAwIDAgMCAwIDAgLi4uXG4gJCB3YWdlX3VuaXRfb2ZfcGF5ICAgICA6IEZhY3RvciB3LyA1IGxldmVscyBcImJpLXdlZWtseVwiLFwiaG91clwiLC4uOiA1IDUgNSA1IDUgNSA1IDUgNSA1IC4uLlxuIn0= -->
+<pre><code>Classes ‘tbl_df’, ‘tbl’ and 'data.frame':   639172 obs. of  20 variables:
+ $ case_number          : chr  &quot;I-200-18026-338377&quot; &quot;I-200-17296-353451&quot; &quot;I-200-18242-524477&quot; &quot;I-200-18243-850522&quot; ...
+ $ case_status          : chr  &quot;certified&quot; &quot;certified&quot; &quot;certified&quot; &quot;certified&quot; ...
+ $ case_submitted       : Date, format: &quot;2018-01-29&quot; &quot;2017-10-23&quot; &quot;2018-08-30&quot; &quot;2018-08-31&quot; ...
+ $ decision_date        : Date, format: &quot;2018-02-02&quot; &quot;2017-10-27&quot; &quot;2018-09-06&quot; &quot;2018-09-07&quot; ...
+ $ visa_class           : chr  &quot;h-1b&quot; &quot;h-1b&quot; &quot;h-1b&quot; &quot;h-1b&quot; ...
+ $ employment_start_date: Date, format: &quot;2018-07-28&quot; &quot;2017-11-06&quot; &quot;2018-09-10&quot; &quot;2018-09-07&quot; ...
+ $ employment_end_date  : Date, format: &quot;2021-07-27&quot; &quot;2020-11-06&quot; &quot;2021-09-09&quot; &quot;2021-09-06&quot; ...
+ $ employer_name        : chr  &quot;microsoft corporation&quot; &quot;ernst &amp; young u.s. llp&quot; &quot;logixhub llc&quot; &quot;ecloud labs,inc.&quot; ...
+ $ employer_city        : chr  &quot;redmond&quot; &quot;secaucus&quot; &quot;irving&quot; &quot;iselin&quot; ...
+ $ employer_state       : chr  &quot;wa&quot; &quot;nj&quot; &quot;tx&quot; &quot;nj&quot; ...
+ $ employer_postal_code : chr  &quot;98052&quot; &quot;07094&quot; &quot;75062&quot; &quot;08830&quot; ...
+ $ job_title            : chr  &quot;software engineer&quot; &quot;tax senior&quot; &quot;database administrator&quot; &quot;microsoft dynamics crm application developer&quot; ...
+ $ soc_code             : chr  &quot;15-1132&quot; &quot;13-2011&quot; &quot;15-1141&quot; &quot;15-1132&quot; ...
+ $ soc_name             : chr  &quot;software developers, applications&quot; &quot;accountants and auditors&quot; &quot;database administrators&quot; &quot;software developers, applications&quot; ...
+ $ full_time_position   : logi  TRUE TRUE TRUE TRUE TRUE TRUE ...
+ $ prevailing_wage      : num  112549 79976 77792 87714 71864 ...
+ $ pw_unit_of_pay       : Factor w/ 5 levels &quot;bi-weekly&quot;,&quot;hour&quot;,..: 5 5 5 5 5 5 5 5 5 5 ...
+ $ wage_rate_of_pay_from: num  143915 100000 78240 95000 74000 ...
+ $ wage_rate_of_pay_to  : num  0 0 0 0 0 0 0 0 0 0 ...
+ $ wage_unit_of_pay     : Factor w/ 5 levels &quot;bi-weekly&quot;,&quot;hour&quot;,..: 5 5 5 5 5 5 5 5 5 5 ...</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaGVhZChIMUIxOF9jbGVhbilcbmBgYCJ9 -->
+<pre class="r"><code>head(H1B18_clean)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibmNvbCI6MjAsIm5yb3ciOjZ9LCJyZGYiOiJINHNJQUFBQUFBQUFBNzFXMjI3Yk5oaVc0ME1iYi9iU0ptMkg3VWJEZ080bU1pekphcFNMRHRrUUROamRzSzFBZ0tFVGFJcDJtRXFrUUZKeDNLdGU5V0s3MnB2c0VmWUtDYkFIMllvZHNBTEpTSWxVWk1jWjJwME1DT1QvZmVSLzRzK2Yvbnovd084ZWRDM0xhbHJOVHNOcXR1WFVhai82OGhNbnRLeldtaFFhVnN0YVYrT0pYTFFwSjF2eTI1QmZSeE8zUDNXODRkQnh3Nkgzd1BIOTBOL1pXV0oydkYzSkJQNG9jSmYzZUNQUENielI2TW9leWZoT0dBd0R6MXRtWExsbjE5OE5obGUwdVo3ckJJRVhCdUdTaitzUU1ZRW5HTVgvRFdBMSs4cmEzdWw5bFQ5cjc3VDNyQnkvMnRPamxqL1c4a09yL0Mya3VBMFR3TGwyM1lDdGZTQ1FITTh2alh5Z2pmUzEwc2RhZnF5VjcydjV3MmVYUnRZdXJ0ZTdrS3JXb2VPTy85Rzg4dk1MN2NjdFBYNTlqWjhQOTE3TlQ2MzNMUDZoMkhmMmZybi9qR3FaYXZsUktaL2l2eFAvblJSRFJqbWRDQnRTbGxFR0JLWkVrM2NSSTF6WTkrMDV6Y25VemdkOFlDZEpwdGszRXpyRko0ZjVXR0pRWXhzSUpqU1A3UVNNK1RZbWNHQ0toNDRSbzhUR1FnTTlEQ2twekJhckZwMjZ3VkNjVW1JcTd5WkhFT1F3NTFydVlIYU15YlNTT0Vvd1djbDF4em1UM0ZUSWtCWk5yTTJBbVpFak14TW5mNFdsWUVsSGV6ZVVGOVlJdzUzaDdzZ0lPOEh3d1NVVGh2Nnd4dmhoeGNnMjRpOXB2YVd5TWdNTTJZaE1NVUdJbVdBRU9MRTVJcGdhNUc0TUJCZ0RqbXdRcDVoZ0x1VHhWZXoyNWRIR2N3S2t4RzNJVWh0a1dZSmhjYzUyakk1UlFyUEt4cjFTdjgzblhDQzVsTUZETEJBMHAvYXVwbVdad0VSWm5kUTBMSjJoR3ppdTYzdVY2TXV1NWJvTDdNaTlidkZxY2RIQ2UxV2lLaC80ZGowNlV5OXZBd2hsQVF0QUJMY0JpVzJReDFqbXlmRDNWcWVSdjY2ZGYzT2hQTzRpVkhXRFYzOWxkM2o1OUxQaTlyOTRYdHordlovUHk2N3d5NUZkakQ5OVcrSy9mdk45MlIyYVBhMjN2ZnBiYU5HZFJQbG5lblRiWE9ZeGRtWUlQVW5tVlNPa3VhbWd0cnk0NHRBUWFwbVp6eEZnMTNTbnpnUkFWYmhsZnlvaSs2angzVUhoK2U5SFpVUXYzaW5IMzF3ZHFlNnpMMyswOUsrdkkzdk4zNnRrcEdrOC9wOXlzUGhReXN1THpDRnNhZkFOS0FzMkluazZyaTV2Q1hFQlJOVXEreVdVajFNc1JQV1U5MklFTVpkMUZzWHFWZER0NVJoekVKVnZzbjRiVUpvbGRKNGlJcFJXSnVyTE4yc2tJbkdkNnBVVVlwRnkvQW9Jc1RCSjYxZWc4dG9zM2FyUWpFbzhpU0NORGJkK1JNZVJ3Q0l4d0UxT1lYMUJJZGZzM3A3a1NTSjNwRWhwdzdYWDdhMk1vV09BMWZzUXpjRFViT2huc3lnbldFUjBFbVhBZUhwSHJZaGtYMEFhanlhTXBpWVhWMGhCellOWVVIVjlxMCsvcTNyUVlNS1U0NHVudjg3b2JHQXFRSlhxbXFyL2k0dUxQMWFVeWcyYTZmNnh0cWtydUc2bHdaYUFqWndvMWJFREQzUHlSSFpacTJ3OERYMDNlbnJlcWMyM1NwdXQ1U3ZSS2Q4clU3VHlMd0JLVEU1bERFVUlnNHhoWWw2VHJrVDVRRkI1eEFhQk5ERkkyUXZPL3dUeXExZ2d0QXNBQUE9PSJ9 -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["case_number"],"name":[1],"type":["chr"],"align":["left"]},{"label":["case_status"],"name":[2],"type":["chr"],"align":["left"]},{"label":["case_submitted"],"name":[3],"type":["date"],"align":["right"]},{"label":["decision_date"],"name":[4],"type":["date"],"align":["right"]},{"label":["visa_class"],"name":[5],"type":["chr"],"align":["left"]},{"label":["employment_start_date"],"name":[6],"type":["date"],"align":["right"]},{"label":["employment_end_date"],"name":[7],"type":["date"],"align":["right"]},{"label":["employer_name"],"name":[8],"type":["chr"],"align":["left"]},{"label":["employer_city"],"name":[9],"type":["chr"],"align":["left"]},{"label":["employer_state"],"name":[10],"type":["chr"],"align":["left"]},{"label":["employer_postal_code"],"name":[11],"type":["chr"],"align":["left"]},{"label":["job_title"],"name":[12],"type":["chr"],"align":["left"]},{"label":["soc_code"],"name":[13],"type":["chr"],"align":["left"]},{"label":["soc_name"],"name":[14],"type":["chr"],"align":["left"]},{"label":["full_time_position"],"name":[15],"type":["lgl"],"align":["right"]},{"label":["prevailing_wage"],"name":[16],"type":["dbl"],"align":["right"]},{"label":["pw_unit_of_pay"],"name":[17],"type":["fctr"],"align":["left"]},{"label":["wage_rate_of_pay_from"],"name":[18],"type":["dbl"],"align":["right"]},{"label":["wage_rate_of_pay_to"],"name":[19],"type":["dbl"],"align":["right"]},{"label":["wage_unit_of_pay"],"name":[20],"type":["fctr"],"align":["left"]}],"data":[{"1":"I-200-18026-338377","2":"certified","3":"2018-01-29","4":"2018-02-02","5":"h-1b","6":"2018-07-28","7":"2021-07-27","8":"microsoft corporation","9":"redmond","10":"wa","11":"98052","12":"software engineer","13":"15-1132","14":"software developers, applications","15":"TRUE","16":"112549","17":"year","18":"143915","19":"0","20":"year"},{"1":"I-200-17296-353451","2":"certified","3":"2017-10-23","4":"2017-10-27","5":"h-1b","6":"2017-11-06","7":"2020-11-06","8":"ernst & young u.s. llp","9":"secaucus","10":"nj","11":"07094","12":"tax senior","13":"13-2011","14":"accountants and auditors","15":"TRUE","16":"79976","17":"year","18":"100000","19":"0","20":"year"},{"1":"I-200-18242-524477","2":"certified","3":"2018-08-30","4":"2018-09-06","5":"h-1b","6":"2018-09-10","7":"2021-09-09","8":"logixhub llc","9":"irving","10":"tx","11":"75062","12":"database administrator","13":"15-1141","14":"database administrators","15":"TRUE","16":"77792","17":"year","18":"78240","19":"0","20":"year"},{"1":"I-200-18243-850522","2":"certified","3":"2018-08-31","4":"2018-09-07","5":"h-1b","6":"2018-09-07","7":"2021-09-06","8":"ecloud labs,inc.","9":"iselin","10":"nj","11":"08830","12":"microsoft dynamics crm application developer","13":"15-1132","14":"software developers, applications","15":"TRUE","16":"87714","17":"year","18":"95000","19":"0","20":"year"},{"1":"I-200-18142-939501","2":"certified","3":"2018-05-22","4":"2018-05-29","5":"h-1b","6":"2018-05-29","7":"2021-05-28","8":"oberon it","9":"irving","10":"tx","11":"75038","12":"senior system architect","13":"15-1132","14":"software developers, applications","15":"TRUE","16":"71864","17":"year","18":"74000","19":"0","20":"year"},{"1":"I-200-18121-552858","2":"certified","3":"2018-05-01","4":"2018-05-07","5":"h-1b","6":"2018-05-02","7":"2018-10-26","8":"iconsoft inc.","9":"burlington","10":"ma","11":"01803","12":"senior oracle adf developer","13":"15-1132","14":"software developers, applications","15":"TRUE","16":"92331","17":"year","18":"114000","19":"0","20":"year"}],"options":{"columns":{"min":{},"max":[10],"total":[20]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
 <div id="save-data" class="section level2">
 <h2>save data</h2>
 <!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuSDFCMTggPC0gSDFCMThfY2xlYW5cbmBgYCJ9 -->
+<pre class="r"><code>H1B18 &lt;- H1B18_clean</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiMTAtaW1wb3J0IgpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sKLS0tCiMjIExvYWQgcGFja2FnZXMKYGBge3IgZXZhbD1GQUxTRX0KbGlicmFyeSh0aWR5dmVyc2UpCmxpYnJhcnkoamFuaXRvcikKbGlicmFyeShhc3NlcnRyKQpgYGAKCgojIyBJbXBvcnQgZGF0YQoKYGBge3Igd2FybmluZz1GQUxTRX0KSDFCMTg8LXJlYWQuY3N2KHVuemlwKCJkYXRhL2gxYjE4LmNzdi56aXAiKSkgJT4lIAogIGNsZWFuX25hbWVzKCkKZmlsZS5yZW1vdmUoImgxYjE4LmNzdiIpCmBgYAoKIyMgZGF0YSBjbGVhbmluZwoKYGBge3J9CkgxQjE4X3Rlc3QgPC0gSDFCMTgKZm9yKGkgaW4gMTpuY29sKEgxQjE4X3Rlc3QpKXsKICBIMUIxOF90ZXN0W2ldIDwtIGdzdWIoIl4kIixOQSxIMUIxOF90ZXN0W2ldKQp9CkgxQjE4X3Rlc3QgPC0gbmEub21pdChIMUIxOF90ZXN0KQpgYGAKCgpgYGB7cn0KSDFCMTggPC0gbmEub21pdChIMUIxOCkKYGBgCiMjIHNhdmUgZGF0YQo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiMTAtaW1wb3J0IgpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sKLS0tCiMjIExvYWQgcGFja2FnZXMKYGBge3J9CmxpYnJhcnkodGlkeXZlcnNlKQpsaWJyYXJ5KGphbml0b3IpCmxpYnJhcnkoYXNzZXJ0cikKbGlicmFyeShzdHJpbmdyKQpsaWJyYXJ5KGx1YnJpZGF0ZSkKYGBgCgoKIyMgSW1wb3J0IGRhdGEKCmBgYHtyIHdhcm5pbmc9RkFMU0V9CkgxQjE4PC1yZWFkX2Nzdih1bnppcCgiZGF0YS9oMWIxOC5jc3YuemlwIikpICU+JSAKICBjbGVhbl9uYW1lcygpCmZpbGUucmVtb3ZlKCJoMWIxOC5jc3YiKQpgYGAKCgoKIyMgZGF0YSBjbGVhbmluZwoKKipUb2RvIGxpc3Q6KioKCkZpbHRlciBIMUIgdmlzYV9jbGFzcwpgYGB7cn0KSDFCMThfY2xlYW4gPC0gSDFCMTggJT4lIAogIGZpbHRlcih2aXNhX2NsYXNzPT0iSC0xQiIpCmBgYAoKUmVtb3ZlIGFsbCBvZiBtaXNzaW5nIHZhbHVlIApgYGB7cn0KSDFCMThfY2xlYW4gPC0gbmEub21pdChIMUIxOF9jbGVhbikKYGBgCgpVcHBlcmNhc2UgLT4gbG93ZXJjYXNlIApgYGB7cn0KSDFCMThfY2xlYW4gPC0gSDFCMThfY2xlYW4gJT4lIAogIG11dGF0ZShjYXNlX3N0YXR1cz10b2xvd2VyKGNhc2Vfc3RhdHVzKSkgJT4lIAogIG11dGF0ZSh2aXNhX2NsYXNzID0gdG9sb3dlcih2aXNhX2NsYXNzKSkgJT4lIAogIG11dGF0ZShlbXBsb3llcl9uYW1lPXRvbG93ZXIoZW1wbG95ZXJfbmFtZSkpICU+JSAKICBtdXRhdGUoZW1wbG95ZXJfY2l0eT10b2xvd2VyKGVtcGxveWVyX2NpdHkpKSAlPiUgCiAgbXV0YXRlKGVtcGxveWVyX3N0YXRlPXRvbG93ZXIoZW1wbG95ZXJfc3RhdGUpKSAlPiUgCiAgbXV0YXRlKGpvYl90aXRsZT10b2xvd2VyKGpvYl90aXRsZSkpICU+JSAKICBtdXRhdGUoc29jX25hbWU9dG9sb3dlcihzb2NfbmFtZSkpICU+JSAgCiAgbXV0YXRlKHB3X3VuaXRfb2ZfcGF5ID0gdG9sb3dlcihwd191bml0X29mX3BheSkpICU+JSAKICBtdXRhdGUod2FnZV91bml0X29mX3BheSA9IHRvbG93ZXIod2FnZV91bml0X29mX3BheSkpCmBgYAoKTHVicmlkYXRlIGFsbCBvZiB0aGUgZGF0ZQpgYGB7cn0KSDFCMThfY2xlYW4gPC0gSDFCMThfY2xlYW4gJT4lIAogIG11dGF0ZShjYXNlX3N1Ym1pdHRlZCA9IG1keShjYXNlX3N1Ym1pdHRlZCkpICU+JSAKICBtdXRhdGUoZGVjaXNpb25fZGF0ZSA9IG1keShkZWNpc2lvbl9kYXRlKSkgJT4lIAogIG11dGF0ZShlbXBsb3ltZW50X3N0YXJ0X2RhdGUgPSBtZHkoZW1wbG95bWVudF9zdGFydF9kYXRlKSkgJT4lIAogIG11dGF0ZShlbXBsb3ltZW50X2VuZF9kYXRlID0gbWR5KGVtcGxveW1lbnRfZW5kX2RhdGUpKSAKYGBgCgpMb2dpY2FsIGNvbHVtbiB0cmFuc2ZlcgpgYGB7cn0KSDFCMThfY2xlYW4gPC0gSDFCMThfY2xlYW4gJT4lIAogIG11dGF0ZShmdWxsX3RpbWVfcG9zaXRpb24gPSBjYXNlX3doZW4oZnVsbF90aW1lX3Bvc2l0aW9uPT0iWSJ+VFJVRSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGZ1bGxfdGltZV9wb3NpdGlvbj09Ik4ifkZBTFNFKSkKYGBgCgpmYWN0b3IgY29sdW1uIHRyYW5zZmVyCmBgYHtyfQojIHVuaXF1ZShIMUIxOCRwd191bml0X29mX3BheSkKIyB1bmlxdWUoSDFCMTgkd2FnZV91bml0X29mX3BheSkKCkgxQjE4X2NsZWFuIDwtIEgxQjE4X2NsZWFuICU+JSAKICBtdXRhdGUocHdfdW5pdF9vZl9wYXkgPSBmYWN0b3IocHdfdW5pdF9vZl9wYXkpKSAlPiUgCiAgbXV0YXRlKHdhZ2VfdW5pdF9vZl9wYXkgPSBmYWN0b3Iod2FnZV91bml0X29mX3BheSkpCmBgYAoKCmBgYHtyfQpzdHIoSDFCMThfY2xlYW4pCmhlYWQoSDFCMThfY2xlYW4pCmBgYAoKIyMgc2F2ZSBkYXRhCmBgYHtyfQpIMUIxOCA8LSBIMUIxOF9jbGVhbgpgYGAKCg==</div>
 
 
 
