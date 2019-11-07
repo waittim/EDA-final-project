@@ -32,11 +32,6 @@ H1B18_clean <- H1B18 %>%
   filter(visa_class=="H-1B")
 ```
 
-Remove all of missing value 
-```{r}
-H1B18_clean <- na.omit(H1B18_clean)
-```
-
 Uppercase -> lowercase 
 ```{r}
 H1B18_clean <- H1B18_clean %>% 
@@ -78,6 +73,15 @@ H1B18_clean <- H1B18_clean %>%
   mutate(wage_unit_of_pay = factor(wage_unit_of_pay))
 ```
 
+clean zip code
+```{r}
+H1B18_clean$employer_postal_code <- gsub("[^0-9\\-]",NA, H1B18_clean$employer_postal_code)
+```
+
+Remove all of missing value 
+```{r}
+H1B18_clean <- na.omit(H1B18_clean)
+```
 
 ```{r}
 # str(H1B18_clean)
