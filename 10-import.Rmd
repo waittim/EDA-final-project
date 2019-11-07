@@ -100,11 +100,11 @@ zipcode <- zipcode[complete.cases(zipcode), ]
 names(zipcode)
 names(H1B18_clean)
 
-df <- H1B18_clean %>% 
+H1B18_clean <- H1B18_clean %>% 
   inner_join(zipcode, c("employer_postal_code" = "zip")) %>% 
   select(-c("visa_class", "city", "state"))
 
-names(df)
+names(H1B18_clean)
 
 ```
 
@@ -112,6 +112,6 @@ names(df)
 
 ## save data
 ```{r}
-H1B18 <- df
+H1B18 <- H1B18_clean
 ```
 
