@@ -75,7 +75,7 @@ H1B18_clean <- H1B18_clean %>%
 
 clean zip code
 ```{r}
-H1B18_clean$employer_postal_code <- gsub("[^0-9\\-]",NA, H1B18_clean$employer_postal_code)
+H1B18_clean$employer_postal_code <- gsub("[^0-9\\-]", NA, H1B18_clean$employer_postal_code)
 ```
 
 Remove all of missing value 
