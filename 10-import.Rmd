@@ -32,11 +32,6 @@ H1B18_clean <- H1B18 %>%
   filter(visa_class=="H-1B")
 ```
 
-Remove all of missing value 
-```{r}
-H1B18_clean <- na.omit(H1B18_clean)
-```
-
 Uppercase -> lowercase 
 ```{r}
 H1B18_clean <- H1B18_clean %>% 
@@ -63,8 +58,9 @@ H1B18_clean <- H1B18_clean %>%
 Logical column transfer
 ```{r}
 H1B18_clean <- H1B18_clean %>% 
-  mutate(full_time_position = case_when(full_time_position=="Y"~TRUE,
-                                        full_time_position=="N"~FALSE))
+  mutate(full_time_position = case_when(full_time_position=="Y"~1,
+                                        full_time_position=="N"~0)) %>% 
+  mutate(full_time_position=factor(full_time_position))
 ```
 
 factor column transfer
@@ -77,14 +73,25 @@ H1B18_clean <- H1B18_clean %>%
   mutate(wage_unit_of_pay = factor(wage_unit_of_pay))
 ```
 
+clean zip code
+```{r}
+H1B18_clean$employer_postal_code <- gsub("[^0-9\\-]",NA, H1B18_clean$employer_postal_code)
+```
+
+Remove all of missing value 
+```{r}
+H1B18_clean <- na.omit(H1B18_clean)
+```
 
 ```{r}
-str(H1B18_clean)
-head(H1B18_clean)
+# str(H1B18_clean)
+# head(H1B18_clean)
+# unique(H1B18$job_title)
 ```
 
 ## save data
 ```{r}
 H1B18 <- H1B18_clean
 ```
+
 
