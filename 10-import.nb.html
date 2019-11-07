@@ -1768,11 +1768,26 @@ library(lubridate)</code></pre>
 <h2>Import data</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuSDFCMTg8LXJlYWRfY3N2KHVuemlwKFwiZGF0YS9oMWIxOC5jc3YuemlwXCIpKSAlPiUgXG4gIGNsZWFuX25hbWVzKClcbmZpbGUucmVtb3ZlKFwiaDFiMTguY3N2XCIpXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuSDFCMTg8LXJlYWRfY3N2KHVuemlwKFwiZGF0YS9oMWIxOC5jc3YuemlwXCIpKSAlPiUgXG4gIGNsZWFuX25hbWVzKClcbmBgYCJ9 -->
 <pre class="r"><code>H1B18&lt;-read_csv(unzip(&quot;data/h1b18.csv.zip&quot;)) %&gt;% 
-  clean_names()
-file.remove(&quot;h1b18.csv&quot;)</code></pre>
+  clean_names()</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiUGFyc2VkIHdpdGggY29sdW1uIHNwZWNpZmljYXRpb246XG5jb2xzKFxuICAuZGVmYXVsdCA9IGNvbF9jaGFyYWN0ZXIoKSxcbiAgUFJFVkFJTElOR19XQUdFID0gXHUwMDFiWzMybWNvbF9udW1iZXIoKVx1MDAxYlszOW0sXG4gIFdBR0VfUkFURV9PRl9QQVlfRlJPTSA9IFx1MDAxYlszMm1jb2xfbnVtYmVyKClcdTAwMWJbMzltLFxuICBXQUdFX1JBVEVfT0ZfUEFZX1RPID0gXHUwMDFiWzMybWNvbF9udW1iZXIoKVx1MDAxYlszOW1cbilcblNlZSBzcGVjKC4uLikgZm9yIGZ1bGwgY29sdW1uIHNwZWNpZmljYXRpb25zLlxuIn0= -->
+<pre><code>Parsed with column specification:
+cols(
+  .default = col_character(),
+  PREVAILING_WAGE = [32mcol_number()[39m,
+  WAGE_RATE_OF_PAY_FROM = [32mcol_number()[39m,
+  WAGE_RATE_OF_PAY_TO = [32mcol_number()[39m
+)
+See spec(...) for full column specifications.</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZmlsZS5yZW1vdmUoXCJoMWIxOC5jc3ZcIilcbmBgYCJ9 -->
+<pre class="r"><code>file.remove(&quot;h1b18.csv&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFRSVUVcbiJ9 -->
+<pre><code>[1] TRUE</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
