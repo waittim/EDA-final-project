@@ -9,6 +9,7 @@ library(janitor)
 library(assertr)
 library(stringr)
 library(lubridate)
+library(zipcode)
 ```
 
 
@@ -75,7 +76,7 @@ H1B18_clean <- H1B18_clean %>%
 
 clean zip code
 ```{r}
-H1B18_clean$employer_postal_code <- gsub("[^0-9\\-]",NA, H1B18_clean$employer_postal_code)
+H1B18_clean$employer_postal_code <- strtrim(H1B18_clean$employer_postal_code, 5)
 ```
 
 Remove all of missing value 
@@ -88,9 +89,29 @@ H1B18_clean <- na.omit(H1B18_clean)
 # head(H1B18_clean)
 # unique(H1B18$job_title)
 ```
+## External data, add longitude and latitude
+```{r}
+data(zipcode)
+zipcode <- zipcode[complete.cases(zipcode), ]
+
+# zipcode$city <- tolower(zipcode$city)
+# zipcode$state <- tolower(zipcode$state)
+
+names(zipcode)
+names(H1B18_clean)
+
+df <- H1B18_clean %>% 
+  inner_join(zipcode, c("employer_postal_code" = "zip")) %>% 
+  select(-c("visa_class", "city", "state"))
+
+names(df)
+
+```
+
+
 
 ## save data
 ```{r}
-H1B18 <- H1B18_clean
+H1B18 <- df
 ```
 
