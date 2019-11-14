@@ -1,0 +1,32 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+H1B18_certificate <- H1B18 %>% 
+  filter(case_status=="certified") %>% 
+  group_by(employer_state) %>% 
+  summarise(num=n())
+```
+
+```{r}
+names(H1B18_certificate)[1]<-"state"
+```
+
+```{r}
+library(usmap)
+library(ggplot2)
+```
+
+```{r}
+plot_usmap(data = H1B18_certificate, values = "num",labels=TRUE) + 
+  scale_fill_continuous(name = "number of certificated cases",low="white",high="red",label=scales::comma) +
+  theme(legend.position = "right")+
+  labs(label=c("CA","TX"))
+```
+
