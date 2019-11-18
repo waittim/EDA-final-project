@@ -12,6 +12,7 @@ library(stringr)
 library(lubridate)
 library(zipcode)
 library(gganimate)
+# library(splus2R)
 ```
 
 
@@ -25,10 +26,23 @@ file.remove("data/transformed.csv")
 
 ```{r}
 DATA <- DATA %>% 
-  select(- c('coli_x', 'coli_y'))
+  select(- c('coli_x', 'coli_y')) %>% 
+  mutate(case_status=str_to_lower(case_status)) %>% 
+  mutate(employer_name=str_to_lower(employer_name)) %>%  
+  mutate(soc_name=str_to_lower(soc_name)) %>%  
+  mutate(job_title=str_to_lower(job_title)) %>% 
+  mutate(full_time_position = case_when(full_time_position=="Y"~1,
+                                        full_time_position=="N"~0)) %>% 
+  mutate(full_time_position=factor(full_time_position)) %>% 
+  mutate(worksite_city=str_to_lower(worksite_city)) %>% 
+  mutate(worksite_state_abb=str_to_lower(worksite_state_abb)) %>% 
+  mutate(worksite_state_full=str_to_lower(worksite_state_full)) %>% 
+  mutate(worksite=str_to_lower(worksite)) 
 
 head(DATA)
 ```
+
+
 
 
 
