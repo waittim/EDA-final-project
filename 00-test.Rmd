@@ -11,6 +11,7 @@ library(assertr)
 library(stringr)
 library(lubridate)
 library(zipcode)
+library(gganimate)
 ```
 
 
