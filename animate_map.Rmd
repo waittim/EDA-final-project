@@ -1,0 +1,45 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(readr)
+library(tidyverse)
+```
+
+```{r}
+data <- read_csv("data/transformed.csv")
+```
+
+```{r}
+H1B_certificate <- data %>% 
+  filter(CASE_STATUS=="CERTIFIED") %>% 
+  group_by(WORKSITE_STATE_ABB,YEAR) %>% 
+  summarise(num=n())
+```
+
+```{r}
+H1B_certificate
+```
+```{r}
+H1B_2018 <-  H1B_certificate %>% 
+  filter(YEAR==2018)
+  
+```
+
+```{r}
+ichoropleth(num~WORKSITE_STATE_ABB,data=H1B_2018)
+```
+
+```{r}
+require(devtools)
+install_github('ramnathv/rCharts@dev')
+install_github('ramnathv/rMaps')
+```
+
+```{r}
+d1<-ichoropleth(num~WORKSITE_STATE_ABB,data=H1B_certificate,animate='YEAR',play='TRUE')
+d1$save('rMaps.html', cdn = TRUE)
+```
+
