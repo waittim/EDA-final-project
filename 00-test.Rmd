@@ -20,4 +20,16 @@ DATA <- read_csv("data/transformed.csv") %>%
   clean_names()
 file.remove("data/transformed.csv")
 ```
+#Removing Coli Extraneous  Columns
+
+```{r}
+DATA <- DATA %>% 
+  select(- c('coli_x', 'coli_y'))
+
+head(DATA)
+```
+
+
+
+
 
