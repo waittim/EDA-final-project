@@ -3,6 +3,17 @@ title: "00-test"
 output: html_notebook
 ---
 
+## Load packages
+```{r}
+library(tidyverse)
+library(janitor)
+library(assertr)
+library(stringr)
+library(lubridate)
+library(zipcode)
+```
+
+
 ```{r}
 # Please unrara the "transformed.rar" file manually first.
 DATA <- read_csv("data/transformed.csv") %>% 
