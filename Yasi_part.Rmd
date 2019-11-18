@@ -1,0 +1,51 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+```
+
+```{r}
+data %>% 
+  filter(CASE_STATUS=="CERTIFIED") %>% 
+  group_by(YEAR) %>% 
+  summarise(n = n(), na.rm = T) %>% 
+  ggplot(aes(x = YEAR, y = n)) + 
+  geom_bar(stat = "identity") + 
+  coord_cartesian(ylim = c(450000, 700000))
+```
+
+
+```{r}
+H1B18_certificate <- data %>% 
+  filter(YEAR == "2018") %>% 
+  filter(CASE_STATUS=="CERTIFIED") %>% 
+  group_by(WORKSITE_STATE_ABB) %>% 
+  summarise(num=n())
+
+```
+
+
+```{r}
+names(H1B18_certificate)[1]<-"state"
+```
+
+```{r}
+library(usmap)
+library(ggplot2)
+```
+
+```{r}
+plot_usmap(data = H1B18_certificate, values = "num",labels=TRUE) + 
+  scale_fill_continuous(name = "number of certificated cases",low="white",high="red",label=scales::comma) +
+  theme(legend.position = "right")+
+  labs(label=c("CA","TX"))
+```
+
+```{r}
+unique(data$JOB_TITLE)
+```
+
