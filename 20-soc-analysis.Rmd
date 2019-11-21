@@ -2,6 +2,12 @@
 title: "20-soc-analysis"
 output: html_notebook
 ---
+
+
+```{r}
+h1b_df <- DATA
+```
+
 #soc field grouped by year
 ```{r}
 h1b_df %>% 
