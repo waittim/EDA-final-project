@@ -42,7 +42,13 @@ head(DATA)
 ```
 
 
-
+#Adding the new feature called `soc_field` to represent the higher level of job fields.
+```{r}
+new_df <- DATA %>% 
+  filter(str_detect(soc_code, "^\\d{2}(-)\\d{4}$")) %>% 
+  mutate(soc_field = substr(soc_code, start = 1, stop = 2)) %>% 
+  select(soc_field, soc_code, job_title, everything())
+```
 
 
 
