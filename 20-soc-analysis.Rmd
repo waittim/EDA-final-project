@@ -168,17 +168,17 @@ soc_tech_top <- soc_tech_year %>%
                           ifelse(str_detect(employer_name,'intel corp|intel mob|intel ame|intel mas|intel fed'), 'Intel', 
                           ifelse(str_detect(employer_name,'facebook'),'Facebook',
                           ifelse(str_detect(employer_name,'google'),'Google',
-                          ifelse(str_detect(employer_name, 'ibm'),'IBM',"no")))))))) 
+                          ifelse(str_detect(employer_name, 'ibm'),'IBM',"no"))))))))
 
 
          
          
 soc_tech_top %>% 
   group_by(employer_name, year) %>% 
-  summarise(n = n()) %>% 
+  summarise(tot = sum(n)) %>% 
   filter(!employer_name == "no") %>% 
   ungroup() %>% 
-  ggplot(aes(x = year, y = n))+
+  ggplot(aes(x = year, y = tot))+
   geom_line(aes(color = employer_name), size = 1.05)+
   labs( y = "Number of Applications", x = "Year")+
   theme_bw()
