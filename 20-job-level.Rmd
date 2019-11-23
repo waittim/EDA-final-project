@@ -14,6 +14,8 @@ highlevel_by_year <- DATA %>%
   mutate(job_level=case_when(grepl("senior",job_title) ~ "high level",
                              grepl("director",job_title) ~ "high level",
                              grepl("lead",job_title) ~ "high level",
+                             grepl("chief",job_title) ~ "high level",
+                             grepl("principal",job_title) ~ "high level",
                              TRUE ~ "undefined")) %>% 
   group_by(year, job_level) %>% 
   summarise(level_num = n()) 
@@ -46,16 +48,29 @@ highlevel_by_year %>%
 ```{r}
 data_related <- DATA %>% 
   mutate(data_relation=case_when(grepl("data",job_title) ~ "data_related",
-                                 grepl("analyst",job_title) ~ "data_related",
-                                 grepl("analytic",job_title) ~ "data_related",
+                                 grepl("analy",job_title) ~ "data_related",
                                  grepl("machine learning",job_title) ~ "data_related",
                                  grepl("deep learning",job_title) ~ "data_related",
-                                 grepl("artificial intelligence",job_title) ~ "data_related",
+                                 grepl("intelligence",job_title) ~ "data_related",
                                  grepl("quantitative",job_title) ~ "data_related",
                                  grepl("statistic",job_title) ~ "data_related",
+                                 grepl("sas",job_title) ~ "data_related",
+                                 grepl("sql",job_title) ~ "data_related",
+                                 grepl("oracle",job_title) ~ "data_related",
+                                 grepl("spss",job_title) ~ "data_related",
+                                 
+                                 # grepl("program",job_title) ~ "undefined",
+                                 # grepl("system",job_title) ~ "undefined",
+                                 # grepl("tech",job_title) ~ "undefined",
+                                 # grepl("comput",job_title) ~ "undefined",
 
                                  TRUE ~ "undefined")) %>% 
+  # mutate(data_relation=case_when(grepl("program",job_title) ~ "undefined",
+  #                                grepl("system",job_title) ~ "undefined",
+  #                                grepl("tech",job_title) ~ "undefined",
+  #                                grepl("comput",job_title) ~ "undefined")) %>% 
   select(year, data_relation,job_title ) %>% 
+  arrange(-year) %>% 
   group_by(year, data_relation) %>% 
   summarise(type_sum = n()) 
 
@@ -305,19 +320,55 @@ sde_related %>%
   coord_cartesian(ylim = c(0,0.5))
 ```
 
+
+
+
 ```{r}
 DATA %>% 
-  mutate(sde_relation=case_when(grepl("software",job_title) ~ "sde_related",
-                                grepl("program",job_title) ~ "sde_related",
-                                grepl("comput",job_title) ~ "sde_related",
-                                grepl("system",job_title) ~ "sde_related",
-                                grepl("tech",job_title) ~ "sde_related",
-                                grepl("develop",job_title) ~ "sde_related",
-                                TRUE ~ "undefined")) %>%
-  filter(sde_relation == "undefined") %>% 
-  filter(soc_field == "15") %>% 
+  filter(year == 2017) 
+```
+
+```{r}
+DATA %>% 
+  # mutate(sde_relation=case_when(grepl("software",job_title) ~ "sde_related",
+  #                               grepl("program",job_title) ~ "sde_related",
+  #                               grepl("comput",job_title) ~ "sde_related",
+  #                               grepl("system",job_title) ~ "sde_related",
+  #                               grepl("tech",job_title) ~ "sde_related",
+  #                               grepl("develop",job_title) ~ "sde_related",
+  #                               TRUE ~ "undefined")) %>%
+  # filter(sde_relation == "undefined") %>% 
+  
+  # filter(soc_field == "15") %>% 
+  
+  # mutate(data_relation=case_when(grepl("data",job_title) ~ "data_related",
+  #                                grepl("analy",job_title) ~ "data_related",
+  #                                grepl("machine learning",job_title) ~ "data_related",
+  #                                grepl("deep learning",job_title) ~ "data_related",
+  #                                grepl("intelligence",job_title) ~ "data_related",
+  #                                grepl("quantitative",job_title) ~ "data_related",
+  #                                grepl("statistic",job_title) ~ "data_related",
+  #                                grepl("sas",job_title) ~ "data_related",
+  #                                grepl("sql",job_title) ~ "data_related",
+  #                                grepl("oracle",job_title) ~ "data_related",
+  #                                grepl("spss",job_title) ~ "data_related",
+  #                                TRUE ~ "undefined")) %>% 
+  # filter(data_relation == "undefined") %>%
+
+  filter(year == 2018 | year == 2017) %>% 
   group_by(job_title,year) %>% 
   summarise(n=n()) %>% 
-  arrange(-n)
+  arrange(-n) %>% 
+  pivot_wider(names_from = "year",
+              values_from = "n"
+              ) %>% 
+  mutate(ratio_2017 = `2017` / 622688 ) %>% 
+  mutate(ratio_2018 = `2018` / 652968 ) %>% 
+
+  mutate(increase_num = `2018` - `2017`) %>% 
+  mutate(increase_ratio = ratio_2018 - ratio_2017) %>% 
+
+  arrange(-increase_ratio)
 ```
+
 
