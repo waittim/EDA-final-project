@@ -20,7 +20,8 @@ senior_by_year
 ```{r}
 ggplot(senior_by_year)+
   geom_line(aes(x=year,y=level_num,color=job_level))+
-  theme_bw()
+  theme_bw()+
+  labs(x="Year", y="Number of job level")
 ```
 
 ```{r}
@@ -33,7 +34,7 @@ senior_by_year %>%
   ggplot()+
   geom_line(aes(x=year,y=level_ratio))+
   theme_bw()+
-  labs(y="high level job ratio")
+  labs(y="High level job ratio", x="Year")
 ```
 
 # data related
@@ -52,7 +53,8 @@ data_related
 ```{r}
 ggplot(data_related)+
   geom_line(aes(x=year,y=type_sum,color=data_relation))+
-  theme_bw()
+  theme_bw()+
+  labs(x="Year", y="Number of job type")
 ```
 
 ```{r}
@@ -65,6 +67,6 @@ data_related %>%
   ggplot()+
   geom_line(aes(x=year,y=type_ratio))+
   theme_bw()+
-  labs(y="data_related job ratio")
+  labs(y="Data related job ratio", x="Year")
 ```
 
