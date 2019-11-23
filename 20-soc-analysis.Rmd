@@ -97,7 +97,39 @@ soc_tech_year <- h1b_df %>%
   arrange(-n) %>% 
   ungroup
 
-soc_tech
+
+soc_tech_year <- h1b_df %>% 
+  filter(soc_field == 15) %>% 
+  group_by(employer_name, year) %>% 
+  summarise(n = n()) %>% 
+  arrange(-n) %>% 
+  ungroup
+
+
+h1b_df %>% 
+  mutate(job_title = ifelse(str_detect(job_title,"data"), 'data', "no")) %>% 
+  group_by(job_title, year) %>% 
+  summarise(n = n()) %>% 
+  ggplot(aes(x = year, y = n))+
+  geom_line(aes(color = job_title), size = 1.05)+
+  labs( y = "Number of Applications", x = "Year")+
+  theme_bw()
+  
+
+h1b_df %>% 
+  filter(str_detect(job_title,"data|analyst|machine learning|deep learning|nlp|intelligence|business  nalyst")==TRUE) %>% 
+  filter(str_detect(job_title, "programmer|systems|technology|quality|management|jc65|budget|test" )==FALSE) %>% 
+  group_by(job_title) %>% 
+  summarise(n = n()) %>% 
+  arrange(-n)
+
+
+
+data <- c("business analyst", "analyst", "data", "software")
+
+
+!str_detect(data, "data|analyst|machine learning|deep learning|nlp|intelligence|business analyst")
+
 ```
 
 ```{r}
@@ -161,26 +193,43 @@ soc_tech_year %>%
   filter(str_detect(employer_name, 'ibm')) %>% 
   mutate(employer_name = 'IBM')
 
+#Amazon
+soc_tech_year %>% 
+  filter(str_detect(employer_name, 'amazon')) 
+
+#Netflix
+soc_tech_year %>% 
+  filter(str_detect(employer_name, 'netflix')) 
+
+#LinkedIn
+soc_tech_year %>% 
+  filter(str_detect(employer_name, 'linkedin')) 
+
+#Cisco
+soc_tech_year %>% 
+  filter(str_detect(employer_name, 'c')) 
+
+
+
 soc_tech_top <- soc_tech_year %>% 
   mutate(employer_name = ifelse(str_detect(employer_name,'apple inc'), 'Apple',
-                          ifelse(str_detect(employer_name, 'microsoft'), 'Microsoft',
-                          ifelse(str_detect(employer_name, 'samsung'), 'Samsung',
-                          ifelse(str_detect(employer_name,'intel corp|intel mob|intel ame|intel mas|intel fed'), 'Intel', 
+                          ifelse(str_detect(employer_name,'microsoft'), 'Microsoft',
+                          ifelse(str_detect(employer_name,'amazon'),'Amazon',
+                          ifelse(str_detect(employer_name,'cisco sys'),'Cisco',
                           ifelse(str_detect(employer_name,'facebook'),'Facebook',
                           ifelse(str_detect(employer_name,'google'),'Google',
-                          ifelse(str_detect(employer_name, 'ibm'),'IBM',"no"))))))))
+                          ifelse(str_detect(employer_name, 'ibm'),'IBM','no'))))))))
 
-
-         
          
 soc_tech_top %>% 
   group_by(employer_name, year) %>% 
   summarise(tot = sum(n)) %>% 
-  filter(!employer_name == "no") %>% 
+  filter(!employer_name %in% c("no","IBM", NA)) %>% 
   ungroup() %>% 
   ggplot(aes(x = year, y = tot))+
   geom_line(aes(color = employer_name), size = 1.05)+
   labs( y = "Number of Applications", x = "Year")+
   theme_bw()
+
 ```
 
