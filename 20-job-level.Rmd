@@ -7,10 +7,10 @@ library(tidyverse)
 library(ggplot2)
 ```
 
-# senior analysis
-
+# overall
+## high level analysis
 ```{r}
-senior_by_year <- DATA %>% 
+highlevel_by_year <- DATA %>% 
   mutate(job_level=case_when(grepl("senior",job_title) ~ "high level",
                              grepl("director",job_title) ~ "high level",
                              grepl("lead",job_title) ~ "high level",
@@ -18,18 +18,18 @@ senior_by_year <- DATA %>%
   group_by(year, job_level) %>% 
   summarise(level_num = n()) 
 
-senior_by_year
+highlevel_by_year
 ```
 
 ```{r}
-ggplot(senior_by_year)+
+ggplot(highlevel_by_year)+
   geom_line(aes(x=year,y=level_num,color=job_level), size = 1.05)+
   theme_bw()+
   labs(x="Year", y="Number of job level")
 ```
 
 ```{r}
-senior_by_year %>% 
+highlevel_by_year %>% 
   group_by(year) %>% 
   mutate(sum=sum(level_num)) %>% 
   mutate(level_ratio=level_num / sum) %>%
@@ -41,7 +41,7 @@ senior_by_year %>%
   labs(y="High level job ratio", x="Year")
 ```
 
-# data related
+## data related analysis
 
 ```{r}
 data_related <- DATA %>% 
@@ -74,13 +74,177 @@ data_related %>%
   labs(y="Data related job ratio", x="Year")
 ```
 
-# high level in top15
+# top analysis
+## high level in top
 ```{r}
+highlevel_in_top <- DATA %>% 
+  filter(employer_name %in% soc_top) %>% 
+  mutate(job_level=case_when(grepl("senior",job_title) ~ "high level",
+                             grepl("director",job_title) ~ "high level",
+                             grepl("lead",job_title) ~ "high level",
+                             TRUE ~ "undefined")) %>% 
+  group_by(year, job_level) %>% 
+  summarise(level_num = n()) 
+
+highlevel_in_top
+```
+
+```{r}
+ggplot(highlevel_in_top)+
+  geom_line(aes(x=year,y=level_num,color=job_level), size = 1.05)+
+  theme_bw()+
+  labs(x="Year", y="Number of job level in top")
+```
+
+```{r}
+DATA %>% 
+  filter(employer_name %in% soc_top) %>% 
+  mutate(job_level=case_when(grepl("senior",job_title) ~ "high level",
+                             grepl("director",job_title) ~ "high level",
+                             grepl("lead",job_title) ~ "high level",
+                             TRUE ~ "undefined")) %>% 
+  group_by(year,employer_name, job_level) %>% 
+  summarise(level_num = n()) %>% 
+  group_by(year) %>% 
+  mutate(sum=sum(level_num)) %>% 
+  mutate(level_ratio=level_num / sum) %>%
+  ungroup() %>% 
+  filter(job_level == "high level") %>% 
+  ggplot()+
+  geom_line(aes(x=year,y=level_ratio,color=employer_name), size = 1.05)+
+  theme_bw()+
+  labs(y="High level job ratio in top", x="Year")
+
 
 ```
 
-# data related in top15
+## data related in top
 ```{r}
+data_related_in_top <- DATA %>% 
+  filter(employer_name %in% soc_top) %>% 
+  mutate(data_relation=case_when(grepl("data",job_title) ~ "data_related",
+                                 grepl("analyst",job_title) ~ "data_related",
+                                 TRUE ~ "undefined")) %>% 
+  group_by(year, data_relation) %>% 
+  summarise(type_sum = n()) 
 
+data_related_in_top
 ```
 
+```{r}
+ggplot(data_related_in_top)+
+  geom_line(aes(x=year,y=type_sum,color=data_relation), size = 1.05)+
+  theme_bw()+
+  labs(x="Year", y="Number of job type")
+```
+
+```{r}
+DATA %>% 
+  filter(employer_name %in% soc_top) %>% 
+  mutate(data_relation=case_when(grepl("data",job_title) ~ "data_related",
+                                 grepl("analyst",job_title) ~ "data_related",
+                                 TRUE ~ "undefined")) %>% 
+  group_by(year,employer_name, data_relation) %>% 
+  summarise(type_sum = n())  %>% 
+  group_by(year) %>% 
+  mutate(sum=sum(type_sum)) %>% 
+  mutate(type_ratio=type_sum / sum) %>%
+  ungroup() %>% 
+  filter(data_relation == "data_related") %>% 
+  ggplot()+
+  geom_line(aes(x=year,y=type_ratio,color=employer_name), size = 1.05)+
+  theme_bw()+
+  labs(y="Data related job ratio", x="Year")
+```
+
+# top tech analysis
+
+```{r}
+soc_top_tech <- c("apple inc", 
+                  "microsoft", 
+                  "samsung", 
+                  "intel corp|intel mob|intel ame|intel mas|intel fed",
+                  "facebook",
+                  "google",
+                  "ibm")
+```
+
+## high level in top tech
+```{r}
+# highlevel_in_top_tech <- DATA %>% 
+#   filter(employer_name %in% soc_top_tech) %>% 
+#   mutate(job_level=case_when(grepl("senior",job_title) ~ "high level",
+#                              grepl("director",job_title) ~ "high level",
+#                              grepl("lead",job_title) ~ "high level",
+#                              TRUE ~ "undefined")) %>% 
+#   group_by(year, job_level) %>% 
+#   summarise(level_num = n()) 
+# 
+# highlevel_in_top_tech
+```
+
+```{r}
+# ggplot(highlevel_in_top_tech)+
+#   geom_line(aes(x=year,y=level_num,color=job_level), size = 1.05)+
+#   theme_bw()+
+#   labs(x="Year", y="Number of job level in top")
+```
+
+```{r}
+# DATA %>% 
+#   filter(employer_name %in% soc_top_tech) %>% 
+#   mutate(job_level=case_when(grepl("senior",job_title) ~ "high level",
+#                              grepl("director",job_title) ~ "high level",
+#                              grepl("lead",job_title) ~ "high level",
+#                              TRUE ~ "undefined")) %>% 
+#   group_by(year,employer_name, job_level) %>% 
+#   summarise(level_num = n()) %>% 
+#   group_by(year) %>% 
+#   mutate(sum=sum(level_num)) %>% 
+#   mutate(level_ratio=level_num / sum) %>%
+#   ungroup() %>% 
+#   filter(job_level == "high level") %>% 
+#   ggplot()+
+#   geom_line(aes(x=year,y=level_ratio,color=employer_name), size = 1.05)+
+#   theme_bw()+
+#   labs(y="High level job ratio in top", x="Year")
+```
+
+## data related in top tech
+```{r}
+data_related_in_top_tech <- DATA %>% 
+  filter(employer_name %in% soc_top_tech) %>% 
+  mutate(data_relation=case_when(grepl("data",job_title) ~ "data_related",
+                                 grepl("analyst",job_title) ~ "data_related",
+                                 TRUE ~ "undefined")) %>% 
+  group_by(year, data_relation) %>% 
+  summarise(type_sum = n()) 
+
+data_related_in_top_tech
+```
+
+```{r}
+ggplot(data_related_in_top_tech)+
+  geom_line(aes(x=year,y=type_sum,color=data_relation), size = 1.05)+
+  theme_bw()+
+  labs(x="Year", y="Number of job type")
+```
+
+```{r}
+DATA %>% 
+  filter(employer_name %in% soc_top_tech) %>% 
+  mutate(data_relation=case_when(grepl("data",job_title) ~ "data_related",
+                                 grepl("analyst",job_title) ~ "data_related",
+                                 TRUE ~ "undefined")) %>% 
+  group_by(year,employer_name, data_relation) %>% 
+  summarise(type_sum = n())  %>% 
+  group_by(year) %>% 
+  mutate(sum=sum(type_sum)) %>% 
+  mutate(type_ratio=type_sum / sum) %>%
+  ungroup() %>% 
+  filter(data_relation == "data_related") %>% 
+  ggplot()+
+  geom_line(aes(x=year,y=type_ratio,color=employer_name), size = 1.05)+
+  theme_bw()+
+  labs(y="Data related job ratio", x="Year")
+```
