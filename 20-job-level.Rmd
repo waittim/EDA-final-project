@@ -2,6 +2,10 @@
 title: "20-job-level"
 output: html_notebook
 ---
+```{r}
+library(tidyverse)
+library(ggplot2)
+```
 
 # senior analysis
 
@@ -19,7 +23,7 @@ senior_by_year
 
 ```{r}
 ggplot(senior_by_year)+
-  geom_line(aes(x=year,y=level_num,color=job_level))+
+  geom_line(aes(x=year,y=level_num,color=job_level), size = 1.05)+
   theme_bw()+
   labs(x="Year", y="Number of job level")
 ```
@@ -32,7 +36,7 @@ senior_by_year %>%
   ungroup() %>% 
   filter(job_level == "high level") %>% 
   ggplot()+
-  geom_line(aes(x=year,y=level_ratio))+
+  geom_line(aes(x=year,y=level_ratio), size = 1.05)+
   theme_bw()+
   labs(y="High level job ratio", x="Year")
 ```
@@ -52,7 +56,7 @@ data_related
 
 ```{r}
 ggplot(data_related)+
-  geom_line(aes(x=year,y=type_sum,color=data_relation))+
+  geom_line(aes(x=year,y=type_sum,color=data_relation), size = 1.05)+
   theme_bw()+
   labs(x="Year", y="Number of job type")
 ```
@@ -65,7 +69,7 @@ data_related %>%
   ungroup() %>% 
   filter(data_relation == "data_related") %>% 
   ggplot()+
-  geom_line(aes(x=year,y=type_ratio))+
+  geom_line(aes(x=year,y=type_ratio), size = 1.05)+
   theme_bw()+
   labs(y="Data related job ratio", x="Year")
 ```
