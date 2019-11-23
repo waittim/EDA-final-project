@@ -74,3 +74,13 @@ data_related %>%
   labs(y="Data related job ratio", x="Year")
 ```
 
+# high level in top15
+```{r}
+
+```
+
+# data related in top15
+```{r}
+
+```
+
