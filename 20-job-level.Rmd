@@ -65,10 +65,11 @@ data_related <- DATA %>%
                                  # grepl("comput",job_title) ~ "undefined",
 
                                  TRUE ~ "undefined")) %>% 
-  # mutate(data_relation=case_when(grepl("program",job_title) ~ "undefined",
-  #                                grepl("system",job_title) ~ "undefined",
-  #                                grepl("tech",job_title) ~ "undefined",
-  #                                grepl("comput",job_title) ~ "undefined")) %>% 
+  mutate(data_relation=case_when(grepl("program",job_title) ~ "undefined",
+                                 grepl("system",job_title) ~ "undefined",
+                                 grepl("tech",job_title) ~ "undefined",
+                                 grepl("comput",job_title) ~ "undefined",
+                                 TRUE ~ data_relation)) %>% 
   select(year, data_relation,job_title ) %>% 
   arrange(-year) %>% 
   group_by(year, data_relation) %>% 
