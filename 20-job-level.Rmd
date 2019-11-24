@@ -274,8 +274,8 @@ sde_related
 ggplot(sde_related)+
   geom_line(aes(x=year,y=type_sum,color=sde_relation), size = 1.05)+
   theme_bw()+
-  labs(x="Year", y="Number of job type")+
-  coord_cartesian(ylim = c(0,400000))
+  labs(x="Year", y="Number of job type")
+  #+coord_cartesian(ylim = c(0,400000))
 
 sde_related %>% 
   group_by(year) %>% 
@@ -286,8 +286,8 @@ sde_related %>%
   ggplot()+
   geom_line(aes(x=year,y=type_ratio), size = 1.05)+
   theme_bw()+
-  labs(y="Sde related job ratio", x="Year")+
-  coord_cartesian(ylim = c(0,0.5))
+  labs(y="Sde related job ratio", x="Year")
+  #+coord_cartesian(ylim = c(0,0.5))
 ```
 
 
