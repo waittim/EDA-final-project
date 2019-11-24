@@ -7,39 +7,38 @@ output: html_notebook
 library(readr)
 library(tidyverse)
 ```
-
-```{r}
-data <- read_csv("data/transformed.csv")
-```
-
-```{r}
-H1B_certificate <- data %>% 
-  filter(CASE_STATUS=="CERTIFIED") %>% 
-  group_by(WORKSITE_STATE_ABB,YEAR) %>% 
-  summarise(num=n())
-```
-
-```{r}
-H1B_certificate
-```
-```{r}
-H1B_2018 <-  H1B_certificate %>% 
-  filter(YEAR==2018)
-  
-```
-
-```{r}
-ichoropleth(num~WORKSITE_STATE_ABB,data=H1B_2018)
-```
-
 ```{r}
 require(devtools)
 install_github('ramnathv/rCharts@dev')
 install_github('ramnathv/rMaps')
+library(rMaps)
+```
+
+
+```{r}
+DATA_certificate <- DATA %>% 
+  filter(case_status=="certified") %>% 
+  group_by(worksite_state_abb,year) %>% 
+  summarise(num=n())
 ```
 
 ```{r}
-d1<-ichoropleth(num~WORKSITE_STATE_ABB,data=H1B_certificate,animate='YEAR',play='TRUE')
+DATA_new <-  DATA_certificate %>% 
+  ungroup(worksite_state_abb) %>% 
+  mutate(worksite_state_abb=str_to_upper(worksite_state_abb))
+```
+
+```{r}
+d1 <- ichoropleth(num~worksite_state_abb,data=DATA_new,animate='year',legend=FALSE,geographyConfig=list(popupTemplate="#!function(geo, data) {
+                                      return '<div class=\"hoverinfo\"><strong>'+
+                                       data.worksite_state_abb+
+                                       '<br>' + data.num+
+                                       '</strong></div>';}!#"))
+```
+
+
+
+```{r}
 d1$save('rMaps.html', cdn = TRUE)
 ```
 
