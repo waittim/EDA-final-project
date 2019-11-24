@@ -17,14 +17,14 @@ library(gganimate)
 
 ```{r}
 # Please unrara the "transformed.rar" file manually first.
-DATA <- read_csv("data/transformed.csv") %>% 
+original_file <- read_csv("data/transformed.csv") %>% 
   clean_names()
 file.remove("data/transformed.csv")
 ```
 #Removing Coli Extraneous  Columns
 
 ```{r}
-DATA <- DATA %>% 
+DATA <- original_file %>% 
   select(- c('coli_x', 'coli_y')) %>% 
   mutate(case_status=str_to_lower(case_status)) %>% 
   mutate(employer_name=str_to_lower(employer_name)) %>%  
@@ -56,13 +56,13 @@ DATA <- DATA %>%
 # Conform the top tech companies's name
 ```{r}
 DATA <- DATA %>% 
-  mutate(employer_name = ifelse(str_detect(employer_name,'apple inc'), 'Apple',
-                          ifelse(str_detect(employer_name,'microsoft'), 'Microsoft',
-                          ifelse(str_detect(employer_name,'amazon'),'Amazon',
-                          ifelse(str_detect(employer_name,'cisco sys'),'Cisco',
-                          ifelse(str_detect(employer_name,'facebook'),'Facebook',
-                          ifelse(str_detect(employer_name,'google'),'Google',
-                          ifelse(str_detect(employer_name, 'ibm'),'IBM', employer_name))))))))
+  mutate(employer_name = ifelse(str_detect(employer_name,'apple inc'), 'apple',
+                          ifelse(str_detect(employer_name,'microsoft'), 'microsoft',
+                          ifelse(str_detect(employer_name,'amazon'),'amazon',
+                          ifelse(str_detect(employer_name,'cisco sys'),'cisco',
+                          ifelse(str_detect(employer_name,'facebook'),'facebook',
+                          ifelse(str_detect(employer_name,'google'),'google',
+                          ifelse(str_detect(employer_name, 'ibm'),'ibm', employer_name))))))))
 ```
 
 
