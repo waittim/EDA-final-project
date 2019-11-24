@@ -1,0 +1,34 @@
+---
+title: "Final_Report"
+output: html_notebook
+---
+
+
+```{r}
+h1b_df <- DATA
+```
+
+
+# Data Science Job Trend
+```{r}
+h1b_df %>% 
+  filter(case_status ==  "certified") %>% 
+#  filter(str_detect(job_title,"data|analyst|machine learning|deep learning|nlp|intelligence|business  nalyst")==TRUE) %>% 
+#  filter(str_detect(job_title, "programmer|systems|technology|quality|management|jc65|budget|test" )==FALSE) %>%
+  mutate(job_title = ifelse(str_detect(job_title, "business")& (str_detect(job_title, "analyst")|str_detect(job_title, "intelligence")) , "business analyst", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data")& (str_detect(job_title, "engineer")|str_detect(job_title, "warehouse")), "Data Engineer", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data")& str_detect(job_title, "scientist"), "Data Scientist", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data")& str_detect(job_title, "analyst"), "Data Analyst", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "machine|deep")& str_detect(job_title, "learning"), "Deep Learning & Machine Learning", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "product") & str_detect(job_title, "analyst|engineer|data"), "Data Product Analyst", job_title)) %>% 
+  filter(job_title %in% c("business analyst","Data Engineer","Deep Learning & Machine Learning","Data Analyst", "Data Scientist", "Data Product Analyst")) %>% 
+  group_by(job_title, year) %>% 
+  summarise(n = n()) %>% 
+  arrange(-n) %>% 
+    ggplot(aes(x = year, y = n))+
+    geom_line(aes(color = job_title),size = 1.05)+
+    labs( y = "Number of Applications", x = "Year")+
+    theme_bw()
+
+```
+
