@@ -20,6 +20,7 @@ library(gganimate)
 original_file <- read_csv("data/transformed.csv") %>% 
   clean_names()
 file.remove("data/transformed.csv")
+stem <- read_csv("data/stem_list.csv")
 ```
 #Removing Coli Extraneous  Columns
 
@@ -100,5 +101,15 @@ DATA <- DATA %>%
                                 grepl("tech",job_title) ~ "sde_related",
                                 grepl("develop",job_title) ~ "sde_related",
                                 TRUE ~ "undefined")) 
+```
+
+
+# left_join: all stem occupations
+
+```{r}
+DATA <- DATA %>% 
+  left_join(stem, by = "soc_code")
+DATA <- DATA %>% 
+  mutate(stem = ifelse(is.na(stem), 0, 1))
 ```
 
