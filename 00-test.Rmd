@@ -53,5 +53,16 @@ DATA <- DATA %>%
 ```
 
 
+# Conform the top tech companies's name
+```{r}
+DATA <- DATA %>% 
+  mutate(employer_name = ifelse(str_detect(employer_name,'apple inc'), 'Apple',
+                          ifelse(str_detect(employer_name,'microsoft'), 'Microsoft',
+                          ifelse(str_detect(employer_name,'amazon'),'Amazon',
+                          ifelse(str_detect(employer_name,'cisco sys'),'Cisco',
+                          ifelse(str_detect(employer_name,'facebook'),'Facebook',
+                          ifelse(str_detect(employer_name,'google'),'Google',
+                          ifelse(str_detect(employer_name, 'ibm'),'IBM', employer_name))))))))
+```
 
 
