@@ -85,6 +85,7 @@ DATA <- DATA %>%
                                  grepl("sql",job_title) ~ "data_related",
                                  grepl("oracle",job_title) ~ "data_related",
                                  grepl("spss",job_title) ~ "data_related",
+                                 grepl("hadoop",job_title) ~ "data_related",
                                  TRUE ~ "undefined")) %>% 
   mutate(data_relation=case_when(grepl("program",job_title) ~ "undefined",
                                  grepl("system",job_title) ~ "undefined",
