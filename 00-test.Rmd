@@ -42,7 +42,7 @@ head(DATA)
 ```
 
 
-#Adding the new feature called `soc_field` to represent the higher level of job fields.
+# Adding the new feature called `soc_field` to represent the higher level of job fields.
 ```{r}
 DATA <- DATA %>% 
   filter(str_detect(soc_code, "^\\d{2}(-)\\d{4}$")) %>% 
@@ -65,4 +65,40 @@ DATA <- DATA %>%
                           ifelse(str_detect(employer_name, 'ibm'),'ibm', employer_name))))))))
 ```
 
+# define job level & data related & sde related 
+```{r}
+DATA <- DATA %>% 
+  mutate(job_level=case_when(grepl("senior",job_title) ~ "high level",
+                             grepl("director",job_title) ~ "high level",
+                             grepl("lead",job_title) ~ "high level",
+                             grepl("chief",job_title) ~ "high level",
+                             grepl("principal",job_title) ~ "high level",
+                             TRUE ~ "undefined")) %>% 
+  mutate(data_relation=case_when(grepl("data",job_title) ~ "data_related",
+                                 grepl("analy",job_title) ~ "data_related",
+                                 grepl("machine learning",job_title) ~ "data_related",
+                                 grepl("deep learning",job_title) ~ "data_related",
+                                 grepl("intelligence",job_title) ~ "data_related",
+                                 grepl("quantitative",job_title) ~ "data_related",
+                                 grepl("statistic",job_title) ~ "data_related",
+                                 grepl("sas",job_title) ~ "data_related",
+                                 grepl("sql",job_title) ~ "data_related",
+                                 grepl("oracle",job_title) ~ "data_related",
+                                 grepl("spss",job_title) ~ "data_related",
+                                 TRUE ~ "undefined")) %>% 
+  mutate(data_relation=case_when(grepl("program",job_title) ~ "undefined",
+                                 grepl("system",job_title) ~ "undefined",
+                                 grepl("tech",job_title) ~ "undefined",
+                                 grepl("comput",job_title) ~ "undefined",
+                                 TRUE ~ data_relation)) %>% 
+  mutate(data_relation=case_when(grepl("business system analyst",job_title) ~ "data_related",
+                                 TRUE ~ data_relation)) %>% 
+  mutate(sde_relation=case_when(grepl("software",job_title) ~ "sde_related",
+                                grepl("program",job_title) ~ "sde_related",
+                                grepl("comput",job_title) ~ "sde_related",
+                                grepl("system",job_title) ~ "sde_related",
+                                grepl("tech",job_title) ~ "sde_related",
+                                grepl("develop",job_title) ~ "sde_related",
+                                TRUE ~ "undefined")) 
+```
 
