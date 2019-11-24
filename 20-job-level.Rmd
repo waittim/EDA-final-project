@@ -7,6 +7,36 @@ library(tidyverse)
 library(ggplot2)
 ```
 
+```{r}
+h1b_df <- DATA
+
+soc_tech_14 <- h1b_df %>% 
+  filter(year == 2014) %>% 
+  filter(soc_field == 15) %>% 
+  group_by(employer_name) %>% 
+  summarise(n = n()) %>% 
+  arrange(-n) %>% 
+  ungroup
+
+soc_tech_18 <- h1b_df %>% 
+  filter(year == 2018) %>% 
+  filter(soc_field == 15) %>% 
+  group_by(employer_name) %>% 
+  summarise(n = n()) %>% 
+  arrange(-n) %>% 
+  ungroup
+
+soc_10_14 <- soc_tech_14 %>% 
+  top_n(15)
+
+soc_10_18 <- soc_tech_18 %>% 
+  top_n(15)
+
+soc_top <- as.vector(intersect(soc_10_14$employer_name,soc_10_18$employer_name))
+soc_top
+```
+
+
 # overall
 ## high level analysis
 ```{r}
