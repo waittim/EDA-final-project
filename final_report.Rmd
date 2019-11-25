@@ -11,7 +11,7 @@ h1b_df <- DATA
 
 # Data Science Job Trend
 ```{r}
-h1b_df %>% 
+h1b_df <- h1b_df %>% 
   filter(case_status ==  "certified") %>% 
   filter(stem == 1) %>% 
 #  filter(str_detect(job_title,"data|analyst|machine learning|deep learning|nlp|intelligence|business  nalyst")==TRUE) %>% 
@@ -21,15 +21,104 @@ h1b_df %>%
   mutate(job_title = ifelse(str_detect(job_title, "data")& str_detect(job_title, "scientist"), "Data Scientist", job_title)) %>% 
   mutate(job_title = ifelse(str_detect(job_title, "data")& str_detect(job_title, "analyst|analytics"), "Data Analyst", job_title)) %>% 
   mutate(job_title = ifelse(str_detect(job_title, "machine|deep")& str_detect(job_title, "learning"), "Deep Learning & Machine Learning", job_title)) %>% 
-  mutate(job_title = ifelse(str_detect(job_title, "product") & str_detect(job_title, "analyst|engineer|data"), "Data Product Analyst", job_title)) %>% 
-  filter(job_title %in% c("Data Engineer","Deep Learning & Machine Learning","Data Analyst", "Data Scientist", "Data Product Analyst")) %>% 
-  group_by(job_title, year) %>% 
-  summarise(n = n()) %>% 
-  arrange(-n) %>% 
-    ggplot(aes(x = year, y = n))+
-    geom_line(aes(color = job_title),size = 1.05)+
-    labs( y = "Number of Applications", x = "Year")+
-    theme_bw()
+  mutate(job_title = ifelse(str_detect(job_title, "product") & str_detect(job_title, "analyst|engineer|data"), "Data Product Analyst", job_title)) 
+ # filter(job_title %in% c("Data Engineer","Deep Learning & Machine Learning","Data Analyst", "Data Scientist", "Data Product Analyst"))
+ # group_by(job_title, year) %>% 
+ # summarise(n = n()) %>% 
+  # arrange(-n)  
+   # ggplot(aes(x = year, y = n))+
+  #  geom_line(aes(color = job_title),size = 1.05)+
+  #  labs( y = "Number of Applications", x = "Year")+
+   # theme_bw()
 
 ```
 
+
+## Facebook
+
+```{r}
+h1b_facebook <- h1b_df %>% 
+  filter(employer_name == 'facebook') %>% 
+  group_by(job_title,year) %>% 
+  summarise(n=n()) %>% 
+  arrange(-n)
+  
+```
+
+```{r}
+con=c("Data Scientist","software engineer","Data Engineer")
+ggplot(h1b_facebook, aes(x = year, y = n, group = job_title)) +
+  geom_line(alpha = 0.3, 
+            size = 0.2) +
+  labs(title = "H1B in Facebook",
+       x = "Year",
+       y = "Number",
+       col = 'Job Title') +
+  theme_light()+
+  theme(plot.title = element_text(hjust = 0.5))+
+   geom_line(data = subset(h1b_facebook, job_title %in% con),aes(col=job_title),size=0.7)+
+  theme(plot.title = element_text(size = 14, family = "Helvetica", face = "bold"),
+              text = element_text(size = 12, family = "Helvetica"),
+              axis.title = element_text(face="bold"),
+              axis.text.x=element_text(size = 11))
+
+```
+
+## Amazon
+
+```{r}
+h1b_amazon <- h1b_df %>% 
+  filter(str_detect(employer_name,'amazon')) %>% 
+  group_by(job_title,year) %>% 
+  summarise(n=n()) %>% 
+  arrange(-n)
+  
+```
+
+```{r}
+con=c("Data Scientist","software development engineer ii","business analyst","Data Engineer","software development engineer i")
+ggplot(h1b_amazon, aes(x = year, y = n, group = job_title)) +
+  geom_line(alpha = 0.3, 
+            size = 0.2) +
+  labs(title = "H1B in Amazon",
+       x = "Year",
+       y = "Number",
+       col = 'Job Title') +
+  theme_light()+
+  theme(plot.title = element_text(hjust = 0.5))+
+   geom_line(data = subset(h1b_amazon, job_title %in% con),aes(col=job_title),size=0.7)+
+  theme(plot.title = element_text(size = 14, family = "Helvetica", face = "bold"),
+              text = element_text(size = 12, family = "Helvetica"),
+              axis.title = element_text(face="bold"),
+              axis.text.x=element_text(size = 11))
+```
+
+
+## Microsoft
+
+```{r}
+h1b_micro <- h1b_df %>% 
+  filter(str_detect(employer_name,'microsoft')) %>% 
+  group_by(job_title,year) %>% 
+  summarise(n=n()) %>% 
+  arrange(-n)
+  
+```
+
+```{r}
+con=c("Data Scientist","software engineer","program manager","senior software engineer")
+ggplot(h1b_micro, aes(x = year, y = n, group = job_title)) +
+  geom_line(alpha = 0.3, 
+            size = 0.2) +
+  labs(title = "H1B in Microsoft",
+       x = "Year",
+       y = "Number",
+       col = 'Job Title') +
+  theme_light()+
+  theme(plot.title = element_text(hjust = 0.5))+
+   geom_line(data = subset(h1b_micro, job_title %in% con),aes(col=job_title),size=0.7)+
+  theme(plot.title = element_text(size = 14, family = "Helvetica", face = "bold"),
+              text = element_text(size = 12, family = "Helvetica"),
+              axis.title = element_text(face="bold"),
+              axis.text.x=element_text(size = 11))
+```
