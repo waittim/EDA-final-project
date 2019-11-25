@@ -1,0 +1,185 @@
+---
+title: "20-data-related"
+output: html_notebook
+---
+
+
+# Data Into h1b_df
+```{r}
+h1b_df <- DATA
+```
+
+# Data Related Mom' Spaghetti
+```{r}
+
+
+soc_top_tech <- c("Apple",
+                  "Microsoft",
+                  "Amazon",
+                  "Facebook",
+                  "Google",
+                  "Ibm",
+                  "Cisco")
+
+
+spag <- h1b_df %>% 
+  filter(case_status ==  "certified") %>% 
+#  filter(str_detect(job_title,"data|analyst|machine learning|deep learning|nlp|intelligence|business  nalyst")==TRUE) %>% 
+#  filter(str_detect(job_title, "programmer|systems|technology|quality|management|jc65|budget|test" )==FALSE) %>%
+  mutate(job_title = ifelse(str_detect(job_title, "business")& (str_detect(job_title, "analyst")|str_detect(job_title, "intelligence")) , "business analyst", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data")& (str_detect(job_title, "engineer")|str_detect(job_title, "warehouse")), "Data Engineer", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data")& str_detect(job_title, "scientist"), "Data Scientist", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data")& str_detect(job_title, "analyst"), "Data Analyst", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "machine|deep")& str_detect(job_title, "learning"), "Deep Learning & Machine Learning", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "product") & str_detect(job_title, "analyst|engineer|data"), "Data Product Analyst", job_title)) %>% 
+  filter(job_title %in% c("business analyst","Data Engineer","Deep Learning & Machine Learning","Data Analyst", "Data Scientist", "Data Product Analyst")) %>% 
+    mutate(employer_name = ifelse(str_detect(employer_name,'apple inc'), 'Apple',
+                          ifelse(str_detect(employer_name,'microsoft'), 'Microsoft',
+                          ifelse(str_detect(employer_name,'amazon'),'Amazon',
+                          ifelse(str_detect(employer_name,'cisco sys'),'Cisco',
+                          ifelse(str_detect(employer_name,'facebook'),'Facebook',
+                          ifelse(str_detect(employer_name,'google'),'Google',
+                          ifelse(str_detect(employer_name, 'ibm'),'IBM',employer_name)))))))) %>% 
+  group_by(employer_name, year) %>% 
+  summarise(n = n()) %>% 
+  ungroup() %>% 
+  filter(!employer_name %in% c("capgemini america inc","infosys limited"))
+  
+#   
+# ggplot(data = spag, aes(x = year, y = n, group = top)) +
+#   geom_line(alpha = 0.01)+
+#   geom_line(data = subset(spag, employer_name %in% soc_top_tech), aes(x = year, y = n), size = 1.5)
+
+```
+
+
+```{r}
+
+
+ggplot(spag, aes(x = year, y = n, group = employer_name)) +
+  geom_line(alpha = 0.1,
+            size = 0.1) +
+  labs(title = "Mom's Spaghetti",
+       x = "Year",
+       y = "Number of Applications") +
+  theme_light()+
+  theme(plot.title = element_text(hjust = 0.5))+
+   geom_line(data = subset(spag, employer_name %in% soc_top_tech ),aes(col=employer_name),size=0.8)
+```
+
+
+
+
+
+
+
+
+
+
+
+# Data Related Jobs and Their Trends
+```{r}
+h1b_df %>% 
+  filter(case_status ==  "certified") %>% 
+#  filter(str_detect(job_title,"data|analyst|machine learning|deep learning|nlp|intelligence|business  nalyst")==TRUE) %>% 
+#  filter(str_detect(job_title, "programmer|systems|technology|quality|management|jc65|budget|test" )==FALSE) %>%
+  mutate(job_title = ifelse(str_detect(job_title, "business")& (str_detect(job_title, "analyst")|str_detect(job_title, "intelligence")) , "business analyst", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data")& (str_detect(job_title, "engineer")|str_detect(job_title, "warehouse")), "Data Engineer", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data")& str_detect(job_title, "scientist"), "Data Scientist", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data")& str_detect(job_title, "analyst"), "Data Analyst", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "machine|deep")& str_detect(job_title, "learning"), "Deep Learning & Machine Learning", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "product") & str_detect(job_title, "analyst|engineer|data"), "Data Product Analyst", job_title)) %>% 
+  filter(job_title %in% c("business analyst","Data Engineer","Deep Learning & Machine Learning","Data Analyst", "Data Scientist", "Data Product Analyst")) %>% 
+  group_by(job_title, year) %>% 
+  summarise(n = n()) %>% 
+  arrange(-n) %>% 
+    ggplot(aes(x = year, y = n))+
+    geom_line(aes(color = job_title),size = 1.05)+
+    labs( y = "Number of Applications", x = "Year")+
+    theme_bw()
+```
+
+
+# Data Related Jobs and Top Companies for Them
+```{r}
+
+data_related_top<- h1b_df %>% 
+  filter(case_status ==  "certified") %>% 
+#  filter(str_detect(job_title,"data|analyst|machine learning|deep learning|nlp|intelligence|business  nalyst")==TRUE) %>% 
+#  filter(str_detect(job_title, "programmer|systems|technology|quality|management|jc65|budget|test" )==FALSE) %>%
+  mutate(job_title = ifelse(str_detect(job_title, "business")& (str_detect(job_title, "analyst")|str_detect(job_title, "intelligence")) , "Business Analyst", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data")& (str_detect(job_title, "engineer")|str_detect(job_title, "warehouse")), "Data Engineer", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data") & str_detect(job_title, "scientist"), "Data Scientist", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data") & str_detect(job_title, "analyst"), "Data Analyst", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "machine|deep") & str_detect(job_title, "learning"), "Deep Learning & Machine Learning", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "product") & str_detect(job_title, "analyst|engineer|data"), "Data Product Analyst", job_title)) %>% 
+  filter(job_title %in% c("Business Analyst","Data Engineer","Deep Learning & Machine Learning","Data Analyst", "Data Scientist", "Data Product Analyst")) %>%
+  group_by(employer_name) %>% 
+  summarise(n = n()) %>% 
+  arrange(-n) %>% 
+  ungroup() %>% 
+  top_n(10)
+
+data_related_top <- as.vector(data_related_top$employer_name)
+
+h1b_df %>% 
+  filter(employer_name %in% data_related_top) %>% 
+  filter(employer_name != "capgemini america inc") %>% 
+  filter(case_status ==  "certified") %>%
+  mutate(job_title = ifelse(str_detect(job_title, "business")& (str_detect(job_title, "analyst")|str_detect(job_title, "intelligence")) , "Business Analyst", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data")& (str_detect(job_title, "engineer")|str_detect(job_title, "warehouse")), "Data Engineer", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data") & str_detect(job_title, "scientist"), "Data Scientist", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data") & str_detect(job_title, "analyst"), "Data Analyst", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "machine|deep") & str_detect(job_title, "learning"), "Deep Learning & Machine Learning", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "product") & str_detect(job_title, "analyst|engineer|data"), "Data Product Analyst", job_title)) %>% 
+  filter(job_title %in% c("Business Analyst","Data Engineer","Deep Learning & Machine Learning","Data Analyst", "Data Scientist", "Data Product Analyst")) %>%
+  group_by(employer_name, year) %>% 
+  summarise(n = n()) %>% 
+  ggplot(aes(x = year, y = n))+
+  geom_line(aes(color = employer_name), size = 1.05)+
+  labs( y = "Number of Applications", x = "Year")+
+    theme_bw()
+
+
+
+```
+
+# Top Tech Companies and Their Trends
+```{r}
+soc_top_tech <- c("apple",
+                  "microsoft",
+                  "intel",
+                  "facebook",
+                  "google",
+                  "ibm",
+                  "cisco sys")
+
+
+h1b_df %>% 
+  filter(case_status ==  "certified") %>%
+  mutate(job_title = ifelse(str_detect(job_title, "business")& (str_detect(job_title, "analyst")|str_detect(job_title, "intelligence")) , "Business Analyst", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data")& (str_detect(job_title, "engineer")|str_detect(job_title, "warehouse")), "Data Engineer", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data") & str_detect(job_title, "scientist"), "Data Scientist", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data") & str_detect(job_title, "analyst"), "Data Analyst", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "machine|deep") & str_detect(job_title, "learning"), "Deep Learning & Machine Learning", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "product") & str_detect(job_title, "analyst|engineer|data"), "Data Product Analyst", job_title)) %>% 
+  filter(job_title %in% c("Business Analyst","Data Engineer","Deep Learning & Machine Learning","Data Analyst", "Data Scientist", "Data Product Analyst")) %>%
+  mutate(employer_name = ifelse(str_detect(employer_name,'apple inc'), 'Apple',
+                          ifelse(str_detect(employer_name,'microsoft'), 'Microsoft',
+                          ifelse(str_detect(employer_name,'amazon'),'Amazon',
+                          ifelse(str_detect(employer_name,'cisco sys'),'Cisco',
+                          ifelse(str_detect(employer_name,'facebook'),'Facebook',
+                          ifelse(str_detect(employer_name,'google'),'Google',
+                          ifelse(str_detect(employer_name, 'ibm'),'IBM','no')))))))) %>% 
+  group_by(employer_name, year) %>% 
+  summarise(tot = n()) %>% 
+  filter(!employer_name %in% c("no", NA)) %>% 
+  ungroup() %>% 
+  ggplot()+
+  geom_line(aes(x = year, y = tot, color = employer_name), size = 1.05)+
+  labs( y = "Number of Applications", x = "Year")+
+  theme_bw()
+
+```
+
+
