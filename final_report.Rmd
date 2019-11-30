@@ -51,7 +51,7 @@ h1b_facebook <- h1b_df %>%
 ```
 
 ```{r}
-con=c("Data Scientist","software engineer","Data Engineer")
+con=c("Data Scientist","software engineer","Data Engineer",'research scientist')
 ggplot(h1b_facebook, aes(x = year, y = n, group = job_title)) +
   geom_line(alpha = 0.3, 
             size = 0.2) +
@@ -65,23 +65,28 @@ ggplot(h1b_facebook, aes(x = year, y = n, group = job_title)) +
   theme(plot.title = element_text(size = 14, family = "Helvetica", face = "bold"),
               text = element_text(size = 12, family = "Helvetica"),
               axis.title = element_text(face="bold"),
-              axis.text.x=element_text(size = 11))
+              axis.text.x=element_text(size = 11))+
+  scale_color_discrete(labels = c("Data Engineer", "Data Scientist", "Research Scientist","Software Engineer"))
 
 ```
 
 ## Amazon
 
 ```{r}
+
 h1b_amazon <- h1b_df %>% 
   filter(str_detect(employer_name,'amazon')) %>% 
+  ungroup(job_title) %>% 
+  mutate(job_title=ifelse(str_detect(job_title,'software development engineer'), 'software development engineer', 
+                   ifelse(str_detect(job_title,'technical program manager'), 'technical program manager',job_title)))%>% 
   group_by(job_title,year) %>% 
   summarise(n=n()) %>% 
   arrange(-n)
-  
+
 ```
 
 ```{r}
-con=c("Data Scientist","software development engineer ii","business analyst","Data Engineer","software development engineer i")
+con=c("Data Scientist","software development engineer","business analyst","Data Engineer","technical program manager")
 ggplot(h1b_amazon, aes(x = year, y = n, group = job_title)) +
   geom_line(alpha = 0.3, 
             size = 0.2) +
@@ -95,7 +100,8 @@ ggplot(h1b_amazon, aes(x = year, y = n, group = job_title)) +
   theme(plot.title = element_text(size = 14, family = "Helvetica", face = "bold"),
               text = element_text(size = 12, family = "Helvetica"),
               axis.title = element_text(face="bold"),
-              axis.text.x=element_text(size = 11))
+              axis.text.x=element_text(size = 11)) +
+  scale_color_discrete(labels = c("Business Analyst", "Data Engineer", "Data Scientist","Software Development Engineer","Technical Program Manager"))
 ```
 
 
