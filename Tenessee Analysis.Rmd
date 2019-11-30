@@ -27,9 +27,23 @@ TN %>%
 
 ```{r}
 TN %>% 
-  filter(data_relation=="data_related") %>% 
   group_by(employer_name) %>% 
   summarise(n=n()) %>% 
   arrange(-n)
+```
+
+## vanderbilt
+
+```{r}
+Vandy <- TN %>% 
+  mutate(employer_name = ifelse(str_detect(employer_name,'vanderbilt'),'vanderbilt',employer_name)) %>%
+  filter(employer_name == 'vanderbilt') %>% 
+  group_by(job_title) %>% 
+  summarise(n=n()) %>% 
+  arrange(-n)
+```
+
+```{r}
+Vandy
 ```
 
