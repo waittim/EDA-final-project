@@ -1,0 +1,35 @@
+---
+title: "Tenessee Analysis"
+output: html_notebook
+---
+
+
+```{r}
+htmltools::includeHTML("rMaps.html")
+```
+
+2014: 3942
+2018: 6538
+
+```{r}
+TN <- DATA %>% 
+  filter(worksite_state_abb=='tn')
+```
+
+# city
+
+```{r}
+TN %>% 
+  group_by(worksite_city) %>% 
+  summarise(n=n()) %>% 
+  arrange(-n)
+```
+
+```{r}
+TN %>% 
+  filter(data_relation=="data_related") %>% 
+  group_by(employer_name) %>% 
+  summarise(n=n()) %>% 
+  arrange(-n)
+```
+
