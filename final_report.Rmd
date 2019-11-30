@@ -8,6 +8,11 @@ output: html_notebook
 h1b_df <- DATA
 ```
 
+# Background
+
+```{r}
+htmltools::includeHTML("rMaps.html")
+```
 
 # Data Science Job Trend
 ```{r}
