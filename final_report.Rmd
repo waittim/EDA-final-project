@@ -110,6 +110,9 @@ ggplot(h1b_amazon, aes(x = year, y = n, group = job_title)) +
 ```{r}
 h1b_micro <- h1b_df %>% 
   filter(str_detect(employer_name,'microsoft')) %>% 
+  ungroup(job_title) %>% 
+  mutate(job_title=ifelse(str_detect(job_title,'software engineer|software development engineer'), 'software engineer', 
+                   ifelse(str_detect(job_title,'program manager'), 'program manager',job_title))) %>% 
   group_by(job_title,year) %>% 
   summarise(n=n()) %>% 
   arrange(-n)
@@ -117,7 +120,7 @@ h1b_micro <- h1b_df %>%
 ```
 
 ```{r}
-con=c("Data Scientist","software engineer","program manager","senior software engineer")
+con=c("Data Scientist","software engineer","program manager")
 ggplot(h1b_micro, aes(x = year, y = n, group = job_title)) +
   geom_line(alpha = 0.3, 
             size = 0.2) +
@@ -131,7 +134,8 @@ ggplot(h1b_micro, aes(x = year, y = n, group = job_title)) +
   theme(plot.title = element_text(size = 14, family = "Helvetica", face = "bold"),
               text = element_text(size = 12, family = "Helvetica"),
               axis.title = element_text(face="bold"),
-              axis.text.x=element_text(size = 11))
+              axis.text.x=element_text(size = 11)) +
+  scale_color_discrete(labels = c("Data Scientist","Program Manager","Software Engineer"))
 ```
 
 
@@ -168,7 +172,8 @@ ggplot(h1b_google, aes(x = year, y = n, group = job_title)) +
   theme(plot.title = element_text(size = 14, family = "Helvetica", face = "bold"),
               text = element_text(size = 12, family = "Helvetica"),
               axis.title = element_text(face="bold"),
-              axis.text.x=element_text(size = 11))
+              axis.text.x=element_text(size = 11)) +
+  scale_color_discrete(labels = c("Business Analyst", "Data Scientist","Product Manager","Program Manager", "Software Engineer"))
 ```
 
 
