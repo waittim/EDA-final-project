@@ -19,7 +19,7 @@ library(gganimate)
 # Please unrara the "transformed.rar" file manually first.
 original_file <- read_csv("data/transformed.csv") %>% 
   clean_names()
-file.remove("data/transformed.csv")
+#file.remove("data/transformed.csv")
 stem <- read_csv("data/stem_list.csv")
 ```
 #Removing Coli Extraneous  Columns
@@ -102,6 +102,34 @@ DATA <- DATA %>%
                                 grepl("tech",job_title) ~ "sde_related",
                                 grepl("develop",job_title) ~ "sde_related",
                                 TRUE ~ "undefined")) 
+```
+
+```{r}
+DATA <- DATA %>% 
+  mutate(data_job_title = 
+           ifelse(str_detect(job_title,"business")&(str_detect(job_title,"analyst")|str_detect(job_title, "intelligence")), 
+                  "business analyst", 
+                  job_title)) %>% 
+  mutate(data_job_title = 
+           ifelse(str_detect(job_title, "data")&(str_detect(job_title,"engineer")|str_detect(job_title, "warehouse")),
+                  "Data Engineer", 
+                  data_job_title)) %>% 
+  mutate(data_job_title = 
+           ifelse(str_detect(job_title, "data")&str_detect(job_title, "scientist"), 
+                  "Data Scientist", 
+                  data_job_title)) %>% 
+  mutate(data_job_title = 
+           ifelse(str_detect(job_title, "data")&str_detect(job_title, "analyst|analytics"), 
+                  "Data Analyst", 
+                  data_job_title)) %>% 
+  mutate(data_job_title = 
+           ifelse(str_detect(job_title, "machine|deep")&str_detect(job_title, "learning"), 
+                  "Deep Learning & Machine Learning", 
+                  data_job_title)) %>% 
+  mutate(data_job_title = 
+           ifelse(str_detect(job_title, "product")&str_detect(job_title, "analyst|engineer|data"), 
+                  "Data Product Analyst", 
+                  data_job_title)) 
 ```
 
 
