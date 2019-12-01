@@ -629,6 +629,7 @@ DATA %>%
   slice(1:20) %>% 
   ggbarplot("job_title", "n", fill = "#00B2E4", color = "white", alpha = 0.8, sort.val = "asc", orientation = "horiz") %>% 
   labs(title = "non stem program")
+
 ```
 
 
@@ -719,7 +720,6 @@ filtered_job <- DATA %>%
   filter(year == 2018)
 
 
-
 top_10_state <- filtered_job %>% 
   group_by(worksite_state_abb) %>% 
   summarise(count = n()) %>% 
@@ -736,8 +736,6 @@ flows <- filtered_job %>%
 
 library(ggalluvial)
 
-
-
 ggplot(flows, aes(y =count, axis1=job_title, axis2=worksite_state_abb)) +
   geom_alluvium(aes(fill = job_title)) +
   geom_stratum(width = 1/8, fill = "black", color = "grey") +
@@ -747,5 +745,21 @@ ggplot(flows, aes(y =count, axis1=job_title, axis2=worksite_state_abb)) +
   scale_fill_manual(values = c("#6ba8a9","#465881", "#00909e", "#00B2E4", "#FC2967", "#999999"))
 
 ```
+
+
+
+
+```{r}
+TN <- DATA %>% 
+  filter(worksite_state_abb == 'tn')
+
+
+TN %>% 
+  filter(str_detect(employer_name, "vanderbilt")) %>% 
+  group_by(job_title) %>%
+  summarise(n = n()) %>% 
+  arrange(-n)
+
 ```
+
 
