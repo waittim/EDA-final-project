@@ -35,7 +35,7 @@ DATA <- original_file %>%
                                         full_time_position=="N"~0)) %>% 
   mutate(full_time_position=factor(full_time_position)) %>% 
   mutate(worksite_city=str_to_lower(worksite_city)) %>% 
-  mutate(worksite_state_abb=str_to_lower(worksite_state_abb)) %>% 
+  mutate(worksite_state_abb=str_to_upper(worksite_state_abb)) %>% 
   mutate(worksite_state_full=str_to_lower(worksite_state_full)) %>% 
   mutate(worksite=str_to_lower(worksite)) 
 
@@ -124,7 +124,7 @@ DATA <- DATA %>%
                   data_job_title)) %>% 
   mutate(data_job_title = 
            ifelse(str_detect(job_title, "machine|deep")&str_detect(job_title, "learning"), 
-                  "Deep Learning & Machine Learning", 
+                  "DL & Machine Learning", 
                   data_job_title)) %>% 
   mutate(data_job_title = 
            ifelse(str_detect(job_title, "product")&str_detect(job_title, "analyst|engineer|data"), 
