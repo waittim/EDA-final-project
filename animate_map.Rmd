@@ -29,11 +29,17 @@ DATA_new <-  DATA_certificate %>%
 ```
 
 ```{r}
-d1 <- ichoropleth(num~worksite_state_abb,data=DATA_new,animate='year',legend=FALSE,geographyConfig=list(popupTemplate="#!function(geo, data) {
-                                      return '<div class=\"hoverinfo\"><strong>'+
-                                       data.worksite_state_abb+
-                                       '<br>' + data.num+
-                                       '</strong></div>';}!#"))
+d1 <-
+  ichoropleth(
+    num ~ worksite_state_abb,
+    data = DATA_new,
+    animate = 'year',
+    ncuts = 9,
+    legend = FALSE,
+    geographyConfig = list(
+      popupTemplate = "#!function(geo, data) {return '<div class=\"hoverinfo\"><strong>' + data.worksite_state_abb + '<br>' + data.num + '</strong></div>';}!#"
+    )
+  )
 ```
 
 
