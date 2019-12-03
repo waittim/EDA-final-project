@@ -124,7 +124,7 @@ DATA <- DATA %>%
                   data_job_title)) %>% 
   mutate(data_job_title = 
            ifelse(str_detect(job_title, "machine|deep")&str_detect(job_title, "learning"), 
-                  "DL & Machine Learning", 
+                  "Data Scientist", 
                   data_job_title)) %>% 
   mutate(data_job_title = 
            ifelse(str_detect(job_title, "product")&str_detect(job_title, "analyst|engineer|data"), 
