@@ -1754,26 +1754,94 @@ summary {
 <h2>Load packages</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5saWJyYXJ5KGphbml0b3IpXG5saWJyYXJ5KGFzc2VydHIpXG5saWJyYXJ5KHN0cmluZ3IpXG5saWJyYXJ5KGx1YnJpZGF0ZSlcbmxpYnJhcnkoemlwY29kZSlcbmxpYnJhcnkoZ2dhbmltYXRlKVxuYGBgIn0= -->
-<pre class="r"><code>library(tidyverse)
-library(janitor)
-library(assertr)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5gYGAifQ== -->
+<pre class="r"><code>library(tidyverse)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiUmVnaXN0ZXJlZCBTMyBtZXRob2Qgb3ZlcndyaXR0ZW4gYnkgJ2RwbHlyJzpcbiAgbWV0aG9kICAgICAgICAgICBmcm9tXG4gIHByaW50LnJvd3dpc2VfZGYgICAgIFxuXHUwMDFiWzM3beKUgOKUgCBcdTAwMWJbMW1BdHRhY2hpbmcgcGFja2FnZXNcdTAwMWJbMjJtIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgCB0aWR5dmVyc2UgMS4yLjEg4pSA4pSAXHUwMDFiWzM5bVxuXHUwMDFiWzM3bVx1MDAxYlszMm3inJRcdTAwMWJbMzdtIFx1MDAxYlszNG1nZ3Bsb3QyXHUwMDFiWzM3bSAzLjIuMSAgICAgXHUwMDFiWzMybeKclFx1MDAxYlszN20gXHUwMDFiWzM0bXB1cnJyICBcdTAwMWJbMzdtIDAuMy4yXG5cdTAwMWJbMzJt4pyUXHUwMDFiWzM3bSBcdTAwMWJbMzRtdGliYmxlIFx1MDAxYlszN20gMi4xLjMgICAgIFx1MDAxYlszMm3inJRcdTAwMWJbMzdtIFx1MDAxYlszNG1kcGx5ciAgXHUwMDFiWzM3bSAwLjguM1xuXHUwMDFiWzMybeKclFx1MDAxYlszN20gXHUwMDFiWzM0bXRpZHlyICBcdTAwMWJbMzdtIDEuMC4wICAgICBcdTAwMWJbMzJt4pyUXHUwMDFiWzM3bSBcdTAwMWJbMzRtc3RyaW5nclx1MDAxYlszN20gMS40LjBcblx1MDAxYlszMm3inJRcdTAwMWJbMzdtIFx1MDAxYlszNG1yZWFkciAgXHUwMDFiWzM3bSAxLjMuMSAgICAgXHUwMDFiWzMybeKclFx1MDAxYlszN20gXHUwMDFiWzM0bWZvcmNhdHNcdTAwMWJbMzdtIDAuNC4wXHUwMDFiWzM5bVxuXHUwMDFiWzM3beKUgOKUgCBcdTAwMWJbMW1Db25mbGljdHNcdTAwMWJbMjJtIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgCB0aWR5dmVyc2VfY29uZmxpY3RzKCkg4pSA4pSAXG5cdTAwMWJbMzFt4pyWXHUwMDFiWzM3bSBcdTAwMWJbMzRtZHBseXJcdTAwMWJbMzdtOjpcdTAwMWJbMzJtZmlsdGVyKClcdTAwMWJbMzdtIG1hc2tzIFx1MDAxYlszNG1zdGF0c1x1MDAxYlszN206OmZpbHRlcigpXG5cdTAwMWJbMzFt4pyWXHUwMDFiWzM3bSBcdTAwMWJbMzRtZHBseXJcdTAwMWJbMzdtOjpcdTAwMWJbMzJtbGFnKClcdTAwMWJbMzdtICAgIG1hc2tzIFx1MDAxYlszNG1zdGF0c1x1MDAxYlszN206OmxhZygpXHUwMDFiWzM5bVxuIn0= -->
+<pre><code>Registered S3 method overwritten by 'dplyr':
+  method           from
+  print.rowwise_df     
+[37m── [1mAttaching packages[22m ─────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──[39m
+[37m[32m✔[37m [34mggplot2[37m 3.2.1     [32m✔[37m [34mpurrr  [37m 0.3.2
+[32m✔[37m [34mtibble [37m 2.1.3     [32m✔[37m [34mdplyr  [37m 0.8.3
+[32m✔[37m [34mtidyr  [37m 1.0.0     [32m✔[37m [34mstringr[37m 1.4.0
+[32m✔[37m [34mreadr  [37m 1.3.1     [32m✔[37m [34mforcats[37m 0.4.0[39m
+[37m── [1mConflicts[22m ────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+[31m✖[37m [34mdplyr[37m::[32mfilter()[37m masks [34mstats[37m::filter()
+[31m✖[37m [34mdplyr[37m::[32mlag()[37m    masks [34mstats[37m::lag()[39m</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShqYW5pdG9yKVxuYGBgIn0= -->
+<pre class="r"><code>library(janitor)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG5BdHRhY2hpbmcgcGFja2FnZTog4oCYamFuaXRvcuKAmVxuXG5UaGUgZm9sbG93aW5nIG9iamVjdHMgYXJlIG1hc2tlZCBmcm9tIOKAmHBhY2thZ2U6c3RhdHPigJk6XG5cbiAgICBjaGlzcS50ZXN0LCBmaXNoZXIudGVzdFxuIn0= -->
+<pre><code>
+Attaching package: ‘janitor’
+
+The following objects are masked from ‘package:stats’:
+
+    chisq.test, fisher.test</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShhc3NlcnRyKVxubGlicmFyeShzdHJpbmdyKVxubGlicmFyeShsdWJyaWRhdGUpXG5gYGAifQ== -->
+<pre class="r"><code>library(assertr)
 library(stringr)
-library(lubridate)
-library(zipcode)
+library(lubridate)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG5BdHRhY2hpbmcgcGFja2FnZTog4oCYbHVicmlkYXRl4oCZXG5cblRoZSBmb2xsb3dpbmcgb2JqZWN0IGlzIG1hc2tlZCBmcm9tIOKAmHBhY2thZ2U6YmFzZeKAmTpcblxuICAgIGRhdGVcbiJ9 -->
+<pre><code>
+Attaching package: ‘lubridate’
+
+The following object is masked from ‘package:base’:
+
+    date</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh6aXBjb2RlKVxubGlicmFyeShnZ2FuaW1hdGUpXG5gYGAifQ== -->
+<pre class="r"><code>library(zipcode)
 library(gganimate)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBQbGVhc2UgdW5yYXJhIHRoZSBcInRyYW5zZm9ybWVkLnJhclwiIGZpbGUgbWFudWFsbHkgZmlyc3QuXG5vcmlnaW5hbF9maWxlIDwtIHJlYWRfY3N2KFwiZGF0YS90cmFuc2Zvcm1lZC5jc3ZcIikgJT4lIFxuICBjbGVhbl9uYW1lcygpXG4jZmlsZS5yZW1vdmUoXCJkYXRhL3RyYW5zZm9ybWVkLmNzdlwiKVxuc3RlbSA8LSByZWFkX2NzdihcImRhdGEvc3RlbV9saXN0LmNzdlwiKVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBQbGVhc2UgdW5yYXJhIHRoZSBcInRyYW5zZm9ybWVkLnJhclwiIGZpbGUgbWFudWFsbHkgZmlyc3QuXG5vcmlnaW5hbF9maWxlIDwtIHJlYWRfY3N2KFwiZGF0YS90cmFuc2Zvcm1lZC5jc3ZcIikgJT4lIFxuICBjbGVhbl9uYW1lcygpXG5gYGAifQ== -->
 <pre class="r"><code># Please unrara the &quot;transformed.rar&quot; file manually first.
 original_file &lt;- read_csv(&quot;data/transformed.csv&quot;) %&gt;% 
-  clean_names()
-#file.remove(&quot;data/transformed.csv&quot;)
+  clean_names()</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiTWlzc2luZyBjb2x1bW4gbmFtZXMgZmlsbGVkIGluOiAnWDEnIFsxXVBhcnNlZCB3aXRoIGNvbHVtbiBzcGVjaWZpY2F0aW9uOlxuY29scyhcbiAgWDEgPSBcdTAwMWJbMzJtY29sX2RvdWJsZSgpXHUwMDFiWzM5bSxcbiAgQ0FTRV9OVU1CRVIgPSBcdTAwMWJbMzFtY29sX2NoYXJhY3RlcigpXHUwMDFiWzM5bSxcbiAgQ0FTRV9TVEFUVVMgPSBcdTAwMWJbMzFtY29sX2NoYXJhY3RlcigpXHUwMDFiWzM5bSxcbiAgRU1QTE9ZRVJfTkFNRSA9IFx1MDAxYlszMW1jb2xfY2hhcmFjdGVyKClcdTAwMWJbMzltLFxuICBTT0NfTkFNRSA9IFx1MDAxYlszMW1jb2xfY2hhcmFjdGVyKClcdTAwMWJbMzltLFxuICBTT0NfQ09ERSA9IFx1MDAxYlszMW1jb2xfY2hhcmFjdGVyKClcdTAwMWJbMzltLFxuICBKT0JfVElUTEUgPSBcdTAwMWJbMzFtY29sX2NoYXJhY3RlcigpXHUwMDFiWzM5bSxcbiAgRlVMTF9USU1FX1BPU0lUSU9OID0gXHUwMDFiWzMxbWNvbF9jaGFyYWN0ZXIoKVx1MDAxYlszOW0sXG4gIFBSRVZBSUxJTkdfV0FHRSA9IFx1MDAxYlszMm1jb2xfZG91YmxlKClcdTAwMWJbMzltLFxuICBXT1JLU0lURV9DSVRZID0gXHUwMDFiWzMxbWNvbF9jaGFyYWN0ZXIoKVx1MDAxYlszOW0sXG4gIFdPUktTSVRFX1NUQVRFX0FCQiA9IFx1MDAxYlszMW1jb2xfY2hhcmFjdGVyKClcdTAwMWJbMzltLFxuICBZRUFSID0gXHUwMDFiWzMybWNvbF9kb3VibGUoKVx1MDAxYlszOW0sXG4gIFdPUktTSVRFX1NUQVRFX0ZVTEwgPSBcdTAwMWJbMzFtY29sX2NoYXJhY3RlcigpXHUwMDFiWzM5bSxcbiAgV09SS1NJVEUgPSBcdTAwMWJbMzFtY29sX2NoYXJhY3RlcigpXHUwMDFiWzM5bSxcbiAgQ09MSS54ID0gXHUwMDFiWzMybWNvbF9kb3VibGUoKVx1MDAxYlszOW0sXG4gIGxvbiA9IFx1MDAxYlszMm1jb2xfZG91YmxlKClcdTAwMWJbMzltLFxuICBsYXQgPSBcdTAwMWJbMzJtY29sX2RvdWJsZSgpXHUwMDFiWzM5bSxcbiAgQ09MSS55ID0gXHUwMDFiWzMybWNvbF9kb3VibGUoKVx1MDAxYlszOW0sXG4gIENPTEkgPSBcdTAwMWJbMzJtY29sX2RvdWJsZSgpXHUwMDFiWzM5bVxuKVxuIn0= -->
+<pre><code>Missing column names filled in: 'X1' [1]Parsed with column specification:
+cols(
+  X1 = [32mcol_double()[39m,
+  CASE_NUMBER = [31mcol_character()[39m,
+  CASE_STATUS = [31mcol_character()[39m,
+  EMPLOYER_NAME = [31mcol_character()[39m,
+  SOC_NAME = [31mcol_character()[39m,
+  SOC_CODE = [31mcol_character()[39m,
+  JOB_TITLE = [31mcol_character()[39m,
+  FULL_TIME_POSITION = [31mcol_character()[39m,
+  PREVAILING_WAGE = [32mcol_double()[39m,
+  WORKSITE_CITY = [31mcol_character()[39m,
+  WORKSITE_STATE_ABB = [31mcol_character()[39m,
+  YEAR = [32mcol_double()[39m,
+  WORKSITE_STATE_FULL = [31mcol_character()[39m,
+  WORKSITE = [31mcol_character()[39m,
+  COLI.x = [32mcol_double()[39m,
+  lon = [32mcol_double()[39m,
+  lat = [32mcol_double()[39m,
+  COLI.y = [32mcol_double()[39m,
+  COLI = [32mcol_double()[39m
+)</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI2ZpbGUucmVtb3ZlKFwiZGF0YS90cmFuc2Zvcm1lZC5jc3ZcIilcbnN0ZW0gPC0gcmVhZF9jc3YoXCJkYXRhL3N0ZW1fbGlzdC5jc3ZcIilcbmBgYCJ9 -->
+<pre class="r"><code>#file.remove(&quot;data/transformed.csv&quot;)
 stem &lt;- read_csv(&quot;data/stem_list.csv&quot;)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiUGFyc2VkIHdpdGggY29sdW1uIHNwZWNpZmljYXRpb246XG5jb2xzKFxuICBzb2NfY29kZSA9IFx1MDAxYlszMW1jb2xfY2hhcmFjdGVyKClcdTAwMWJbMzltLFxuICBzdGVtID0gXHUwMDFiWzMybWNvbF9kb3VibGUoKVx1MDAxYlszOW1cbilcbiJ9 -->
+<pre><code>Parsed with column specification:
+cols(
+  soc_code = [31mcol_character()[39m,
+  stem = [32mcol_double()[39m
+)</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>#Removing Coli Extraneous Columns</p>
@@ -1796,6 +1864,13 @@ stem &lt;- read_csv(&quot;data/stem_list.csv&quot;)</code></pre>
 
 head(DATA)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibmNvbCI6MTcsIm5yb3ciOjZ9LCJyZGYiOiJINHNJQUFBQUFBQUFBNDFXelc4YlJSVGYyTEhkdUhWYXB5a0tFb1RoQnBMWDh0cHhFaU5CWElLQUlGRUpsSWhJU0pqeDdOaWVaRDFqell6aldFS0NDeGNrTGx4QVZJaXFFaWNPY0d4dnZrR0Y0TUkvZ0NwVklKQ2dsMTRLYXBoZDc5dDRiVDY2MG5yZTE4Njg5M3N6di9IckwreFhzdnRaeTdLU1ZqSTlaeVZUUnJSU2U3c3YycHVXTlo4d3lwdzFieTM0NDdFSnVtaUV2SGtYelp2ZXVtc0ZUOTBLeHpQaGVDRWNsOE54eFlMSDk2VERDWmQyN0hLcFpKZHFUbW5kcnE2dFY5ZXFNNTcxc3Uyc1ZTcVZqUm5QWnRtdVZrdGx4NW54MUNyMjVrYWxWS3ZOZWpac3AxeGFMODE0eWlYelRiVmFxMjFPNVhpUlVLbFppMUhYSGpEZGNTVWU4TkMxRUxsQ1E5cWwvRlNiY1QvY1ZQSGxuOVQwR0N1a05OWVU5VGs3b2xJeFBiUVY1cWlMSlJFcURFUjBTSkhxVWNLd3g1UldTTFFRNHk3REhCZFFyMGlLc0pMWGFSYU1KekxrQnJpTCtnckhqQ3R1cTY4bzBwUjB1UEJFbTFFVjh6K204U0ZGbEdzcWU1S1pTRVhsRVNOVStVRlRKYUFtQzZZZzJFT0tNUE9SbjE4QlljOURRbmVvRE9QT2laNFdYYXFsN3daRU1kRkNncmFDQ1JGOXJqRTM5V0h1SXR4MzJZUi9tWWh1cjI5eVFqMHAyaEozdS9SL2ZQRk1NMDdOZGtwbDJCeVpzcSt1T1pHNllUWkx0TjB5VGlXdVZtM0hxY3lvOFJXZTZBbWxYZUVYWmRDUVZGSFR3dzdDU2duVE9FM0RzTE1UVUlTbVN5MGhYS1J3aStyaEtZd0FEUE03d2JGbWdwdDVUMkdDYlg1YXM4RU5lMFAxWHg0cm1RdFN0cXpFUDc4eFZraDc5SWg2QUdVQ3VLSUVnak1WbnlLZUtUY01qeVpwQlkwMjBnUGdsdnFkM0NqZ2pqOGFid2ZqTHdkakx2bjVxZkg0KzlLMVlQeTFCdlF6aVhSMjVvU2NDNDlEVDVnREV0cm1XMWkyNFNCNGVDQXBKL1NJZVI1MDRvdy96WUZRb0MrUURwYWUwS1pWOGZVU3Uvc2c3VndCNlkwZGtGNjZETkoySkYzWmptcjkvSGhjMDBPT1UydW5BcEtBblJlV0NRa1BtQ0tDS3daVWsybFRJZHNNL0ZsekxGbExTQjVaRnJtUXVvTUlsZ1lvTTA5OHJmd3ByZ1UwdWU2bFNYZ0xLSjdGZVIvbkFwck81WkVZNUFVVVQyMFpzQytnbVNRZmpmcFFRRFA1QnBpTzl0L1orajY3d0VkN0h6eCs2N25yUDc1NzE0Y3RjMzIwZS9MTU54ZStlM3IwMXZITnF4OWZ1enJhcmQ2NzlmV05UNk5lUEh0NzlkVnZmL3Fxdm4zN3pjeUhILzBKMzlYcjkrbld2WnQ3OWVlL2ZLV1RYUDJrZnZtemZQRXY3d2Y0TG9wNytZdlZHNi85OWo3by96Wk9Id3VPdXhTT1JSNjJ5REh3eVZtQ0ZXM3dmcmNaOGVYWTVOOE1mZWhCam5aN25oaFMyZkJuaTdhd0lETTZFVzYwcFE5RXM2R1pqdmI4VXF2dmVjYlNwUTFEVjh3bkZXaGpUOUlqekF6TTdjWUF0K0dEM0VESVF4TklHOFRjVFRCTFpBd3Vyd1p1TnVIUURRM3J3WjA0RmVVdkRYbUNLOVNUWHBSSDBzTkFZUFBFZEgyTVpmTEVpck5LMXNVYUYxdlNyejJPOW9JVWd5SWc3ck5kNGozemMzSnljdDhLS0NnV25ERnNiREF3b1FuLzMwOXFhcFU1T1dVNDMrZisxSzVOT24xK2FGZjhUQUwzK01tRmNucEN6bytYbkljS1VzQ0xsTGNaQndSU0htNVNnR2ZSbEJCVVVEUTNjTVQwV1dOVlJTMDBocmlzQVFnc1kzcDk4RGRUMk9KRTlBa0FBQT09In0= -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["x1"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["case_number"],"name":[2],"type":["chr"],"align":["left"]},{"label":["case_status"],"name":[3],"type":["chr"],"align":["left"]},{"label":["employer_name"],"name":[4],"type":["chr"],"align":["left"]},{"label":["soc_name"],"name":[5],"type":["chr"],"align":["left"]},{"label":["soc_code"],"name":[6],"type":["chr"],"align":["left"]},{"label":["job_title"],"name":[7],"type":["chr"],"align":["left"]},{"label":["full_time_position"],"name":[8],"type":["fctr"],"align":["left"]},{"label":["prevailing_wage"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["worksite_city"],"name":[10],"type":["chr"],"align":["left"]},{"label":["worksite_state_abb"],"name":[11],"type":["chr"],"align":["left"]},{"label":["year"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["worksite_state_full"],"name":[13],"type":["chr"],"align":["left"]},{"label":["worksite"],"name":[14],"type":["chr"],"align":["left"]},{"label":["lon"],"name":[15],"type":["dbl"],"align":["right"]},{"label":["lat"],"name":[16],"type":["dbl"],"align":["right"]},{"label":["coli"],"name":[17],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"I-200-09106-546545","3":"certified-withdrawn","4":"texas state university-san marcos","5":"biological scientists, all other","6":"19-1029","7":"postdoctoral research associate","8":"1","9":"43118","10":"san marcos","11":"TX","12":"2014","13":"texas","14":"san marcos, texas","15":"-97.94139","16":"29.88327","17":"NA"},{"1":"2","2":"I-200-09162-143337","3":"certified","4":"eye specialists of indiana, p.c.","5":"optometrists","6":"29-1041","7":"optometrist","8":"1","9":"64251","10":"indianapolis","11":"IN","12":"2014","13":"indiana","14":"indianapolis, indiana","15":"-86.15807","16":"39.76840","17":"49.29"},{"1":"3","2":"I-200-09182-550211","3":"denied","4":"lhb, inc.","5":"actors","6":"27-2011","7":"food safety scientist","8":"1","9":"50000","10":"farg","11":"WI","12":"2014","13":"wisconsin","14":"farg, wisconsin","15":"NA","16":"NA","17":"NA"},{"1":"4","2":"I-200-09193-873099","3":"certified","4":"wam usa, inc.","5":"accountants and auditors","6":"13-2011","7":"international accountant","8":"1","9":"47424","10":"lawrenceville","11":"GA","12":"2014","13":"georgia","14":"lawrenceville, georgia","15":"-83.98796","16":"33.95621","17":"NA"},{"1":"5","2":"I-200-09197-120609","3":"certified-withdrawn","4":"dfuse technologies, inc.","5":"computer programmers","6":"15-1131","7":"programmer analyst","8":"1","9":"61589","10":"san jose","11":"CA","12":"2014","13":"california","14":"san jose, california","15":"-121.88633","16":"37.33821","17":"NA"},{"1":"6","2":"I-200-09203-855998","3":"certified","4":"take enterprise services inc","5":"computer programmers","6":"15-1131","7":"programmer analyst","8":"1","9":"53706","10":"charlotte","11":"NC","12":"2014","13":"north carolina","14":"charlotte, north carolina","15":"-80.84313","16":"35.22709","17":"NA"}],"options":{"columns":{"min":{},"max":[10],"total":[17]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
