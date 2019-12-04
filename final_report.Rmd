@@ -8,13 +8,16 @@ output: html_notebook
 h1b_df <- DATA
 ```
 
-# Background
+
+# SECTION 1: BACKGROUND
+# SLIDE 7: MAP
 
 ```{r}
 htmltools::includeHTML("rMaps.html")
 ```
 
-# Stem and non-stem histogram
+# SECTION 2: STEM
+# SLIDE 9: Stem and non-stem histogram
 ```{r fig.height=7, fig.width=6}
 DATA %>%
   group_by(year, stem) %>% 
@@ -30,7 +33,7 @@ DATA %>%
 ```
 
 
-# Stem and non-stem boxplot
+# SLIDE 10: Stem and non-stem boxplot
 ```{r}
 DATA %>%
   filter(prevailing_wage >= 0 & prevailing_wage <= 600000) %>%
@@ -45,7 +48,7 @@ DATA %>%
 ```
 
 
-# Stem and non-stem prevailing wage distribution
+# SLIDE 11: Stem and non-stem prevailing wage distribution
 ```{r}
 DATA %>%
   filter(year == 2018) %>%
@@ -62,7 +65,7 @@ DATA %>%
 ```
 
 
-# bar plot: stem jobs
+# SLIDE 12 AND 13: bar plot: stem jobs
 ```{r}
 dt <- DATA %>% 
   mutate(job_title = ifelse(str_detect(job_title, "business")& (str_detect(job_title, "analyst")|str_detect(job_title, "intelligence")) , "business analyst", job_title)) %>% 
@@ -109,6 +112,49 @@ dt %>%
   ggbarplot("job_title", "n", fill = "#00B2E4", alpha = 0.8, orientation = "horiz", color = "white") +
   labs(y = "Number of Aplications", x = "Job Titles")
 ```
+
+
+# Slide 7
+# Top Tech Companies and Their Trends
+```{r}
+soc_top_tech <- c("Apple",
+                  "Microsoft",
+                  "Amazon",
+                  "Facebook",
+                  "Google",
+                  "IBM",
+                  "Cisco")
+
+
+h1b_df %>% 
+  filter(case_status ==  "certified") %>%
+  mutate(job_title = ifelse(str_detect(job_title, "business")& (str_detect(job_title, "analyst")|str_detect(job_title, "intelligence")) , "Business Analyst", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data")& (str_detect(job_title, "engineer")|str_detect(job_title, "warehouse")), "Data Engineer", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data") & str_detect(job_title, "scientist"), "Data Scientist", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data") & str_detect(job_title, "analyst"), "Data Analyst", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "machine|deep") & str_detect(job_title, "learning"), "Deep Learning & Machine Learning", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "product") & str_detect(job_title, "analyst|engineer|data"), "Data Product Analyst", job_title)) %>% 
+  filter(job_title %in% c("Business Analyst","Data Engineer","Deep Learning & Machine Learning","Data Analyst", "Data Scientist", "Data Product Analyst")) %>%
+  mutate(employer_name = ifelse(str_detect(employer_name,'apple'), 'Apple',
+                          ifelse(str_detect(employer_name,'microsoft'), 'Microsoft',
+                          ifelse(str_detect(employer_name,'amazon'),'Amazon',
+                          ifelse(str_detect(employer_name,'cisco sys'),'Cisco',
+                          ifelse(str_detect(employer_name,'facebook'),'Facebook',
+                          ifelse(str_detect(employer_name,'google'),'Google',
+                          ifelse(str_detect(employer_name, 'ibm'),'IBM','no')))))))) %>% 
+  group_by(employer_name, year) %>% 
+  summarise(tot = n()) %>% 
+  filter(!employer_name %in% c("no", NA)) %>% 
+  ungroup()%>% 
+  ggplot()+
+  geom_line(aes(x = year, y = tot, color = employer_name), size = 1.05)+
+  labs( y = "Number of Applications", x = "Year", color = "Employer")+
+  theme_bw()
+
+
+```
+
+
 
 ## Facebook
 
