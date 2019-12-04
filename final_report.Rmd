@@ -14,33 +14,101 @@ h1b_df <- DATA
 htmltools::includeHTML("rMaps.html")
 ```
 
-# Data Science Job Trend
-```{r}
-h1b_df <- h1b_df %>% 
-  filter(case_status ==  "certified") %>% 
-  filter(stem == 1) 
-#%>% 
-#  filter(str_detect(job_title,"data|analyst|machine learning|deep learning|nlp|intelligence|business  nalyst")==TRUE) %>% 
-#  filter(str_detect(job_title, "programmer|systems|technology|quality|management|jc65|budget|test" )==FALSE) %>%
-  
-  # mutate(job_title = ifelse(str_detect(job_title, "business")& (str_detect(job_title, "analyst")|str_detect(job_title, "intelligence")) , "business analyst", job_title)) %>% 
-  # mutate(job_title = ifelse(str_detect(job_title, "data")& (str_detect(job_title, "engineer")|str_detect(job_title, "warehouse")), "Data Engineer", job_title)) %>% 
-  # mutate(job_title = ifelse(str_detect(job_title, "data")& str_detect(job_title, "scientist"), "Data Scientist", job_title)) %>% 
-  # mutate(job_title = ifelse(str_detect(job_title, "data")& str_detect(job_title, "analyst|analytics"), "Data Analyst", job_title)) %>% 
-  # mutate(job_title = ifelse(str_detect(job_title, "machine|deep")& str_detect(job_title, "learning"), "Deep Learning & Machine Learning", job_title)) %>% 
-  # mutate(job_title = ifelse(str_detect(job_title, "product") & str_detect(job_title, "analyst|engineer|data"), "Data Product Analyst", job_title)) 
-
- # filter(job_title %in% c("Data Engineer","Deep Learning & Machine Learning","Data Analyst", "Data Scientist", "Data Product Analyst"))
- # group_by(job_title, year) %>% 
- # summarise(n = n()) %>% 
-  # arrange(-n)  
-   # ggplot(aes(x = year, y = n))+
-  #  geom_line(aes(color = job_title),size = 1.05)+
-  #  labs( y = "Number of Applications", x = "Year")+
-   # theme_bw()
-
+# Stem and non-stem histogram
+```{r fig.height=7, fig.width=6}
+DATA %>%
+  group_by(year, stem) %>% 
+  summarise(n = n()) %>% 
+  ggplot(aes(x = year, y = n, fill = as.factor(stem))) +
+  geom_bar(stat = "identity", position = position_stack(reverse = FALSE), alpha = 0.8) +
+  scale_fill_manual(values = c("#00B2E4", "#0F2A48"), name = "field", labels = c("non-stem", "stem")) +
+  labs(title="The number of Certifited \n Applications throughout years: 2014 - 2018", y="Number", x="\n Year") + 
+  scale_y_continuous(labels = function(x){paste0(x/1000, 'K')}) + 
+  theme_minimal() + 
+  theme(plot.title = element_text(hjust=0.5)) +
+  theme(legend.position = "top")
 ```
 
+
+# Stem and non-stem boxplot
+```{r}
+DATA %>%
+  filter(prevailing_wage >= 0 & prevailing_wage <= 600000) %>%
+  ggplot(aes(x = as.factor(year), y = prevailing_wage)) +
+  geom_boxplot(aes(fill=stem), outlier.shape = NA, alpha=0.7, color = "white") +
+  theme_minimal() +
+ labs(x = "\n Prevailing wage ($)", y = "Density \n", title = "Distribution of prevailing wage in 2018") +
+  scale_y_continuous(labels = function(x){paste0(x / 1000, "K")}) +
+  scale_color_manual(values = c("#00B2E4", "#0F2A48"), name = "field", labels = c("non-stem", "stem")) +
+  scale_fill_manual(values = c("#00B2E4", "#0F2A48"), name = "field", labels = c("non-stem", "stem")) +
+  coord_cartesian(ylim = c(40000, 100000))
+```
+
+
+# Stem and non-stem prevailing wage distribution
+```{r}
+DATA %>%
+  filter(year == 2018) %>%
+  filter(prevailing_wage >= 0 & prevailing_wage <= 400000) %>% 
+  ggplot(aes(x = prevailing_wage, color = as.factor(stem), fill = as.factor(stem))) +
+  geom_density(adjust = 2, alpha = 0.7)+
+  theme_classic() +
+  labs(x = "\n Prevailing wage ($)", y = "Density \n", title = "Distribution of prevailing wage in 2018") +
+  scale_x_continuous(labels = function(x){paste0(x/1000, 'K')}) +
+  scale_y_continuous(labels = function(x){paste0(x * 1000, "* 10^3")}) +
+  scale_color_manual(values = c("#00B2E4", "#0F2A48"), name = "field", labels = c("non-stem", "stem")) +
+  scale_fill_manual(values = c("#00B2E4", "#0F2A48"), name = "field", labels = c("non-stem", "stem")) +
+  theme(plot.title = element_text(hjust=0.5))
+```
+
+
+# bar plot: stem jobs
+```{r}
+dt <- DATA %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "business")& (str_detect(job_title, "analyst")|str_detect(job_title, "intelligence")) , "business analyst", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data")& (str_detect(job_title, "engineer")|str_detect(job_title, "warehouse")), "data engineer", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data")& str_detect(job_title, "scientist"), "data scientist", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data")& str_detect(job_title, "analyst|analytics"), "data analyst", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "machine|deep")& str_detect(job_title, "learning"), "deep learning & machine learning", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "product") & str_detect(job_title, "analyst|engineer|data"), "data product analyst", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "senior systems analyst jc60"), "senior systems analyst", job_title)) %>% 
+  filter(stem == 1)
+
+dt %>% 
+  filter(year == 2017) %>% 
+  group_by(job_title) %>% 
+  summarise(n = n()) %>%
+  arrange(-n) %>% 
+  slice(1:20) %>% 
+  mutate(cat = ifelse(str_detect(job_title, "analyst|data"), "data", "non-data")) %>%
+  arrange(n) %>% 
+  ggbarplot("job_title", "n", fill = "cat", palette = c("red", "#00B2E4"), alpha = 0.8, orientation = "horiz", color = "white") +
+  labs(y = "Number of Aplications", x = "Job Titles")
+
+dt %>% 
+  filter(year == 2018) %>% 
+  group_by(job_title) %>% 
+  summarise(n = n()) %>%
+  arrange(-n) %>% 
+  slice(1:20) %>% 
+  mutate(cat = ifelse(str_detect(job_title, "analyst|data"), "data", "non-data")) %>%
+  arrange(n) %>% 
+  ggbarplot("job_title", "n", fill = "cat", palette = c("red", "#00B2E4"), alpha = 0.8, orientation = "horiz", color = "white") +
+  labs(y = "Number of Aplications", x = "Job Titles")
+
+
+# original
+dt %>% 
+  filter(year == 2018) %>% 
+  group_by(job_title) %>% 
+  summarise(n = n()) %>%
+  arrange(-n) %>% 
+  slice(1:20) %>% 
+  mutate(cat = ifelse(str_detect(job_title, "analyst|data"), "data", "non-data")) %>%
+  arrange(n) %>% 
+  ggbarplot("job_title", "n", fill = "#00B2E4", alpha = 0.8, orientation = "horiz", color = "white") +
+  labs(y = "Number of Aplications", x = "Job Titles")
+```
 
 ## Facebook
 
@@ -52,6 +120,8 @@ h1b_facebook <- h1b_df %>%
   arrange(-n)
   
 ```
+
+
 
 ```{r}
 con=c("Data Scientist","software engineer","Data Engineer",'research scientist')
