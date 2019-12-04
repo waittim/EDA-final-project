@@ -128,8 +128,13 @@ DATA <- DATA %>%
                   data_job_title)) %>% 
   mutate(data_job_title = 
            ifelse(str_detect(job_title, "product")&str_detect(job_title, "analyst|engineer|data"), 
-                  "Data Product Analyst", 
+                  "Data Analyst", 
+                  data_job_title)) %>% 
+  mutate(data_job_title = 
+           ifelse(str_detect(job_title, "product")&str_detect(job_title, "manager"), 
+                  "Product Manager", 
                   data_job_title)) 
+  
 ```
 
 
@@ -140,5 +145,14 @@ DATA <- DATA %>%
   left_join(stem, by = "soc_code")
 DATA <- DATA %>% 
   mutate(stem = ifelse(is.na(stem), 0, 1))
+```
+
+
+# filter certified status
+
+```{r}
+DATA <- DATA %>% 
+  filter(case_status == "certified")
+
 ```
 
