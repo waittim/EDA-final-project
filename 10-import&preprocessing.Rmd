@@ -112,7 +112,7 @@ DATA <- DATA %>%
   mutate(data_job_title = 
            ifelse(str_detect(job_title,"business")&(str_detect(job_title,"analyst")|str_detect(job_title, "intelligence")), 
                   "Business Analyst", 
-                  job_title)) %>% 
+                  NA)) %>% 
   mutate(data_job_title = 
            ifelse(str_detect(job_title, "data")&(str_detect(job_title,"engineer")|str_detect(job_title, "warehouse")),
                   "Data Engineer", 
