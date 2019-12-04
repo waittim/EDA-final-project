@@ -478,9 +478,9 @@ df %>%
 ```
 
 
-```{r fig.width=7, fig.height=8}
+```{r fig.width=4, fig.height=4}
 dt <- h1b_df %>% 
-  filter(case_status ==  "certified") %>% 
+  #filter(case_status ==  "certified") %>% 
 #  filter(str_detect(job_title,"data|analyst|machine learning|deep learning|nlp|intelligence|business  nalyst")==TRUE) %>% 
 #  filter(str_detect(job_title, "programmer|systems|technology|quality|management|jc65|budget|test" )==FALSE) %>%
   mutate(job_title = ifelse(str_detect(job_title, "business")& (str_detect(job_title, "analyst")|str_detect(job_title, "intelligence")) , "Business analyst", job_title)) %>% 
