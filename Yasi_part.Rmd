@@ -492,7 +492,10 @@ p1 <- dt %>%
   labs( y = "", x = "Year", title = "Applications Data related jobs", face = "bold", size = 14)+
   scale_color_manual(values=c("#FC2967","#465881", "#00909e", "#00B2E4"), name = "") + 
   theme_minimal() +
-  theme(legend.position = "top") +
+  theme(legend.position = "top",
+        axis.text = element_text(size = 15),
+        axis.title.x = element_text(size = 15)
+        ) +
   theme(plot.title = element_text(hjust=0.5))
 p1
   
