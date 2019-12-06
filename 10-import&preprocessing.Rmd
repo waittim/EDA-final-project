@@ -277,42 +277,42 @@ state_maps_ca <- state_maps %>%
 
 ```
 
-# focus on west
+# focus on northeast
 ```{r}
-west_states <- c("MA","NY","NJ","CT","RI","MD","DE","DC","PA")
+northeast_states<- c("ME","VT","NH","MA","NY","RI","CT","NJ","DE","DC","PA","MD","DC")
 
-df_18_west <- filtered_job %>% 
-  filter(worksite_state_abb %in% west_states) %>% 
+df_18_northeast <- filtered_job %>% 
+  filter(worksite_state_abb %in% northeast_states) %>% 
   group_by(lon, lat, data_job_title) %>% 
   summarise(n = n()) %>% 
   pivot_wider(names_from = data_job_title, values_from = n) %>% 
   clean_names() 
 
-df_18_west[is.na(df_18_west)] <- 0
-df_18_west$max <- apply(df_18_west[c(3,4,5,6)], 1, max)
-df_18_west
+df_18_northeast[is.na(df_18_northeast)] <- 0
+df_18_northeast$max <- apply(df_18_northeast[c(3,4,5,6)], 1, max)
+df_18_northeast
 
 
 
-df_18_west_max_nolat <- df_18_west[c(3,4,5,6)] %>%
+df_18_northeast_max_nolat <- df_18_northeast[c(3,4,5,6)] %>%
   by_row(..f = row_handler, .collate = "rows", .to = "max_job")
 
-df_18_west$max_job <- df_18_west_max_nolat$max_job
-df_18_west <- df_18_west %>% 
+df_18_northeast$max_job <- df_18_northeast_max_nolat$max_job
+df_18_northeast <- df_18_northeast %>% 
   mutate(max_job = case_when(max_job == "business_analyst" ~ "Business Analyst",
                              max_job == "data_analyst" ~ "Data Analyst",
                              max_job == "data_engineer" ~ "Data Engineer",
                              max_job == "data_scientist" ~ "Data Scientist"))
-points_west <- df_18_west %>% 
+points_northeast <- df_18_northeast %>% 
   ungroup() %>% 
   select(lon, lat, max_job)  %>% 
-  slice(1:410)
+  slice(1:596)
 
-points_west
+points_northeast
 
 
-state_maps_west <- state_maps %>% 
-  filter(state %in% west_states)
+state_maps_northeast <- state_maps %>% 
+  filter(state %in% northeast_states)
 
 ```
 
