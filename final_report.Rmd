@@ -116,6 +116,30 @@ dt %>%
   labs(y = "Number of Aplications", x = "Job Titles")
 ```
 
+# Slide 15
+```{r,fig.width=4, fig.height=4}
+dt <- DATA %>% 
+  filter(data_job_title %in% c("Business Analyst","Data Engineer","Data Analyst", "Data Scientist")) %>% 
+  group_by(data_job_title, year) %>% 
+  summarise(n = n()) %>% 
+  arrange(-n) 
+
+p1 <- dt %>% 
+  ggplot(aes(x = year, y = n))+
+  geom_point(aes(color = data_job_title), size = 2)+
+  geom_line(aes(color = data_job_title),size = 1.2)+
+  labs( y = "", x = "Year", title = "Applications Data related jobs", face = "bold", size = 14)+
+  scale_color_manual(values=c("#FC2967","#465881", "#00909e", "#00B2E4"), name = "") + 
+  theme_minimal() +
+  theme(legend.position = "top",
+        axis.text = element_text(size = 15),
+        axis.title.x = element_text(size = 15)
+        ) +
+  theme(plot.title = element_text(hjust=0.5))
+p1
+```
+
+
 
 # Slide 17
 # Top Tech Companies and Their Trends
@@ -437,7 +461,7 @@ ggplot(points) +
 ```{r}
 ggplot(points_ca) + 
   geom_sf(data = state_maps_ca, color = "white", fill = "lightgrey",alpha=0.5) +
-  geom_point(aes(x = jitter(lon,100), y = jitter(lat,100), color = max_job), size = 1, alpha = 0.5) + 
+  geom_point(aes(x = jitter(lon), y = jitter(lat), color = max_job), size = 1, alpha = 0.5) + 
   scale_color_manual(values = c("Business Analyst" = "#00B2E4", 
                                 "Data Analyst" = "#0F2A48",
                                 "Data Engineer" = "#008B8B",
@@ -455,7 +479,43 @@ ggplot(points_ca) +
 ```{r}
 ggplot(points_west) + 
   geom_sf(data = state_maps_west, color = "white", fill = "lightgrey",alpha=0.5) +
+  geom_point(aes(x = jitter(lon), y = jitter(lat), color = max_job), size = 1, alpha = 0.5) + 
+  scale_color_manual(values = c("Business Analyst" = "#00B2E4", 
+                                "Data Analyst" = "#0F2A48",
+                                "Data Engineer" = "#008B8B",
+                                "Data Scientist" = "#FC2967"),
+                     name = "Job Title") +
+  theme(panel.background = element_blank(),
+        legend.background = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank(),
+        #legend.position = c(0,0), legend.justification = c(0,0)
+        )+
+  labs(x = "", y = "", title = "")
+```
+
+```{r}
+ggplot(points_midwest) + 
+  geom_sf(data = state_maps_midwest, color = "white", fill = "lightgrey",alpha=0.5) +
   geom_point(aes(x = jitter(lon,100), y = jitter(lat,100), color = max_job), size = 1, alpha = 0.5) + 
+  scale_color_manual(values = c("Business Analyst" = "#00B2E4", 
+                                "Data Analyst" = "#0F2A48",
+                                "Data Engineer" = "#008B8B",
+                                "Data Scientist" = "#FC2967"),
+                     name = "Job Title") +
+  theme(panel.background = element_blank(),
+        legend.background = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank(),
+        #legend.position = c(0,0), legend.justification = c(0,0)
+        )+
+  labs(x = "", y = "", title = "")
+```
+
+```{r}
+ggplot(points_tn) + 
+  geom_sf(data = state_maps_tn, color = "white", fill = "lightgrey",alpha=0.5) +
+  geom_point(aes(x = jitter(lon), y = jitter(lat), color = max_job), size = 1, alpha = 0.5) + 
   scale_color_manual(values = c("Business Analyst" = "#00B2E4", 
                                 "Data Analyst" = "#0F2A48",
                                 "Data Engineer" = "#008B8B",
