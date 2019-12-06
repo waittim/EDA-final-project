@@ -167,7 +167,7 @@ DATA <- DATA %>%
 
 ```{r}
 filtered_job <- DATA %>% 
-  filter(year == 2018) %>% 
+  filter(year == 2018 | year == 2017) %>% 
   filter(data_job_title %in% c("Business Analyst","Data Analyst", "Data Engineer", "Data Scientist"))
 
 df_18 <- filtered_job %>% 
@@ -202,7 +202,8 @@ df_18 <- df_18 %>%
 points <- df_18 %>% 
   ungroup() %>% 
   select(lon, lat, max_job) %>% 
-  slice(3:1499)
+  filter(lat>20) %>% 
+  slice(4:1733)
 
 points
 ```
@@ -278,8 +279,10 @@ state_maps_ca <- state_maps %>%
 
 # focus on west
 ```{r}
+west_states <- c("MA","NY","NJ","CT","RI","MD","DE","DC","PA")
+
 df_18_west <- filtered_job %>% 
-  filter(worksite_state_abb %in% c("MA","NY","NJ","CT","RI","MD","DE","DC","PA")) %>% 
+  filter(worksite_state_abb %in% west_states) %>% 
   group_by(lon, lat, data_job_title) %>% 
   summarise(n = n()) %>% 
   pivot_wider(names_from = data_job_title, values_from = n) %>% 
@@ -309,6 +312,82 @@ points_west
 
 
 state_maps_west <- state_maps %>% 
-  filter(state %in% c("MA","NY","NJ","CT","RI","MD","DE","DC","PA"))
+  filter(state %in% west_states)
+
+```
+
+# focus on midwest
+```{r}
+midwest_states <- c("IL", "MI", "IN", "OH", "MN", "WI")
+
+df_18_midwest <- filtered_job %>% 
+  filter(worksite_state_abb %in% midwest_states) %>% 
+  group_by(lon, lat, data_job_title) %>% 
+  summarise(n = n()) %>% 
+  pivot_wider(names_from = data_job_title, values_from = n) %>% 
+  clean_names() 
+
+df_18_midwest[is.na(df_18_midwest)] <- 0
+df_18_midwest$max <- apply(df_18_midwest[c(3,4,5,6)], 1, max)
+df_18_midwest
+
+
+
+df_18_midwest_max_nolat <- df_18_midwest[c(3,4,5,6)] %>%
+  by_row(..f = row_handler, .collate = "rows", .to = "max_job")
+
+df_18_midwest$max_job <- df_18_midwest_max_nolat$max_job
+df_18_midwest <- df_18_midwest %>% 
+  mutate(max_job = case_when(max_job == "business_analyst" ~ "Business Analyst",
+                             max_job == "data_analyst" ~ "Data Analyst",
+                             max_job == "data_engineer" ~ "Data Engineer",
+                             max_job == "data_scientist" ~ "Data Scientist"))
+points_midwest <- df_18_midwest %>% 
+  ungroup() %>% 
+  select(lon, lat, max_job)  %>% 
+  slice(1:345)
+
+points_midwest
+
+
+state_maps_midwest <- state_maps %>% 
+  filter(state %in% midwest_states)
+
+```
+
+# focus on TN
+```{r}
+df_18_tn <- filtered_job %>% 
+  filter(worksite_state_abb=="TN") %>% 
+  group_by(lon, lat, data_job_title) %>% 
+  summarise(n = n()) %>% 
+  pivot_wider(names_from = data_job_title, values_from = n) %>% 
+  clean_names() 
+
+df_18_tn[is.na(df_18_tn)] <- 0
+df_18_tn$max <- apply(df_18_tn[c(3,4,5,6)], 1, max)
+df_18_tn
+
+
+
+df_18_tn_max_nolat <- df_18_tn[c(3,4,5,6)] %>%
+  by_row(..f = row_handler, .collate = "rows", .to = "max_job")
+
+df_18_tn$max_job <- df_18_tn_max_nolat$max_job
+df_18_tn <- df_18_tn %>% 
+  mutate(max_job = case_when(max_job == "business_analyst" ~ "Business Analyst",
+                             max_job == "data_analyst" ~ "Data Analyst",
+                             max_job == "data_engineer" ~ "Data Engineer",
+                             max_job == "data_scientist" ~ "Data Scientist"))
+points_tn <- df_18_tn %>% 
+  ungroup() %>% 
+  select(lon, lat, max_job) %>% 
+  slice(1:21)
+
+points_tn
+
+
+state_maps_tn <- state_maps %>% 
+  filter(state == "TN")
 
 ```
