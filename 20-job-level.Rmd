@@ -342,3 +342,123 @@ DATA %>%
 ```
 
 
+
+
+# test MA
+
+```{r}
+df_18_ma <- filtered_job %>% 
+  filter(worksite_state_abb=="MA") %>% 
+  group_by(lon, lat, data_job_title) %>% 
+  summarise(n = n()) %>% 
+  pivot_wider(names_from = data_job_title, values_from = n) %>% 
+  clean_names() 
+
+df_18_ma[is.na(df_18_ma)] <- 0
+df_18_ma$max <- apply(df_18_ma[c(3,4,5,6)], 1, max)
+df_18_ma
+
+
+
+df_18_ma_max_nolat <- df_18_ma[c(3,4,5,6)] %>%
+  by_row(..f = row_handler, .collate = "rows", .to = "max_job")
+
+df_18_ma$max_job <- df_18_ma_max_nolat$max_job
+df_18_ma <- df_18_ma %>% 
+  mutate(max_job = case_when(max_job == "business_analyst" ~ "Business Analyst",
+                             max_job == "data_analyst" ~ "Data Analyst",
+                             max_job == "data_engineer" ~ "Data Engineer",
+                             max_job == "data_scientist" ~ "Data Scientist"))
+points_ma <- df_18_ma %>% 
+  ungroup() %>% 
+  select(lon, lat, max_job) %>% 
+  slice(1:90)
+
+points_ma
+
+
+state_maps_ma <- state_maps %>% 
+  filter(state == "MA")
+
+```
+
+```{r}
+ggplot(points_ma) + 
+  geom_sf(data = state_maps_ma, color = "white", fill = "lightgrey",alpha=0.5) +
+  geom_point(aes(x = jitter(lon), y = jitter(lat), color = max_job), size = 1, alpha = 0.5) + 
+  scale_color_manual(values = c("Business Analyst" = "#00B2E4", 
+                                "Data Analyst" = "#0F2A48",
+                                "Data Engineer" = "#008B8B",
+                                "Data Scientist" = "#FC2967"),
+                     name = "Job Title") +
+  theme(panel.background = element_blank(),
+        legend.background = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank(),
+        #legend.position = c(0,0), legend.justification = c(0,0)
+        )+
+  labs(x = "", y = "", title = "")
+```
+
+
+```{r}
+northeast_states<- c("ME","VT","NH","MA","NY","RI","CT","NJ","DE","DC","PA","MD","DC")
+```
+
+```{r}
+northeast_states<- c("ME","VT","NH","MA","NY","RI","CT","NJ","DE","DC","PA","MD","DC")
+
+df_18_northeast <- filtered_job %>% 
+  filter(worksite_state_abb %in% northeast_states) %>% 
+  group_by(lon, lat, data_job_title) %>% 
+  summarise(n = n()) %>% 
+  pivot_wider(names_from = data_job_title, values_from = n) %>% 
+  clean_names() 
+
+df_18_northeast[is.na(df_18_northeast)] <- 0
+df_18_northeast$max <- apply(df_18_northeast[c(3,4,5,6)], 1, max)
+df_18_northeast
+
+
+
+df_18_northeast_max_nolat <- df_18_northeast[c(3,4,5,6)] %>%
+  by_row(..f = row_handler, .collate = "rows", .to = "max_job")
+
+df_18_northeast$max_job <- df_18_northeast_max_nolat$max_job
+df_18_northeast <- df_18_northeast %>% 
+  mutate(max_job = case_when(max_job == "business_analyst" ~ "Business Analyst",
+                             max_job == "data_analyst" ~ "Data Analyst",
+                             max_job == "data_engineer" ~ "Data Engineer",
+                             max_job == "data_scientist" ~ "Data Scientist"))
+points_northeast <- df_18_northeast %>% 
+  ungroup() %>% 
+  select(lon, lat, max_job)  %>% 
+  slice(1:596)
+
+points_northeast
+
+
+state_maps_northeast <- state_maps %>% 
+  filter(state %in% northeast_states)
+
+```
+
+```{r}
+ggplot(points_northeast) + 
+  geom_sf(data = state_maps_northeast, color = "white", fill = "lightgrey",alpha=0.5) +
+  geom_point(aes(x = jitter(lon), y = jitter(lat), color = max_job), size = 1, alpha = 0.5) + 
+  scale_color_manual(values = c("Business Analyst" = "#00B2E4", 
+                                "Data Analyst" = "#0F2A48",
+                                "Data Engineer" = "#008B8B",
+                                "Data Scientist" = "#FC2967"),
+                     name = "Job Title") +
+  theme(panel.background = element_blank(),
+        legend.background = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank(),
+        #legend.position = c(0,0), legend.justification = c(0,0)
+        )+
+  labs(x = "", y = "", title = "")
+```
+
+
