@@ -477,8 +477,8 @@ ggplot(points_ca) +
 ```
 
 ```{r}
-ggplot(points_west) + 
-  geom_sf(data = state_maps_west, color = "white", fill = "lightgrey",alpha=0.5) +
+ggplot(points_northeast) + 
+  geom_sf(data = state_maps_northeast, color = "white", fill = "lightgrey",alpha=0.5) +
   geom_point(aes(x = jitter(lon), y = jitter(lat), color = max_job), size = 1, alpha = 0.5) + 
   scale_color_manual(values = c("Business Analyst" = "#00B2E4", 
                                 "Data Analyst" = "#0F2A48",
