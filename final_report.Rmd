@@ -18,14 +18,14 @@ htmltools::includeHTML("rMaps.html")
 
 # SECTION 2: STEM
 # SLIDE 9: Stem and non-stem histogram
-```{r fig.height=7, fig.width=6}
+```{r fig.height=3.5, fig.width=3}
 DATA %>%
   group_by(year, stem) %>% 
   summarise(n = n()) %>% 
   ggplot(aes(x = year, y = n, fill = as.factor(stem))) +
   geom_bar(stat = "identity", position = position_stack(reverse = FALSE), alpha = 0.8) +
-  scale_fill_manual(values = c("#00B2E4", "#0F2A48"), name = "field", labels = c("non-stem", "stem")) +
-  labs(title="The number of Certifited \n Applications throughout years: 2014 - 2018", y="Number", x="\n Year") + 
+  scale_fill_manual(values = c("#00B2E4", "#0F2A48"), name = "", labels = c("non-STEM", "STEM")) +
+  labs(y="Number", x="\n Year") + 
   scale_y_continuous(labels = function(x){paste0(x/1000, 'K')}) + 
   theme_minimal() + 
   theme(plot.title = element_text(hjust=0.5)) +
@@ -33,22 +33,22 @@ DATA %>%
 ```
 
 
-# SLIDE 10: Stem and non-stem boxplot
+# SLIDE 10: STEM and non-STEM boxplot: "Prevailing wage boxplot throughout years"
 ```{r}
 DATA %>%
   filter(prevailing_wage >= 0 & prevailing_wage <= 600000) %>%
   ggplot(aes(x = as.factor(year), y = prevailing_wage)) +
   geom_boxplot(aes(fill=as.factor(stem)), outlier.shape = NA, alpha=0.9, color = "white") +
   theme_minimal() +
- labs(x = "\n Prevailing wage ($)", y = "Density \n", title = "Distribution of prevailing wage in 2018") +
+ labs(x = "\n Prevailing wage ($)", y = "Density \n") +
   scale_y_continuous(labels = function(x){paste0(x / 1000, "K")}) +
-  scale_color_manual(values = c("#00B2E4", "#0F2A48"), name = "field", labels = c("non-stem", "stem")) +
-  scale_fill_manual(values = c("#00B2E4", "#0F2A48"), name = "field", labels = c("non-stem", "stem")) +
+  scale_color_manual(values = c("#00B2E4", "#0F2A48"), name = "", labels = c("non-STEM", "STEM")) +
+  scale_fill_manual(values = c("#00B2E4", "#0F2A48"), name = "", labels = c("non-STEM", "STEM")) +
   coord_cartesian(ylim = c(40000, 100000))
 ```
 
 
-# SLIDE 11: Stem and non-stem prevailing wage distribution
+# SLIDE 11: Stem and non-stem prevailing wage distribution in 2018
 ```{r}
 DATA %>%
   filter(year == 2018) %>%
@@ -56,11 +56,11 @@ DATA %>%
   ggplot(aes(x = prevailing_wage, color = as.factor(stem), fill = as.factor(stem))) +
   geom_density(adjust = 2, alpha = 0.7)+
   theme_classic() +
-  labs(x = "\n Prevailing wage ($)", y = "Density \n", title = "Distribution of prevailing wage in 2018") +
+  labs(x = "\n Prevailing wage ($)", y = expression(Density~(10^{-3})), title = "Distribution of prevailing wage in 2018") +
   scale_x_continuous(labels = function(x){paste0(x/1000, 'K')}) +
-  scale_y_continuous(labels = function(x){paste0(x * 1000, "* 10^3")}) +
-  scale_color_manual(values = c("#00B2E4", "#0F2A48"), name = "field", labels = c("non-stem", "stem")) +
-  scale_fill_manual(values = c("#00B2E4", "#0F2A48"), name = "field", labels = c("non-stem", "stem")) +
+  scale_y_continuous(labels = function(x){paste0(x * 1000, "")}) +
+  scale_color_manual(values = c("#00B2E4", "#0F2A48"), name = "", labels = c("non-STEM", "STEM")) +
+  scale_fill_manual(values = c("#00B2E4", "#0F2A48"), name = "", labels = c("non-STEM", "STEM")) +
   theme(plot.title = element_text(hjust=0.5))
 ```
 
@@ -76,17 +76,17 @@ dt <- DATA %>%
   mutate(job_title = ifelse(str_detect(job_title, "product") & str_detect(job_title, "analyst|engineer|data"), "data product analyst", job_title)) %>% 
   mutate(job_title = ifelse(str_detect(job_title, "senior systems analyst jc60"), "senior systems analyst", job_title)) %>% 
   filter(stem == 1)
-
-dt %>% 
-  filter(year == 2017) %>% 
-  group_by(job_title) %>% 
-  summarise(n = n()) %>%
-  arrange(-n) %>% 
-  slice(1:20) %>% 
-  mutate(cat = ifelse(str_detect(job_title, "analyst|data"), "data", "non-data")) %>%
-  arrange(n) %>% 
-  ggbarplot("job_title", "n", fill = "cat", palette = c("#FC2967", "#00B2E4"), alpha = 0.8, orientation = "horiz", color = "white") +
-  labs(y = "Number of Aplications", x = "Job Titles")
+# 
+# dt %>% 
+#   filter(year == 2017) %>% 
+#   group_by(job_title) %>% 
+#   summarise(n = n()) %>%
+#   arrange(-n) %>% 
+#   slice(1:20) %>% 
+#   mutate(cat = ifelse(str_detect(job_title, "analyst|data"), "data", "non-data")) %>%
+#   arrange(n) %>% 
+#   ggbarplot("job_title", "n", fill = "cat", palette = c("#FC2967", "#00B2E4"), alpha = 0.8, orientation = "horiz", color = "white") +
+#   labs(y = "Number of Aplications", x = "Job Titles")
 
 dt %>% 
   filter(year == 2018) %>% 
@@ -139,6 +139,47 @@ p1 <- dt %>%
 p1
 ```
 
+# Slide 17
+```{r}
+
+top_com <- DATA %>% 
+  filter(data_job_title %in% c("Business Analyst", "Data Analyst", "Data Engineer", "Data Scientist")) %>%
+  group_by(employer_name) %>% 
+  summarise(n = n()) %>% 
+  arrange(-n) %>% 
+  slice(1:20) %>% 
+  ungroup()
+
+top_com <-top_com$employer_name 
+
+spa_data <- DATA %>% 
+  filter(employer_name %in% top_com) %>% 
+  filter(employer_name != "capgemini america inc") %>% 
+  filter(data_job_title %in% c("Business Analyst", "Data Analyst", "Data Engineer", "Data Scientist")) %>%
+  group_by(employer_name, year) %>% 
+  summarise(n = n()) 
+
+con=c("infosys limited", "deloitte consulting llp","amazon","facebook", "ibm")
+myColor <- c("#465881", "#FFB6C1", "#00909e", "#00B2E4", "#FC2967")
+
+# c(amazon, "deloitte", "#facebook", "ibm", "info")
+
+ggplot(spa_data, aes(x = year, y = n, group = employer_name)) +
+  geom_line(alpha = 0.3, 
+            size = 0.2) +
+  labs(x = "Year",
+       y = "Number",
+       col = "") +
+  theme_classic()+
+  geom_line(data = subset(spa_data, employer_name %in% con),aes(col=employer_name),size=1.2)+
+  theme(plot.title = element_text(size = 14),
+              text = element_text(size = 12),
+              axis.title = element_text(face="bold"),
+              axis.text.x=element_text(size = 11)) +
+  scale_color_manual(values = myColor, breaks = c("infosys limited", "deloitte consulting llp","amazon","facebook", "ibm"), labels = c("Infosys Limited", "Deloitte Consulting","Amazon","Facebook", "IBM")) +
+  theme(legend.position = "top")
+
+```
 
 
 # Slide 17
