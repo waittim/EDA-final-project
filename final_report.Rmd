@@ -139,6 +139,32 @@ p1 <- dt %>%
 p1
 ```
 
+# slide 16
+
+```{r}
+filtered_job <- DATA %>% 
+  filter(data_job_title %in% c("Business Analyst","Data Engineer", "Data Scientist","Data Analyst"))
+
+
+filtered_job$data_job_title <- factor(filtered_job$data_job_title, levels = c("Data Analyst", "Business Analyst", "Data Engineer", "Data Scientist"), ordered = TRUE)
+
+
+filtered_job %>% group_by(data_job_title) %>% summarise(mean = mean(prevailing_wage))
+filtered_job %>%  
+  ggplot(aes(y = prevailing_wage, x = data_job_title)) +
+  geom_boxplot(fill = "#00B2E4", outlier.shape = NA, color = "white", width = 0.5) +
+  coord_cartesian(ylim = c(50000, 120000)) +
+  theme_minimal() +
+  labs(x = "\n Job title", y = "Prevailing wage (per year) \n", title = "Prevailing wages in data related jobs") +
+  theme(plot.title = element_text(size = 1),
+        text = element_text(size = 12),
+        axis.title = element_text(size = 16),
+        axis.text.x= element_text(size = 10),
+        axis.text.y = element_text(size = 10)) +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+
 # Slide 17
 ```{r}
 
