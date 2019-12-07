@@ -158,6 +158,151 @@ h1b_df %>%
 ```
 
 
+# Data jobs in top companies 
+
+```{r}
+
+filtered_job_all <- DATA %>% 
+  filter(data_job_title %in% c("Business Analyst","Data Analyst", "Data Engineer", "Data Scientist")) %>% 
+  mutate(employer_name = ifelse(str_detect(employer_name,'apple'), 'Apple',
+                          ifelse(str_detect(employer_name,'microsoft'), 'Microsoft',
+                          ifelse(str_detect(employer_name,'amazon'),'Amazon',
+                          ifelse(str_detect(employer_name,'facebook'),'Facebook',
+                          ifelse(str_detect(employer_name,'google'),'Google',
+                          ifelse(str_detect(employer_name, 'ibm'),'IBM',employer_name))))))) 
+  
+```
+
+#IBM
+```{r}
+filtered_job_all %>% 
+  filter(employer_name == 'IBM') %>% 
+  group_by(data_job_title, year) %>% 
+  summarise(n = n()) %>% 
+  ggplot(aes(x = year, y = n))+
+  geom_point(aes(color = data_job_title), size = 2) +
+  geom_line(aes(color = data_job_title),size = 1.2)+
+  labs( y = "", x = "Year", title = "", face = "bold", size = 14)+
+  theme_minimal()+
+  theme(legend.position = "top",
+        axis.text = element_text(size = 15),
+        axis.title.x = element_text(size = 15)
+        ) +
+  theme(plot.title = element_text(hjust=0.5))
+
+
+```
+
+# Infosys
+```{r}
+
+filtered_job_all %>% 
+  filter(str_detect(employer_name, 'infosys')) %>% 
+  group_by(data_job_title, year) %>% 
+  summarise(n = n()) %>% 
+  ggplot(aes(x = year, y = n))+
+  geom_point(aes(color = data_job_title), size = 2) +
+  geom_line(aes(color = data_job_title),size = 1.2)+
+  labs( y = "", x = "Year", title = "", face = "bold", size = 14)+
+  theme_minimal()+
+  theme(legend.position = "top",
+        axis.text = element_text(size = 15),
+        axis.title.x = element_text(size = 15)
+        ) +
+  theme(plot.title = element_text(hjust=0.5))
+
+```
+
+# Microsoft
+```{r}
+filtered_job_all %>% 
+  filter(employer_name == 'Microsoft') %>% 
+  group_by(data_job_title, year) %>% 
+  summarise(n = n()) %>% 
+  ggplot(aes(x = year, y = n))+
+  geom_point(aes(color = data_job_title), size = 2) +
+  geom_line(aes(color = data_job_title),size = 1.2)+
+  labs( y = "", x = "Year", title = "", face = "bold", size = 14)+
+  theme_minimal()+
+  theme(legend.position = "top",
+        axis.text = element_text(size = 15),
+        axis.title.x = element_text(size = 15)
+        ) +
+  theme(plot.title = element_text(hjust=0.5))
+```
+
+# Amazon
+```{r}
+filtered_job_all %>% 
+  filter(employer_name == 'Amazon') %>% 
+  group_by(data_job_title, year) %>% 
+  summarise(n = n()) %>% 
+  ggplot(aes(x = year, y = n))+
+  geom_point(aes(color = data_job_title), size = 2) +
+  geom_line(aes(color = data_job_title),size = 1.2)+
+  labs( y = "", x = "Year", title = "", face = "bold", size = 14)+
+  theme_minimal()+
+  theme(legend.position = "top",
+        axis.text = element_text(size = 15),
+        axis.title.x = element_text(size = 15)
+        ) +
+  theme(plot.title = element_text(hjust=0.5))
+```
+
+# Deloitte
+```{r}
+filtered_job_all %>% 
+  filter(str_detect(employer_name, "deloitte")) %>% 
+  group_by(data_job_title, year) %>% 
+  summarise(n = n()) %>% 
+  ggplot(aes(x = year, y = n))+
+  geom_point(aes(color = data_job_title), size = 2) +
+  geom_line(aes(color = data_job_title),size = 1.2)+
+  labs( y = "", x = "Year", title = "", face = "bold", size = 14)+
+  theme_minimal()+
+  theme(legend.position = "top",
+        axis.text = element_text(size = 15),
+        axis.title.x = element_text(size = 15)
+        ) +
+  theme(plot.title = element_text(hjust=0.5))
+```
+
+# Facebook
+```{r}
+filtered_job_all %>% 
+  filter(str_detect(employer_name, "Facebook")) %>% 
+  group_by(data_job_title, year) %>% 
+  summarise(n = n()) %>% 
+  ggplot(aes(x = year, y = n))+
+  geom_point(aes(color = data_job_title), size = 2) +
+  geom_line(aes(color = data_job_title),size = 1.2)+
+  labs( y = "", x = "Year", title = "", face = "bold", size = 14)+
+  theme_minimal()+
+  theme(legend.position = "top",
+        axis.text = element_text(size = 15),
+        axis.title.x = element_text(size = 15)
+        ) +
+  theme(plot.title = element_text(hjust=0.5))
+```
+
+# Apple
+```{r}
+filtered_job_all %>% 
+  filter(str_detect(employer_name, "Apple")) %>% 
+  group_by(data_job_title, year) %>% 
+  summarise(n = n()) %>% 
+  ggplot(aes(x = year, y = n))+
+  geom_point(aes(color = data_job_title), size = 2) +
+  geom_line(aes(color = data_job_title),size = 1.2)+
+  labs( y = "", x = "Year", title = "", face = "bold", size = 14)+
+  theme_minimal()+
+  theme(legend.position = "top",
+        axis.text = element_text(size = 15),
+        axis.title.x = element_text(size = 15)
+        ) +
+  theme(plot.title = element_text(hjust=0.5))
+```
+
 
 ## Facebook
 
