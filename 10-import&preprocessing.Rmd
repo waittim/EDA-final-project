@@ -1,10 +1,10 @@
 ---
-title: "00-test"
+title: "10-import"
 output: html_notebook
 ---
 
 ## Load packages
-```{r}
+```{r message = FALSE}
 library(tidyverse)
 library(janitor)
 library(assertr)
@@ -21,7 +21,7 @@ library(sf)
 
 
 ```{r}
-# Please unrara the "transformed.rar" file manually first.
+# Please extract the "transformed.rar" file manually first.
 original_file <- read_csv("data/transformed.csv") %>% 
   clean_names()
 #file.remove("data/transformed.csv")

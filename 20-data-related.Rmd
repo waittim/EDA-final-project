@@ -68,15 +68,6 @@ ggplot(spag, aes(x = year, y = n, group = employer_name)) +
 ```
 
 
-
-
-
-
-
-
-
-
-
 # Data Related Jobs and Their Trends
 ```{r}
 h1b_df %>% 
@@ -164,7 +155,7 @@ h1b_df %>%
   mutate(job_title = ifelse(str_detect(job_title, "machine|deep") & str_detect(job_title, "learning"), "Deep Learning & Machine Learning", job_title)) %>% 
   mutate(job_title = ifelse(str_detect(job_title, "product") & str_detect(job_title, "analyst|engineer|data"), "Data Product Analyst", job_title)) %>% 
   filter(job_title %in% c("Business Analyst","Data Engineer","Deep Learning & Machine Learning","Data Analyst", "Data Scientist", "Data Product Analyst")) %>%
-  mutate(employer_name = ifelse(str_detect(employer_name,'apple inc'), 'Apple',
+  mutate(employer_name = ifelse(str_detect(employer_name,'apple'), 'Apple',
                           ifelse(str_detect(employer_name,'microsoft'), 'Microsoft',
                           ifelse(str_detect(employer_name,'amazon'),'Amazon',
                           ifelse(str_detect(employer_name,'cisco sys'),'Cisco',
@@ -182,4 +173,40 @@ h1b_df %>%
 
 ```
 
+```{r}
+soc_top_tech <- c("Apple",
+                  "Microsoft",
+                  "Amazon",
+                  "Facebook",
+                  "Google",
+                  "Ibm",
+                  "Cisco")
+
+filtered_job_all <- DATA %>% 
+  filter(data_job_title %in% c("Business Analyst","Data Analyst", "Data Engineer", "Data Scientist")) %>% 
+  mutate(employer_name = ifelse(str_detect(employer_name,'apple'), 'Apple',
+                          ifelse(str_detect(employer_name,'microsoft'), 'Microsoft',
+                          ifelse(str_detect(employer_name,'amazon'),'Amazon',
+                          ifelse(str_detect(employer_name,'cisco sys'),'Cisco',
+                          ifelse(str_detect(employer_name,'facebook'),'Facebook',
+                          ifelse(str_detect(employer_name,'google'),'Google',
+                          ifelse(str_detect(employer_name, 'ibm'),'IBM','no'))))))))
+  
+```
+
+
+
+
+
+```{r}
+filtered_job_all %>% 
+  filter(employer_name == 'Apple') %>% 
+  group_by(data_job_title, year) %>% 
+  summarise(n = n()) %>% 
+  ggplot()+
+  geom_line(aes(x = year, y = n, color = data_job_title), size = 1.05)+
+  labs( y = "Number of Applications", x = "Year")+
+  theme_bw()
+  
+```
 
