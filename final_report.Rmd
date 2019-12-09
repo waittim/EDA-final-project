@@ -406,6 +406,24 @@ filtered_job_all %>%
   theme(plot.title = element_text(hjust=0.5))
 ```
 
+# Google
+```{r}
+filtered_job_all %>% 
+  filter(str_detect(employer_name, "Google")) %>% 
+  group_by(data_job_title, year) %>% 
+  summarise(n = n()) %>% 
+  ggplot(aes(x = year, y = n))+
+  #geom_point(aes(color = data_job_title), size = 2) +
+  geom_line(aes(color = data_job_title),size = 1.2)+
+  labs( y = "", x = "Year", title = "", face = "bold", size = 14)+
+  scale_color_manual(values=c("#FC2967","#465881", "#00909e", "#00B2E4"), name = "") +
+  theme_minimal()+
+  theme(legend.position = "top",
+        axis.text = element_text(size = 15),
+        axis.title.x = element_text(size = 15)
+        ) +
+  theme(plot.title = element_text(hjust=0.5))
+```
 
 ## Facebook
 
