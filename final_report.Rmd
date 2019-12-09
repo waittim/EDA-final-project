@@ -61,7 +61,8 @@ DATA %>%
   scale_y_continuous(labels = function(x){paste0(x * 1000, "")}) +
   scale_color_manual(values = c("#00B2E4", "#0F2A48"), name = "", labels = c("non-STEM", "STEM")) +
   scale_fill_manual(values = c("#00B2E4", "#0F2A48"), name = "", labels = c("non-STEM", "STEM")) +
-  theme(plot.title = element_text(hjust=0.5))
+  theme(plot.title = element_text(hjust=0.5)) +
+  theme_minimal()
 ```
 
 
@@ -86,7 +87,8 @@ dt <- DATA %>%
 #   mutate(cat = ifelse(str_detect(job_title, "analyst|data"), "data", "non-data")) %>%
 #   arrange(n) %>% 
 #   ggbarplot("job_title", "n", fill = "cat", palette = c("#FC2967", "#00B2E4"), alpha = 0.8, orientation = "horiz", color = "white") +
-#   labs(y = "Number of Aplications", x = "Job Titles")
+#   labs(y = "Number of Aplications", x = "Job Titles") +
+#   theme_minimal()
 
 dt %>% 
   filter(year == 2018) %>% 
@@ -98,9 +100,10 @@ dt %>%
   arrange(n) %>% 
   ggbarplot("job_title", "n", fill = "cat", palette = c("#FC2967", "#00B2E4"), alpha = 0.8, orientation = "horiz", color = "white") +
   labs(y = "Number of Aplications", x = "Job Titles")+
+  theme_minimal()+
   theme(
     legend.position = "none"
-  )
+  ) 
 
 
 # original
@@ -113,7 +116,8 @@ dt %>%
   mutate(cat = ifelse(str_detect(job_title, "analyst|data"), "data", "non-data")) %>%
   arrange(n) %>% 
   ggbarplot("job_title", "n", fill = "#00B2E4", alpha = 0.8, orientation = "horiz", color = "white") +
-  labs(y = "Number of Aplications", x = "Job Titles")
+  labs(y = "Number of Aplications", x = "Job Titles") +
+  theme_minimal()
 ```
 
 # Slide 15
@@ -126,7 +130,7 @@ dt <- DATA %>%
 
 p1 <- dt %>% 
   ggplot(aes(x = year, y = n))+
-  geom_point(aes(color = data_job_title), size = 2)+
+  #geom_point(aes(color = data_job_title), size = 2)+
   geom_line(aes(color = data_job_title),size = 1.2)+
   labs( y = "", x = "Year", title = "Applications Data related jobs", face = "bold", size = 14)+
   scale_color_manual(values=c("#FC2967","#465881", "#00909e", "#00B2E4"), name = "") + 
@@ -202,7 +206,8 @@ ggplot(spa_data, aes(x = year, y = n, group = employer_name)) +
               text = element_text(size = 12),
               axis.title = element_text(face="bold"),
               axis.text.x=element_text(size = 11)) +
-  scale_color_manual(values = myColor, breaks = c("infosys limited", "deloitte consulting llp","amazon","facebook", "ibm"), labels = c("Infosys Limited", "Deloitte Consulting","Amazon","Facebook", "IBM")) +
+  scale_color_manual(values = myColor, breaks = c("infosys limited", "deloitte consulting llp","amazon","facebook", "ibm"), labels = c("Infosys Limited", "Deloitte Consulting","Amazon","Facebook", "IBM"))  +
+  theme_minimal() +
   theme(legend.position = "top")
 
 ```
@@ -242,8 +247,8 @@ h1b_df %>%
   ungroup()%>% 
   ggplot()+
   geom_line(aes(x = year, y = tot, color = employer_name), size = 1.05)+
-  labs( y = "Number of Applications", x = "Year", color = "Employer")+
-  theme_bw()
+  labs( y = "Number of Applications", x = "Year", color = "Employer") +
+  theme_minimal() 
 
 
 ```
@@ -271,7 +276,7 @@ filtered_job_all %>%
   group_by(data_job_title, year) %>% 
   summarise(n = n()) %>% 
   ggplot(aes(x = year, y = n))+
-  geom_point(aes(color = data_job_title), size = 2) +
+  #geom_point(aes(color = data_job_title), size = 2) +
   geom_line(aes(color = data_job_title),size = 1.2)+
   labs( y = "", x = "Year", title = "", face = "bold", size = 14)+
   scale_color_manual(values=c("#FC2967","#465881", "#00909e", "#00B2E4"), name = "") +
@@ -293,7 +298,7 @@ filtered_job_all %>%
   group_by(data_job_title, year) %>% 
   summarise(n = n()) %>% 
   ggplot(aes(x = year, y = n))+
-  geom_point(aes(color = data_job_title), size = 2) +
+  #geom_point(aes(color = data_job_title), size = 2) +
   geom_line(aes(color = data_job_title),size = 1.2)+
   labs( y = "", x = "Year", title = "", face = "bold", size = 14)+
   scale_color_manual(values=c("#FC2967","#465881", "#00909e", "#00B2E4"), name = "") +
@@ -313,7 +318,7 @@ filtered_job_all %>%
   group_by(data_job_title, year) %>% 
   summarise(n = n()) %>% 
   ggplot(aes(x = year, y = n))+
-  geom_point(aes(color = data_job_title), size = 2) +
+  #geom_point(aes(color = data_job_title), size = 2) +
   geom_line(aes(color = data_job_title),size = 1.2)+
   labs( y = "", x = "Year", title = "", face = "bold", size = 14)+
   scale_color_manual(values=c("#FC2967","#465881", "#00909e", "#00B2E4"), name = "") +
@@ -332,7 +337,7 @@ filtered_job_all %>%
   group_by(data_job_title, year) %>% 
   summarise(n = n()) %>% 
   ggplot(aes(x = year, y = n))+
-  geom_point(aes(color = data_job_title), size = 2) +
+  #geom_point(aes(color = data_job_title), size = 2) +
   geom_line(aes(color = data_job_title),size = 1.2)+
   labs( y = "", x = "Year", title = "", face = "bold", size = 14)+
   scale_color_manual(values=c("#FC2967","#465881", "#00909e", "#00B2E4"), name = "") +
@@ -351,7 +356,7 @@ filtered_job_all %>%
   group_by(data_job_title, year) %>% 
   summarise(n = n()) %>% 
   ggplot(aes(x = year, y = n))+
-  geom_point(aes(color = data_job_title), size = 2) +
+  #geom_point(aes(color = data_job_title), size = 2) +
   geom_line(aes(color = data_job_title),size = 1.2)+
   labs( y = "", x = "Year", title = "", face = "bold", size = 14)+
   scale_color_manual(values=c("#FC2967","#465881", "#00909e", "#00B2E4"), name = "") +
@@ -370,7 +375,7 @@ filtered_job_all %>%
   group_by(data_job_title, year) %>% 
   summarise(n = n()) %>% 
   ggplot(aes(x = year, y = n))+
-  geom_point(aes(color = data_job_title), size = 2) +
+  #geom_point(aes(color = data_job_title), size = 2) +
   geom_line(aes(color = data_job_title),size = 1.2)+
   labs( y = "", x = "Year", title = "", face = "bold", size = 14)+
   scale_color_manual(values=c("#FC2967","#465881", "#00909e", "#00B2E4"), name = "") +
@@ -389,7 +394,7 @@ filtered_job_all %>%
   group_by(data_job_title, year) %>% 
   summarise(n = n()) %>% 
   ggplot(aes(x = year, y = n))+
-  geom_point(aes(color = data_job_title), size = 2) +
+  #geom_point(aes(color = data_job_title), size = 2) +
   geom_line(aes(color = data_job_title),size = 1.2)+
   labs( y = "", x = "Year", title = "", face = "bold", size = 14)+
   scale_color_manual(values=c("#FC2967","#465881", "#00909e", "#00B2E4"), name = "") +
