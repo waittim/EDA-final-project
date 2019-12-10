@@ -71,7 +71,7 @@ d1 <-
     num ~ worksite_state_abb,
     data = DATA_new_data,
     animate = 'year',
-    ncuts = 9,
+    ncuts = 8,
     legend = FALSE,
     geographyConfig = list(
       popupTemplate = "#!function(geo, data) {return '<div class=\"hoverinfo\"><strong>' + data.worksite_state_abb + '<br>' + data.num + '</strong></div>';}!#"
