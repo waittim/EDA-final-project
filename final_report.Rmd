@@ -56,7 +56,7 @@ DATA %>%
   ggplot(aes(x = prevailing_wage, color = as.factor(stem), fill = as.factor(stem))) +
   geom_density(adjust = 2, alpha = 0.7)+
   theme_classic() +
-  labs(x = "\n Prevailing wage ($)", y = expression(Density~(10^{-3})), title = "Distribution of prevailing wage in 2018") +
+  labs(x = "\n Prevailing wage ($)", y = expression(Density~(10^{-3})), title = "") +
   scale_x_continuous(labels = function(x){paste0(x/1000, 'K')}) +
   scale_y_continuous(labels = function(x){paste0(x * 1000, "")}) +
   scale_color_manual(values = c("#00B2E4", "#0F2A48"), name = "", labels = c("non-STEM", "STEM")) +
@@ -898,7 +898,7 @@ DATA %>%
   geom_bar(stat = "identity", position = "dodge", alpha = 0.8) +
   scale_fill_manual(values = c("#00B2E4", "#0F2A48"), name = "", labels = c("Data jobs", "Others")) +
   labs(y="\n Number", x="\n Year") + 
-  scale_y_continuous(labels = function(x){paste0(x/1000, 'K')}) + 
+  #scale_y_continuous(labels = function(x){paste0(x/1000, 'K')}) + 
   theme_minimal() + 
   theme(plot.title = element_text(hjust=0.5)) +
   theme(legend.position = "top")
