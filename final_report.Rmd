@@ -376,6 +376,27 @@ filtered_job_all %>%
 
 ```
 
+# Accenture
+```{r}
+
+filtered_job_all %>% 
+  filter(str_detect(employer_name, 'accenture')) %>% 
+  group_by(data_job_title, year) %>% 
+  summarise(n = n()) %>% 
+  ggplot(aes(x = year, y = n))+
+  #geom_point(aes(color = data_job_title), size = 2) +
+  geom_line(aes(color = data_job_title),size = 1.2)+
+  labs( y = "", x = "Year", title = "", face = "bold", size = 14)+
+  scale_color_manual(values=c("#FC2967","#465881", "#00909e", "#00B2E4"), name = "") +
+  theme_minimal()+
+  theme(legend.position = "top",
+        axis.text = element_text(size = 15),
+        axis.title.x = element_text(size = 15)
+        ) +
+  theme(plot.title = element_text(hjust=0.5))
+
+```
+
 # Microsoft
 ```{r}
 filtered_job_all %>% 
@@ -645,23 +666,25 @@ h1b_ibm <- h1b_ibm %>%
   arrange(-n)
 ```
 
-```{r}
+```{r fig.height=3, fig.width=2.5}
 con=c("Business Analyst","Data Engineer","Data Scientist","Data Analyst")
 ggplot(h1b_ibm, aes(x = year, y = n, group = data_job_title)) +
   geom_line(alpha = 0.3, 
             size = 0.2) +
-  labs(title = "H1B in IBM",
+  labs(title = "",
        x = "Year",
        y = "Number",
        col = 'Job Title') +
   theme_minimal()+
   theme(plot.title = element_text(hjust = 0.5))+
-   geom_line(data = subset(h1b_ibm, data_job_title %in% con),aes(col=data_job_title),size=0.7)+
-  theme(plot.title = element_text(size = 14, family = "Helvetica", face = "bold"),
+   geom_line(data = subset(h1b_ibm, data_job_title %in% con),aes(col=data_job_title),size=1.1)+
+    scale_color_manual(values=c("#FC2967","#465881", "#00909e", "#00B2E4"), name = "") +
+  theme(plot.title = element_text(size = 14, family = "Helvetica"),
               text = element_text(size = 12, family = "Helvetica"),
-              axis.title = element_text(face="bold"),
-              axis.text.x=element_text(size = 11))+
-  coord_cartesian(ylim=c(0,900))
+              #axis.title = element_text(face="bold"),
+              axis.text.x=element_text(size = 11),
+        legend.position = "none")+
+  coord_cartesian(ylim=c(0,1000))
 ```
 
 ## Uber
@@ -753,7 +776,7 @@ DATA %>%
 ```{r}
 ggplot(points) + 
   geom_sf(data = state_maps, color = "white", fill = "lightgrey",alpha=0.5) +
-  geom_point(aes(x = jitter(lon,100), y = jitter(lat,100), color = max_job), size = 0.1, alpha = 0.5) + 
+  geom_point(aes(x = jitter(lon,100), y = jitter(lat,100), color = max_job, size = max), alpha = 0.5) + 
   scale_color_manual(values = c("Business Analyst" = "#00B2E4", 
                                 "Data Analyst" = "#0F2A48",
                                 "Data Engineer" = "#008B8B",
@@ -763,14 +786,34 @@ ggplot(points) +
         legend.background = element_blank(),
         axis.text = element_blank(),
         axis.ticks = element_blank(),
-        legend.position = c(0,0), legend.justification = c(0,0))+
+        #legend.position = "left",
+        legend.position = c(0,0), legend.justification = c(0,0)
+        )+
   labs(x = "", y = "", title = "")
 ```
 
 ```{r}
 ggplot(points_ca) + 
   geom_sf(data = state_maps_ca, color = "white", fill = "lightgrey",alpha=0.5) +
-  geom_point(aes(x = jitter(lon), y = jitter(lat), color = max_job), size = 1, alpha = 0.5) + 
+  geom_point(aes(x = jitter(lon), y = jitter(lat), color = max_job, size = max), alpha = 0.5) + 
+  scale_color_manual(values = c("Business Analyst" = "#00B2E4", 
+                                "Data Analyst" = "#0F2A48",
+                                "Data Engineer" = "#008B8B",
+                                "Data Scientist" = "#FC2967"),
+                     name = "Job Title") +
+  theme(panel.background = element_blank(),
+        legend.background = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank(),
+        #legend.position = c(0,0), legend.justification = c(0,0)
+        )+
+  labs(x = "", y = "", title = "")
+```
+
+```{r}
+ggplot(points_tx) + 
+  geom_sf(data = state_maps_tx, color = "white", fill = "lightgrey",alpha=0.5) +
+  geom_point(aes(x = jitter(lon), y = jitter(lat), color = max_job, size = max), alpha = 0.5) + 
   scale_color_manual(values = c("Business Analyst" = "#00B2E4", 
                                 "Data Analyst" = "#0F2A48",
                                 "Data Engineer" = "#008B8B",
@@ -788,7 +831,7 @@ ggplot(points_ca) +
 ```{r}
 ggplot(points_northeast) + 
   geom_sf(data = state_maps_northeast, color = "white", fill = "lightgrey",alpha=0.5) +
-  geom_point(aes(x = jitter(lon), y = jitter(lat), color = max_job), size = 1, alpha = 0.5) + 
+  geom_point(aes(x = jitter(lon), y = jitter(lat), color = max_job, size = max), alpha = 0.5) + 
   scale_color_manual(values = c("Business Analyst" = "#00B2E4", 
                                 "Data Analyst" = "#0F2A48",
                                 "Data Engineer" = "#008B8B",
@@ -806,7 +849,7 @@ ggplot(points_northeast) +
 ```{r}
 ggplot(points_midwest) + 
   geom_sf(data = state_maps_midwest, color = "white", fill = "lightgrey",alpha=0.5) +
-  geom_point(aes(x = jitter(lon,100), y = jitter(lat,100), color = max_job), size = 1, alpha = 0.5) + 
+  geom_point(aes(x = jitter(lon,100), y = jitter(lat,100), color = max_job, size = max), alpha = 0.5) + 
   scale_color_manual(values = c("Business Analyst" = "#00B2E4", 
                                 "Data Analyst" = "#0F2A48",
                                 "Data Engineer" = "#008B8B",
@@ -824,7 +867,7 @@ ggplot(points_midwest) +
 ```{r}
 ggplot(points_tn) + 
   geom_sf(data = state_maps_tn, color = "white", fill = "lightgrey",alpha=0.5) +
-  geom_point(aes(x = jitter(lon), y = jitter(lat), color = max_job), size = 1, alpha = 0.5) + 
+  geom_point(aes(x = jitter(lon), y = jitter(lat), color = max_job,size = max), alpha = 0.5) + 
   scale_color_manual(values = c("Business Analyst" = "#00B2E4", 
                                 "Data Analyst" = "#0F2A48",
                                 "Data Engineer" = "#008B8B",
