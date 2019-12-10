@@ -786,10 +786,10 @@ ggplot(points) +
         legend.background = element_blank(),
         axis.text = element_blank(),
         axis.ticks = element_blank(),
-        #legend.position = "left",
-        legend.position = c(0,0), legend.justification = c(0,0)
+        legend.box = "horizontal",
+        legend.position = c(0,-0.1), legend.justification = c(0,0)
         )+
-  labs(x = "", y = "", title = "")
+  labs(x = "", y = "", title = "", size="Number")
 ```
 
 ```{r}
@@ -807,7 +807,7 @@ ggplot(points_ca) +
         axis.ticks = element_blank(),
         #legend.position = c(0,0), legend.justification = c(0,0)
         )+
-  labs(x = "", y = "", title = "")
+  labs(x = "", y = "", title = "", size="Number")
 ```
 
 ```{r}
@@ -825,7 +825,7 @@ ggplot(points_tx) +
         axis.ticks = element_blank(),
         #legend.position = c(0,0), legend.justification = c(0,0)
         )+
-  labs(x = "", y = "", title = "")
+  labs(x = "", y = "", title = "", size="Number")
 ```
 
 ```{r}
@@ -843,7 +843,7 @@ ggplot(points_northeast) +
         axis.ticks = element_blank(),
         #legend.position = c(0,0), legend.justification = c(0,0)
         )+
-  labs(x = "", y = "", title = "")
+  labs(x = "", y = "", title = "", size="Number")
 ```
 
 ```{r}
@@ -861,7 +861,7 @@ ggplot(points_midwest) +
         axis.ticks = element_blank(),
         #legend.position = c(0,0), legend.justification = c(0,0)
         )+
-  labs(x = "", y = "", title = "")
+  labs(x = "", y = "", title = "", size="Number")
 ```
 
 ```{r}
@@ -879,5 +879,27 @@ ggplot(points_tn) +
         axis.ticks = element_blank(),
         #legend.position = c(0,0), legend.justification = c(0,0)
         )+
-  labs(x = "", y = "", title = "")
+  labs(x = "", y = "", title = "", size="Number")
+```
+
+```{r}
+
+DATA %>%
+  filter(worksite_state_abb=="TN") %>% 
+  group_by(year, data_relation) %>% 
+  summarise(n = n()) %>% 
+  # pivot_wider(names_from = data_relation, values_from = n) %>% 
+  # mutate(ratio = data_related/(data_related + undefined)) %>% 
+  # ggplot(aes(y = ratio, x = year))+
+  # geom_line()+
+  # coord_cartesian(ylim = c(0, 0.17))
+  
+  ggplot(aes(x = year, y = n, fill = as.factor(data_relation))) +
+  geom_bar(stat = "identity", position = "dodge", alpha = 0.8) +
+  scale_fill_manual(values = c("#00B2E4", "#0F2A48"), name = "", labels = c("Data jobs", "Others")) +
+  labs(y="\n Number", x="\n Year") + 
+  scale_y_continuous(labels = function(x){paste0(x/1000, 'K')}) + 
+  theme_minimal() + 
+  theme(plot.title = element_text(hjust=0.5)) +
+  theme(legend.position = "top")
 ```
