@@ -649,17 +649,14 @@ h1b_ibm <- h1b_df %>%
 
 ```{r}
 h1b_ibm <- h1b_ibm %>% 
-  ungroup(job_title) %>% 
-  mutate(job_title=ifelse(str_detect(job_title,'software engineer'), 'software engineer',
-              ifelse(str_detect(job_title,'hardware engineer'), 'hardware engineer',job_title))) %>% 
-  group_by(job_title,year) %>% 
+  group_by(data_job_title,year) %>% 
   summarise(n=n()) %>% 
   arrange(-n)
 ```
 
 ```{r}
-con=c("consultant","application developer","it specialist","software engineer","project manager")
-ggplot(h1b_ibm, aes(x = year, y = n, group = job_title)) +
+con=c("Business Analyst","Data Engineer","Data Scientist","Data Analyst")
+ggplot(h1b_ibm, aes(x = year, y = n, group = data_job_title)) +
   geom_line(alpha = 0.3, 
             size = 0.2) +
   labs(title = "H1B in IBM",
@@ -668,11 +665,12 @@ ggplot(h1b_ibm, aes(x = year, y = n, group = job_title)) +
        col = 'Job Title') +
   theme_minimal()+
   theme(plot.title = element_text(hjust = 0.5))+
-   geom_line(data = subset(h1b_ibm, job_title %in% con),aes(col=job_title),size=0.7)+
+   geom_line(data = subset(h1b_ibm, data_job_title %in% con),aes(col=data_job_title),size=0.7)+
   theme(plot.title = element_text(size = 14, family = "Helvetica", face = "bold"),
               text = element_text(size = 12, family = "Helvetica"),
               axis.title = element_text(face="bold"),
-              axis.text.x=element_text(size = 11))
+              axis.text.x=element_text(size = 11))+
+  coord_cartesian(ylim=c(0,900))
 ```
 
 ## Uber
