@@ -304,8 +304,8 @@ filtered_job_all %>%
   scale_color_manual(values=c("#FC2967","#465881", "#00909e", "#00B2E4"), name = "") +
   theme_minimal()+
   theme(legend.position = "top",
-        axis.text = element_text(size = 15),
-        axis.title.x = element_text(size = 15)
+        #axis.text = element_text(size = 15),
+        #axis.title.x = element_text(size = 15)
         ) +
   theme(plot.title = element_text(hjust=0.5))
 
@@ -634,7 +634,7 @@ ggplot(h1b_uber, aes(x = year, y = n, group = data_job_title)) +
 
 
 ## Alluvia
-```{r}
+```{r,fig.width=4, fig.height=2.7}
 filtered_job <- DATA %>% 
   filter(year == 2018) %>% 
   filter(data_job_title %in% c("Business Analyst","Data Analyst","Data Engineer", "Data Scientist"))
@@ -655,11 +655,15 @@ flows <- filtered_job %>%
 
 ggplot(flows, aes(y =count, axis1=data_job_title, axis2=worksite_state_abb)) +
   geom_alluvium(aes(fill = data_job_title)) +
-  geom_stratum(width = 1/8, fill = "black", color = "grey", alpha = 0.8) +
+  geom_stratum(width = 1/8, fill = "#0F2A48", color = "grey", alpha = 0.9) +
   geom_label(stat = "stratum", label.strata = TRUE) +
-  theme_classic()+
-  theme(legend.position = "bottom") +
-  scale_fill_manual(values = c("#6ba8a9","#465881", "#999999", "#FC2967"))
+  labs(x="",y="")+
+  theme_minimal()+
+  theme(legend.position = "top") +
+  scale_fill_manual(values =c("#FC2967","#465881", "#00909e", "#00B2E4"), name=NULL)+
+  scale_x_discrete(limits = c("Job title", "State"), expand = c(.05, .05)) +
+  theme(axis.text.x=element_text(size = 12, face = "bold"))+
+  theme(line = element_blank())
 ```
 
 
