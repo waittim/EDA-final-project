@@ -18,14 +18,14 @@ htmltools::includeHTML("rMaps.html")
 
 # SECTION 2: STEM
 # SLIDE 9: Stem and non-stem histogram
-```{r fig.height=3.5, fig.width=3}
+```{r fig.height=2.6, fig.width=2.3}
 DATA %>%
   group_by(year, stem) %>% 
   summarise(n = n()) %>% 
   ggplot(aes(x = year, y = n, fill = as.factor(stem))) +
   geom_bar(stat = "identity", position = position_stack(reverse = FALSE), alpha = 0.8) +
   scale_fill_manual(values = c("#00B2E4", "#0F2A48"), name = "", labels = c("non-STEM", "STEM")) +
-  labs(y="Number", x="\n Year") + 
+  labs(y="\n Number", x="\n Year") + 
   scale_y_continuous(labels = function(x){paste0(x/1000, 'K')}) + 
   theme_minimal() + 
   theme(plot.title = element_text(hjust=0.5)) +
@@ -332,7 +332,10 @@ ggplot(ibm_data, aes(x = year, y = n, group = job_title)) +
   theme(plot.title = element_text(size = 14),
               text = element_text(size = 12),
               axis.title = element_text(face="bold"),
-              axis.text.x=element_text(size = 11))
+              axis.text.x=element_text(size = 11),
+        legend.position = "top",)+
+  scale_color_manual(values=c("#FC2967","#465881", "#00909e", "#00B2E4"), name = "") +
+  ylim(0,150)
 ```
 
 
