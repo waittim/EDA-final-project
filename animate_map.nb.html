@@ -1758,18 +1758,9 @@ library(tidyverse)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmVxdWlyZShkZXZ0b29scylcbmBgYCJ9 -->
-<pre class="r"><code>require(devtools)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiTG9hZGluZyByZXF1aXJlZCBwYWNrYWdlOiBkZXZ0b29sc1xuTG9hZGluZyByZXF1aXJlZCBwYWNrYWdlOiB1c2V0aGlzXG5SZWdpc3RlcmVkIFMzIG1ldGhvZCBvdmVyd3JpdHRlbiBieSAnaHRtbHdpZGdldHMnOlxuICBtZXRob2QgICAgICAgICAgIGZyb20gICAgICAgICBcbiAgcHJpbnQuaHRtbHdpZGdldCB0b29sczpyc3R1ZGlvXG4ifQ== -->
-<pre><code>Loading required package: devtools
-Loading required package: usethis
-Registered S3 method overwritten by 'htmlwidgets':
-  method           from         
-  print.htmlwidget tools:rstudio</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaW5zdGFsbF9naXRodWIoJ3JhbW5hdGh2L3JDaGFydHNAZGV2JylcbmBgYCJ9 -->
-<pre class="r"><code>install_github('ramnathv/rCharts@dev')</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmVxdWlyZShkZXZ0b29scylcbmluc3RhbGxfZ2l0aHViKCdyYW1uYXRodi9yQ2hhcnRzQGRldicpXG5gYGAifQ== -->
+<pre class="r"><code>require(devtools)
+install_github('ramnathv/rCharts@dev')</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiU2tpcHBpbmcgaW5zdGFsbCBvZiAnckNoYXJ0cycgZnJvbSBhIGdpdGh1YiByZW1vdGUsIHRoZSBTSEExICg4ZDNmZTM1YikgaGFzIG5vdCBjaGFuZ2VkIHNpbmNlIGxhc3QgaW5zdGFsbC5cbiAgVXNlIGBmb3JjZSA9IFRSVUVgIHRvIGZvcmNlIGluc3RhbGxhdGlvblxuIn0= -->
 <pre><code>Skipping install of 'rCharts' from a github remote, the SHA1 (8d3fe35b) has not changed since last install.
@@ -1787,6 +1778,8 @@ Registered S3 method overwritten by 'htmlwidgets':
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+<div id="all-job" class="section level1">
+<h1>all job</h1>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuREFUQV9jZXJ0aWZpY2F0ZSA8LSBEQVRBICU+JSBcbiAgZmlsdGVyKGNhc2Vfc3RhdHVzPT1cImNlcnRpZmllZFwiKSAlPiUgXG4gIGdyb3VwX2J5KHdvcmtzaXRlX3N0YXRlX2FiYix5ZWFyKSAlPiUgXG4gIHN1bW1hcmlzZShudW09bigpKVxuYGBgIn0= -->
@@ -1830,9 +1823,54 @@ Registered S3 method overwritten by 'htmlwidgets':
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+<hr />
+<p>#data jobs</p>
 <!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuREFUQV9jZXJ0aWZpY2F0ZV9kYXRhIDwtIERBVEEgJT4lIFxuICBmaWx0ZXIoY2FzZV9zdGF0dXM9PVwiY2VydGlmaWVkXCIpICU+JSBcbiAgZmlsdGVyKGRhdGFfam9iX3RpdGxlICVpbiUgYyhcIkJ1c2luZXNzIEFuYWx5c3RcIixcIkRhdGEgRW5naW5lZXJcIixcIkRhdGEgQW5hbHlzdFwiLCBcIkRhdGEgU2NpZW50aXN0XCIpKSAlPiUgXG4gIGdyb3VwX2J5KHdvcmtzaXRlX3N0YXRlX2FiYix5ZWFyKSAlPiUgXG4gIHN1bW1hcmlzZShudW09bigpKVxuYGBgIn0= -->
+<pre class="r"><code>DATA_certificate_data &lt;- DATA %&gt;% 
+  filter(case_status==&quot;certified&quot;) %&gt;% 
+  filter(data_job_title %in% c(&quot;Business Analyst&quot;,&quot;Data Engineer&quot;,&quot;Data Analyst&quot;, &quot;Data Scientist&quot;)) %&gt;% 
+  group_by(worksite_state_abb,year) %&gt;% 
+  summarise(num=n())</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuREFUQV9uZXdfZGF0YSA8LSAgREFUQV9jZXJ0aWZpY2F0ZV9kYXRhICU+JSBcbiAgdW5ncm91cCh3b3Jrc2l0ZV9zdGF0ZV9hYmIpICU+JSBcbiAgbXV0YXRlKHdvcmtzaXRlX3N0YXRlX2FiYj1zdHJfdG9fdXBwZXIod29ya3NpdGVfc3RhdGVfYWJiKSlcbmBgYCJ9 -->
+<pre class="r"><code>DATA_new_data &lt;-  DATA_certificate_data %&gt;% 
+  ungroup(worksite_state_abb) %&gt;% 
+  mutate(worksite_state_abb=str_to_upper(worksite_state_abb))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZDEgPC1cbiAgaWNob3JvcGxldGgoXG4gICAgbnVtIH4gd29ya3NpdGVfc3RhdGVfYWJiLFxuICAgIGRhdGEgPSBEQVRBX25ld19kYXRhLFxuICAgIGFuaW1hdGUgPSAneWVhcicsXG4gICAgbmN1dHMgPSA5LFxuICAgIGxlZ2VuZCA9IEZBTFNFLFxuICAgIGdlb2dyYXBoeUNvbmZpZyA9IGxpc3QoXG4gICAgICBwb3B1cFRlbXBsYXRlID0gXCIjIWZ1bmN0aW9uKGdlbywgZGF0YSkge3JldHVybiAnPGRpdiBjbGFzcz1cXFwiaG92ZXJpbmZvXFxcIj48c3Ryb25nPicgKyBkYXRhLndvcmtzaXRlX3N0YXRlX2FiYiArICc8YnI+JyArIGRhdGEubnVtICsgJzxcL3N0cm9uZz48XC9kaXY+Jzt9ISNcIlxuICAgIClcbiAgKVxuYGBgIn0= -->
+<pre class="r"><code>d1 &lt;-
+  ichoropleth(
+    num ~ worksite_state_abb,
+    data = DATA_new_data,
+    animate = 'year',
+    ncuts = 9,
+    legend = FALSE,
+    geographyConfig = list(
+      popupTemplate = &quot;#!function(geo, data) {return '&lt;div class=\&quot;hoverinfo\&quot;&gt;&lt;strong&gt;' + data.worksite_state_abb + '&lt;br&gt;' + data.num + '&lt;/strong&gt;&lt;/div&gt;';}!#&quot;
+    )
+  )</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZDEkc2F2ZSgnck1hcHNfZGF0YS5odG1sJywgY2RuID0gVFJVRSlcbmBgYCJ9 -->
+<pre class="r"><code>d1$save('rMaps_data.html', cdn = TRUE)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+</div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKYGBge3J9CmxpYnJhcnkocmVhZHIpCmxpYnJhcnkodGlkeXZlcnNlKQpgYGAKYGBge3J9CnJlcXVpcmUoZGV2dG9vbHMpCmluc3RhbGxfZ2l0aHViKCdyYW1uYXRodi9yQ2hhcnRzQGRldicpCmluc3RhbGxfZ2l0aHViKCdyYW1uYXRodi9yTWFwcycpCmxpYnJhcnkock1hcHMpCmBgYAoKCmBgYHtyfQpEQVRBX2NlcnRpZmljYXRlIDwtIERBVEEgJT4lIAogIGZpbHRlcihjYXNlX3N0YXR1cz09ImNlcnRpZmllZCIpICU+JSAKICBncm91cF9ieSh3b3Jrc2l0ZV9zdGF0ZV9hYmIseWVhcikgJT4lIAogIHN1bW1hcmlzZShudW09bigpKQpgYGAKCmBgYHtyfQpEQVRBX25ldyA8LSAgREFUQV9jZXJ0aWZpY2F0ZSAlPiUgCiAgdW5ncm91cCh3b3Jrc2l0ZV9zdGF0ZV9hYmIpICU+JSAKICBtdXRhdGUod29ya3NpdGVfc3RhdGVfYWJiPXN0cl90b191cHBlcih3b3Jrc2l0ZV9zdGF0ZV9hYmIpKQpgYGAKCmBgYHtyfQpkMSA8LQogIGljaG9yb3BsZXRoKAogICAgbnVtIH4gd29ya3NpdGVfc3RhdGVfYWJiLAogICAgZGF0YSA9IERBVEFfbmV3LAogICAgYW5pbWF0ZSA9ICd5ZWFyJywKICAgIG5jdXRzID0gOSwKICAgIGxlZ2VuZCA9IEZBTFNFLAogICAgZ2VvZ3JhcGh5Q29uZmlnID0gbGlzdCgKICAgICAgcG9wdXBUZW1wbGF0ZSA9ICIjIWZ1bmN0aW9uKGdlbywgZGF0YSkge3JldHVybiAnPGRpdiBjbGFzcz1cImhvdmVyaW5mb1wiPjxzdHJvbmc+JyArIGRhdGEud29ya3NpdGVfc3RhdGVfYWJiICsgJzxicj4nICsgZGF0YS5udW0gKyAnPC9zdHJvbmc+PC9kaXY+Jzt9ISMiCiAgICApCiAgKQpgYGAKCgoKYGBge3J9CmQxJHNhdmUoJ3JNYXBzLmh0bWwnLCBjZG4gPSBUUlVFKQpgYGAKCg==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKYGBge3J9CmxpYnJhcnkocmVhZHIpCmxpYnJhcnkodGlkeXZlcnNlKQpgYGAKYGBge3J9CnJlcXVpcmUoZGV2dG9vbHMpCmluc3RhbGxfZ2l0aHViKCdyYW1uYXRodi9yQ2hhcnRzQGRldicpCmluc3RhbGxfZ2l0aHViKCdyYW1uYXRodi9yTWFwcycpCmxpYnJhcnkock1hcHMpCmBgYAoKIyBhbGwgam9iCmBgYHtyfQpEQVRBX2NlcnRpZmljYXRlIDwtIERBVEEgJT4lIAogIGZpbHRlcihjYXNlX3N0YXR1cz09ImNlcnRpZmllZCIpICU+JSAKICBncm91cF9ieSh3b3Jrc2l0ZV9zdGF0ZV9hYmIseWVhcikgJT4lIAogIHN1bW1hcmlzZShudW09bigpKQpgYGAKCmBgYHtyfQpEQVRBX25ldyA8LSAgREFUQV9jZXJ0aWZpY2F0ZSAlPiUgCiAgdW5ncm91cCh3b3Jrc2l0ZV9zdGF0ZV9hYmIpICU+JSAKICBtdXRhdGUod29ya3NpdGVfc3RhdGVfYWJiPXN0cl90b191cHBlcih3b3Jrc2l0ZV9zdGF0ZV9hYmIpKQpgYGAKCmBgYHtyfQpkMSA8LQogIGljaG9yb3BsZXRoKAogICAgbnVtIH4gd29ya3NpdGVfc3RhdGVfYWJiLAogICAgZGF0YSA9IERBVEFfbmV3LAogICAgYW5pbWF0ZSA9ICd5ZWFyJywKICAgIG5jdXRzID0gOSwKICAgIGxlZ2VuZCA9IEZBTFNFLAogICAgZ2VvZ3JhcGh5Q29uZmlnID0gbGlzdCgKICAgICAgcG9wdXBUZW1wbGF0ZSA9ICIjIWZ1bmN0aW9uKGdlbywgZGF0YSkge3JldHVybiAnPGRpdiBjbGFzcz1cImhvdmVyaW5mb1wiPjxzdHJvbmc+JyArIGRhdGEud29ya3NpdGVfc3RhdGVfYWJiICsgJzxicj4nICsgZGF0YS5udW0gKyAnPC9zdHJvbmc+PC9kaXY+Jzt9ISMiCiAgICApCiAgKQpgYGAKCgoKYGBge3J9CmQxJHNhdmUoJ3JNYXBzLmh0bWwnLCBjZG4gPSBUUlVFKQpgYGAKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KI2RhdGEgam9icwoKYGBge3J9CkRBVEFfY2VydGlmaWNhdGVfZGF0YSA8LSBEQVRBICU+JSAKICBmaWx0ZXIoY2FzZV9zdGF0dXM9PSJjZXJ0aWZpZWQiKSAlPiUgCiAgZmlsdGVyKGRhdGFfam9iX3RpdGxlICVpbiUgYygiQnVzaW5lc3MgQW5hbHlzdCIsIkRhdGEgRW5naW5lZXIiLCJEYXRhIEFuYWx5c3QiLCAiRGF0YSBTY2llbnRpc3QiKSkgJT4lIAogIGdyb3VwX2J5KHdvcmtzaXRlX3N0YXRlX2FiYix5ZWFyKSAlPiUgCiAgc3VtbWFyaXNlKG51bT1uKCkpCmBgYAoKYGBge3J9CkRBVEFfbmV3X2RhdGEgPC0gIERBVEFfY2VydGlmaWNhdGVfZGF0YSAlPiUgCiAgdW5ncm91cCh3b3Jrc2l0ZV9zdGF0ZV9hYmIpICU+JSAKICBtdXRhdGUod29ya3NpdGVfc3RhdGVfYWJiPXN0cl90b191cHBlcih3b3Jrc2l0ZV9zdGF0ZV9hYmIpKQpgYGAKCmBgYHtyfQpkMSA8LQogIGljaG9yb3BsZXRoKAogICAgbnVtIH4gd29ya3NpdGVfc3RhdGVfYWJiLAogICAgZGF0YSA9IERBVEFfbmV3X2RhdGEsCiAgICBhbmltYXRlID0gJ3llYXInLAogICAgbmN1dHMgPSA5LAogICAgbGVnZW5kID0gRkFMU0UsCiAgICBnZW9ncmFwaHlDb25maWcgPSBsaXN0KAogICAgICBwb3B1cFRlbXBsYXRlID0gIiMhZnVuY3Rpb24oZ2VvLCBkYXRhKSB7cmV0dXJuICc8ZGl2IGNsYXNzPVwiaG92ZXJpbmZvXCI+PHN0cm9uZz4nICsgZGF0YS53b3Jrc2l0ZV9zdGF0ZV9hYmIgKyAnPGJyPicgKyBkYXRhLm51bSArICc8L3N0cm9uZz48L2Rpdj4nO30hIyIKICAgICkKICApCmBgYAoKCgpgYGB7cn0KZDEkc2F2ZSgnck1hcHNfZGF0YS5odG1sJywgY2RuID0gVFJVRSkKYGBg</div>
 
 
 
