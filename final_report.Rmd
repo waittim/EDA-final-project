@@ -255,7 +255,6 @@ h1b_df %>%
 
 
 # Data jobs in top companies 
-
 ```{r}
 
 filtered_job_all <- DATA %>% 
@@ -270,6 +269,76 @@ filtered_job_all <- DATA %>%
 ```
 
 #IBM
+
+
+
+```{r}
+top_com <- DATA %>% 
+  filter(data_job_title %in% c("Business Analyst", "Data Analyst", "Data Engineer", "Data Scientist")) %>%
+  group_by(employer_name) %>% 
+  summarise(n = n()) %>% 
+  arrange(-n) %>% 
+  slice(1:20) %>% 
+  ungroup()
+
+top_com <-top_com$employer_name 
+
+ibm_data <- DATA %>% 
+  filter( str_detect(employer_name, "ibm")) %>% 
+  group_by(job_title, year) %>% 
+  summarise(n = n())%>% 
+  mutate(data_job_title = 
+           ifelse(str_detect(job_title,"business")&(str_detect(job_title,"analyst")|str_detect(job_title, "intelligence")), 
+                  "Business Analyst", 
+                  NA)) %>% 
+  mutate(data_job_title = 
+           ifelse(str_detect(job_title, "data")&(str_detect(job_title,"engineer")|str_detect(job_title, "warehouse")),
+                  "Data Engineer", 
+                  data_job_title)) %>% 
+  mutate(data_job_title = 
+           ifelse(str_detect(job_title, "data")&str_detect(job_title, "scientist"), 
+                  "Data Scientist", 
+                  data_job_title)) %>% 
+  mutate(data_job_title = 
+           ifelse(str_detect(job_title, "data")&str_detect(job_title, "analyst|analytics"), 
+                  "Data Analyst", 
+                  data_job_title)) %>% 
+  mutate(data_job_title = 
+           ifelse(str_detect(job_title, "machine|deep")&str_detect(job_title, "learning"), 
+                  "Data Scientist", 
+                  data_job_title)) %>% 
+  mutate(data_job_title = 
+           ifelse(str_detect(job_title, "product")&str_detect(job_title, "analyst|engineer|data"), 
+                  "Data Analyst", 
+                  data_job_title)) %>% 
+  mutate(data_job_title = 
+           ifelse(str_detect(job_title, "product")&str_detect(job_title, "manager"), 
+                  "Product Manager", 
+                  data_job_title))
+
+con=c("infosys limited", "deloitte consulting llp","amazon","facebook", "ibm")
+myColor <- c("#465881", "#FFB6C1", "#00909e", "#00B2E4", "#FC2967")
+
+# c(amazon, "deloitte", "#facebook", "ibm", "info")
+
+ggplot(ibm_data, aes(x = year, y = n, group = job_title)) +
+  geom_line(alpha = 0.3, 
+            size = 0.2) +
+  labs(x = "Year",
+       y = "Number",
+       col = "") +
+  theme_classic()+
+  geom_line(data = subset(ibm_data, data_job_title %in% c("Business Analyst", "Data Analyst", "Data Engineer", "Data Scientist")),aes(col=data_job_title),size=1.2)+
+  theme(plot.title = element_text(size = 14),
+              text = element_text(size = 12),
+              axis.title = element_text(face="bold"),
+              axis.text.x=element_text(size = 11))
+```
+
+
+
+
+
 ```{r}
 filtered_job_all %>% 
   filter(employer_name == 'IBM') %>% 
