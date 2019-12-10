@@ -210,7 +210,7 @@ ggplot(spa_data, aes(x = year, y = n, group = employer_name)) +
               axis.text.x=element_text(size = 11)) +
   scale_color_manual(values = myColor, breaks = c("infosys limited", "deloitte consulting llp","amazon","facebook", "ibm"), labels = c("Infosys Limited", "Deloitte Consulting","Amazon","Facebook", "IBM"))  +
   theme_minimal() +
-  theme(legend.position = "top")
+  theme(legend.position = "right")
 
 ```
 
@@ -223,35 +223,26 @@ soc_top_tech <- c("Apple",
                   "Amazon",
                   "Facebook",
                   "Google",
-                  "IBM",
-                  "Cisco")
+                  "IBM")
 
 
-h1b_df %>% 
-  filter(case_status ==  "certified") %>%
-  mutate(job_title = ifelse(str_detect(job_title, "business")& (str_detect(job_title, "analyst")|str_detect(job_title, "intelligence")) , "Business Analyst", job_title)) %>% 
-  mutate(job_title = ifelse(str_detect(job_title, "data")& (str_detect(job_title, "engineer")|str_detect(job_title, "warehouse")), "Data Engineer", job_title)) %>% 
-  mutate(job_title = ifelse(str_detect(job_title, "data") & str_detect(job_title, "scientist"), "Data Scientist", job_title)) %>% 
-  mutate(job_title = ifelse(str_detect(job_title, "data") & str_detect(job_title, "analyst"), "Data Analyst", job_title)) %>% 
-  mutate(job_title = ifelse(str_detect(job_title, "machine|deep") & str_detect(job_title, "learning"), "Deep Learning & Machine Learning", job_title)) %>% 
-  mutate(job_title = ifelse(str_detect(job_title, "product") & str_detect(job_title, "analyst|engineer|data"), "Data Product Analyst", job_title)) %>% 
-  filter(job_title %in% c("Business Analyst","Data Engineer","Deep Learning & Machine Learning","Data Analyst", "Data Scientist", "Data Product Analyst")) %>%
+DATA %>% 
+  filter(data_job_title %in% c("Business Analyst","Data Engineer","Data Analyst", "Data Scientist")) %>% 
   mutate(employer_name = ifelse(str_detect(employer_name,'apple'), 'Apple',
                           ifelse(str_detect(employer_name,'microsoft'), 'Microsoft',
                           ifelse(str_detect(employer_name,'amazon'),'Amazon',
-                          ifelse(str_detect(employer_name,'cisco sys'),'Cisco',
                           ifelse(str_detect(employer_name,'facebook'),'Facebook',
                           ifelse(str_detect(employer_name,'google'),'Google',
-                          ifelse(str_detect(employer_name, 'ibm'),'IBM','no')))))))) %>% 
+                          ifelse(str_detect(employer_name, 'ibm'),'IBM','no'))))))) %>% 
   group_by(employer_name, year) %>% 
   summarise(tot = n()) %>% 
   filter(!employer_name %in% c("no", NA)) %>% 
   ungroup()%>% 
   ggplot()+
-  geom_line(aes(x = year, y = tot, color = employer_name), size = 1.05)+
-  labs( y = "Number of Applications", x = "Year", color = "Employer") +
-  theme_minimal() 
-
+  scale_color_brewer(palette = "RdBu") +
+  geom_line(aes(x = year, y = tot, color = employer_name), size = 1.5)+
+  labs( y = "Number of Applications", x = "Year", color = "Employer")+
+  theme_minimal()
 
 ```
 
