@@ -103,7 +103,8 @@ dt %>%
   theme_minimal()+
   theme(
     legend.position = "none"
-  ) 
+  ) +
+  theme(panel.grid.major.y = element_blank())
 
 
 # original
@@ -117,7 +118,8 @@ dt %>%
   arrange(n) %>% 
   ggbarplot("job_title", "n", fill = "#00B2E4", alpha = 0.8, orientation = "horiz", color = "white") +
   labs(y = "Number of Aplications", x = "Job Titles") +
-  theme_minimal()
+  theme_minimal()+
+  theme(panel.grid.major.y = element_blank())
 ```
 
 # Slide 15
