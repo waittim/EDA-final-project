@@ -40,7 +40,7 @@ DATA %>%
   ggplot(aes(x = as.factor(year), y = prevailing_wage)) +
   geom_boxplot(aes(fill=as.factor(stem)), outlier.shape = NA, alpha=0.9, color = "white") +
   theme_minimal() +
- labs(x = "\n Prevailing wage ($)", y = "Density \n") +
+ labs(x = "\n Year", y = "Prevailing wage \n") +
   scale_y_continuous(labels = function(x){paste0(x / 1000, "K")}) +
   scale_color_manual(values = c("#00B2E4", "#0F2A48"), name = "", labels = c("non-STEM", "STEM")) +
   scale_fill_manual(values = c("#00B2E4", "#0F2A48"), name = "", labels = c("non-STEM", "STEM")) +
