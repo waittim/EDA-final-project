@@ -32,11 +32,9 @@ original_file <- read_csv("data/transformed.csv") %>%
 # Or just do not commit the data file
 stem <- read_csv("data/stem_list.csv")
 ```
-#Removing Coli Extraneous  Columns
 
 ```{r}
 DATA <- original_file %>%
-  select(-c('coli_x', 'coli_y')) %>%
   mutate(case_status = str_to_lower(case_status)) %>%
   mutate(employer_name = str_to_lower(employer_name)) %>%
   mutate(soc_name = str_to_lower(soc_name)) %>%
