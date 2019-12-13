@@ -10,7 +10,7 @@ h1b_df <- DATA
 
 
 
-```{r animation map for all jobs}
+```{r interactive map for all jobs}
 DATA_certificate <- DATA %>%
   filter(case_status == "certified") %>%
   group_by(worksite_state_abb, year) %>%
@@ -33,7 +33,7 @@ d1 <-
 d1$save('rMaps.html', cdn = TRUE)
 ```
 
-```{r show animation map}
+```{r show interactive map}
 htmltools::includeHTML("rMaps.html")
 ```
 
@@ -787,7 +787,7 @@ filtered_job_all %>%
 
 # Data job per state in 2018
 
-```{r animation map for data jobs}
+```{r interactive map for data jobs}
 DATA_certificate_data <- DATA %>%
   filter(case_status == "certified") %>%
   filter(
@@ -818,7 +818,7 @@ d1 <-
 d1$save('rMaps_data.html', cdn = TRUE)
 ```
 
-```{r show animation map for data jobs}
+```{r show interactive map for data jobs}
 htmltools::includeHTML("rMaps_data.html")
 ```
 
