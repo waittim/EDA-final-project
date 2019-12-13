@@ -1063,41 +1063,6 @@ ggplot(points_midwest) +
        size = "Number")
 ```
 
-```{r data city TN map}
-ggplot(points_tn) +
-  geom_sf(
-    data = state_maps_tn,
-    color = "white",
-    fill = "lightgrey",
-    alpha = 0.5
-  ) +
-  geom_point(aes(
-    x = jitter(lon),
-    y = jitter(lat),
-    color = max_job,
-    size = max
-  ), alpha = 0.5) +
-  scale_color_manual(
-    values = c(
-      "Business Analyst" = "#00B2E4",
-      "Data Analyst" = "#0F2A48",
-      "Data Engineer" = "#008B8B",
-      "Data Scientist" = "#FC2967"
-    ),
-    name = "Job Title"
-  ) +
-  theme(
-    panel.background = element_blank(),
-    legend.background = element_blank(),
-    axis.text = element_blank(),
-    axis.ticks = element_blank(),
-    #legend.position = c(0,0), legend.justification = c(0,0)
-  ) +
-  labs(x = "",
-       y = "",
-       title = "",
-       size = "Number")
-```
 
 ```{r data city FL&GA map}
 ggplot(points_fl) +
@@ -1170,6 +1135,43 @@ ggplot(points_wa) +
        title = "",
        size = "Number")
 ```
+
+```{r data city TN map}
+ggplot(points_tn) +
+  geom_sf(
+    data = state_maps_tn,
+    color = "white",
+    fill = "lightgrey",
+    alpha = 0.5
+  ) +
+  geom_point(aes(
+    x = jitter(lon),
+    y = jitter(lat),
+    color = max_job,
+    size = max
+  ), alpha = 0.5) +
+  scale_color_manual(
+    values = c(
+      "Business Analyst" = "#00B2E4",
+      "Data Analyst" = "#0F2A48",
+      "Data Engineer" = "#008B8B",
+      "Data Scientist" = "#FC2967"
+    ),
+    name = "Job Title"
+  ) +
+  theme(
+    panel.background = element_blank(),
+    legend.background = element_blank(),
+    axis.text = element_blank(),
+    axis.ticks = element_blank(),
+    #legend.position = c(0,0), legend.justification = c(0,0)
+  ) +
+  labs(x = "",
+       y = "",
+       title = "",
+       size = "Number")
+```
+
 
 ```{r data job  and others number per year in TN }
 DATA %>%
