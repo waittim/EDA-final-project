@@ -136,18 +136,7 @@ DATA <- DATA %>%
   mutate(data_relation = case_when(
     grepl("business system analyst", job_title) ~ "data_related",
     TRUE ~ data_relation
-  )) %>%
-  mutate(
-    sde_relation = case_when(
-      grepl("software", job_title) ~ "sde_related",
-      grepl("program", job_title) ~ "sde_related",
-      grepl("comput", job_title) ~ "sde_related",
-      grepl("system", job_title) ~ "sde_related",
-      grepl("tech", job_title) ~ "sde_related",
-      grepl("develop", job_title) ~ "sde_related",
-      TRUE ~ "undefined"
-    )
-  ) 
+  ))  
 ```
 
 ```{r}
