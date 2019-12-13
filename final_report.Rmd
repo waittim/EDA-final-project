@@ -4,27 +4,23 @@ output: html_notebook
 ---
 
 
-```{r}
+```{r import data}
 h1b_df <- DATA
 ```
 
 
 # SECTION 1: BACKGROUND
 # SLIDE 7: MAP
-```{r}
+```{r animation map for all jobs}
 DATA_certificate <- DATA %>%
   filter(case_status == "certified") %>%
   group_by(worksite_state_abb, year) %>%
   summarise(num = n())
-```
 
-```{r}
 DATA_new <-  DATA_certificate %>%
   ungroup(worksite_state_abb) %>%
   mutate(worksite_state_abb = str_to_upper(worksite_state_abb))
-```
 
-```{r}
 d1 <-
   ichoropleth(
     num ~ worksite_state_abb,
@@ -34,19 +30,17 @@ d1 <-
     legend = FALSE,
     geographyConfig = list(popupTemplate = "#!function(geo, data) {return '<div class=\"hoverinfo\"><strong>' + data.worksite_state_abb + '<br>' + data.num + '</strong></div>';}!#")
   )
-```
 
-```{r}
 d1$save('rMaps.html', cdn = TRUE)
 ```
 
-```{r}
+```{r show animation map}
 htmltools::includeHTML("rMaps.html")
 ```
 
 # SECTION 2: STEM
 # SLIDE 9: Stem and non-stem histogram
-```{r fig.height=2.6, fig.width=2.3}
+```{r stem-nonstem bar chart, fig.height=2.6, fig.width=2.3}
 DATA %>%
   group_by(year, stem) %>%
   summarise(n = n()) %>%
@@ -72,7 +66,7 @@ DATA %>%
 
 
 # SLIDE 10: STEM and non-STEM boxplot: "Prevailing wage boxplot throughout years"
-```{r}
+```{r Prevailing wage of stem-nonstem boxplot}
 DATA %>%
   filter(prevailing_wage >= 0 & prevailing_wage <= 600000) %>%
   ggplot(aes(x = as.factor(year), y = prevailing_wage)) +
@@ -104,7 +98,7 @@ DATA %>%
 
 
 # SLIDE 11: Stem and non-stem prevailing wage distribution in 2018
-```{r}
+```{r prevailing wage density in 2018}
 DATA %>%
   filter(year == 2018) %>%
   filter(prevailing_wage >= 0 & prevailing_wage <= 400000) %>%
@@ -146,7 +140,7 @@ DATA %>%
 
 
 # SLIDE 12 AND 13: bar plot: stem jobs
-```{r}
+```{r stem jobs bars}
 dt <- DATA %>%
   mutate(job_title = ifelse(
     str_detect(job_title, "business") &
@@ -246,7 +240,7 @@ dt %>%
 ```
 
 # Slide 15
-```{r,fig.width=4, fig.height=4}
+```{r data jobs number per year,fig.width=4, fig.height=4}
 dt <- DATA %>%
   filter(
     data_job_title %in% c(
@@ -285,7 +279,7 @@ p1
 
 # slide 16
 
-```{r}
+```{r data job salary boxplot}
 filtered_job <- DATA %>%
   filter(
     data_job_title %in% c(
@@ -334,7 +328,7 @@ filtered_job %>%
 
 
 # Slide 17
-```{r}
+```{r data jobs in top companies per year}
 top_com <- DATA %>%
   filter(
     data_job_title %in% c(
@@ -418,7 +412,7 @@ ggplot(spa_data, aes(x = year, y = n, group = employer_name)) +
 
 # Slide 17
 # Top Tech Companies and Their Trends
-```{r}
+```{r data job num in top tech per year}
 soc_top_tech <- c("Apple",
                   "Microsoft",
                   "Amazon",
@@ -471,7 +465,7 @@ DATA %>%
 
 
 # Data jobs in top companies 
-```{r}
+```{r clean names for tech companies}
 filtered_job_all <- DATA %>%
   filter(
     data_job_title %in% c(
@@ -508,20 +502,17 @@ filtered_job_all <- DATA %>%
 
 ## IBM 
 
-```{r}
+```{r prep for IBM}
 h1b_ibm <- h1b_df %>%
   filter(str_detect(employer_name, 'ibm'))
 
-```
-
-```{r}
 h1b_ibm <- h1b_ibm %>%
   group_by(data_job_title, year) %>%
   summarise(n = n()) %>%
   arrange(-n)
 ```
 
-```{r fig.height=3, fig.width=2.5}
+```{r all jobs in IBM per year, fig.height=3, fig.width=2.5}
 con = c("Business Analyst",
         "Data Engineer",
         "Data Scientist",
@@ -554,7 +545,7 @@ ggplot(h1b_ibm, aes(x = year, y = n, group = data_job_title)) +
 
 
 
-```{r}
+```{r data jobs in IBM per year}
 filtered_job_all %>%
   filter(employer_name == 'IBM') %>%
   group_by(data_job_title, year) %>%
@@ -583,7 +574,7 @@ filtered_job_all %>%
 ```
 
 # Infosys
-```{r}
+```{r data jobs in Infosys per year}
 
 filtered_job_all %>%
   filter(str_detect(employer_name, 'infosys')) %>%
@@ -608,7 +599,7 @@ filtered_job_all %>%
 ```
 
 # Accenture
-```{r}
+```{r data jobs in Accenture per year}
 filtered_job_all %>%
   filter(str_detect(employer_name, 'accenture')) %>%
   group_by(data_job_title, year) %>%
@@ -636,7 +627,7 @@ filtered_job_all %>%
 ```
 
 # Microsoft
-```{r}
+```{r data jobs in Microsoft per year}
 filtered_job_all %>%
   filter(employer_name == 'Microsoft') %>%
   group_by(data_job_title, year) %>%
@@ -663,7 +654,7 @@ filtered_job_all %>%
 ```
 
 # Amazon
-```{r}
+```{r data jobs in Amazon per year}
 filtered_job_all %>%
   filter(employer_name == 'Amazon') %>%
   group_by(data_job_title, year) %>%
@@ -690,7 +681,7 @@ filtered_job_all %>%
 ```
 
 # Deloitte
-```{r}
+```{r data jobs in Deloitte per year}
 filtered_job_all %>%
   filter(str_detect(employer_name, "deloitte")) %>%
   group_by(data_job_title, year) %>%
@@ -717,7 +708,7 @@ filtered_job_all %>%
 ```
 
 # Facebook
-```{r}
+```{r data jobs in Facebook per year}
 filtered_job_all %>%
   filter(str_detect(employer_name, "Facebook")) %>%
   group_by(data_job_title, year) %>%
@@ -744,7 +735,7 @@ filtered_job_all %>%
 ```
 
 # Apple
-```{r}
+```{r data jobs in Apple per year}
 filtered_job_all %>%
   filter(str_detect(employer_name, "Apple")) %>%
   group_by(data_job_title, year) %>%
@@ -771,7 +762,7 @@ filtered_job_all %>%
 ```
 
 # Google
-```{r}
+```{r data jobs in Google per year}
 filtered_job_all %>%
   filter(str_detect(employer_name, "Google")) %>%
   group_by(data_job_title, year) %>%
@@ -803,7 +794,7 @@ filtered_job_all %>%
 
 # Data job per state in 2018
 
-```{r}
+```{r animation map for data jobs}
 DATA_certificate_data <- DATA %>%
   filter(case_status == "certified") %>%
   filter(
@@ -816,15 +807,11 @@ DATA_certificate_data <- DATA %>%
   ) %>%
   group_by(worksite_state_abb, year) %>%
   summarise(num = n())
-```
 
-```{r}
 DATA_new_data <-  DATA_certificate_data %>%
   ungroup(worksite_state_abb) %>%
   mutate(worksite_state_abb = str_to_upper(worksite_state_abb))
-```
 
-```{r}
 d1 <-
   ichoropleth(
     num ~ worksite_state_abb,
@@ -834,19 +821,17 @@ d1 <-
     legend = FALSE,
     geographyConfig = list(popupTemplate = "#!function(geo, data) {return '<div class=\"hoverinfo\"><strong>' + data.worksite_state_abb + '<br>' + data.num + '</strong></div>';}!#")
   )
-```
 
-```{r}
 d1$save('rMaps_data.html', cdn = TRUE)
 ```
 
-```{r}
+```{r show animation map for data jobs}
 htmltools::includeHTML("rMaps.html")
 ```
 
 
 ## Alluvia
-```{r,fig.width=4, fig.height=2.7}
+```{r data jobs alluvia for top states,fig.width=4, fig.height=2.7}
 filtered_job <- DATA %>%
   filter(year == 2018) %>%
   filter(
@@ -894,27 +879,9 @@ ggplot(flows,
 ```
 
 
-## bar plot:stem program in different job titles
-```{r}
-DATA %>% 
-  mutate(job_title = ifelse(str_detect(job_title, "business")& (str_detect(job_title, "analyst")|str_detect(job_title, "intelligence")) , "business analyst", job_title)) %>% 
-  mutate(job_title = ifelse(str_detect(job_title, "data")& (str_detect(job_title, "engineer")|str_detect(job_title, "warehouse")), "data engineer", job_title)) %>% 
-  mutate(job_title = ifelse(str_detect(job_title, "data")& str_detect(job_title, "scientist"), "data scientist", job_title)) %>% 
-  mutate(job_title = ifelse(str_detect(job_title, "data")& str_detect(job_title, "analyst|analytics"), "data analyst", job_title)) %>% 
-  mutate(job_title = ifelse(str_detect(job_title, "machine|deep")& str_detect(job_title, "learning"), "deep learning & machine learning", job_title)) %>% 
-  mutate(job_title = ifelse(str_detect(job_title, "product") & str_detect(job_title, "analyst|engineer|data"), "data product analyst", job_title)) %>% 
-  filter(year == 2018) %>% 
-  filter(stem == 1) %>% 
-  group_by(job_title) %>% 
-  summarise(n = n()) %>%
-  arrange(-n) %>% 
-  slice(1:20) %>% 
-  ggbarplot("job_title", "n", fill = "#00B2E4", color = "white", alpha = 0.8, sort.val = "asc", orientation = "horiz") %>% 
-  labs(title = "stem program")
-```
 
 # MAP - data job with the highest number in each city 
-```{r}
+```{r data city US map}
 ggplot(points) +
   geom_sf(
     data = state_maps,
@@ -952,7 +919,7 @@ ggplot(points) +
        size = "Number")
 ```
 
-```{r}
+```{r data city CA map}
 ggplot(points_ca) +
   geom_sf(
     data = state_maps_ca,
@@ -988,7 +955,7 @@ ggplot(points_ca) +
        size = "Number")
 ```
 
-```{r}
+```{r data city TX map}
 ggplot(points_tx) +
   geom_sf(
     data = state_maps_tx,
@@ -1024,7 +991,7 @@ ggplot(points_tx) +
        size = "Number")
 ```
 
-```{r}
+```{r data city Northeastern map}
 ggplot(points_northeast) +
   geom_sf(
     data = state_maps_northeast,
@@ -1060,7 +1027,7 @@ ggplot(points_northeast) +
        size = "Number")
 ```
 
-```{r}
+```{r data city Midwestern map}
 ggplot(points_midwest) +
   geom_sf(
     data = state_maps_midwest,
@@ -1096,7 +1063,7 @@ ggplot(points_midwest) +
        size = "Number")
 ```
 
-```{r}
+```{r data city TN map}
 ggplot(points_tn) +
   geom_sf(
     data = state_maps_tn,
@@ -1132,7 +1099,7 @@ ggplot(points_tn) +
        size = "Number")
 ```
 
-```{r}
+```{r data city FL&GA map}
 ggplot(points_fl) +
   geom_sf(
     data = state_maps_fl,
@@ -1168,7 +1135,7 @@ ggplot(points_fl) +
        size = "Number")
 ```
 
-```{r}
+```{r data city WA map}
 ggplot(points_wa) +
   geom_sf(
     data = state_maps_wa,
@@ -1204,7 +1171,7 @@ ggplot(points_wa) +
        size = "Number")
 ```
 
-```{r}
+```{r data job  and others number per year in TN }
 DATA %>%
   filter(worksite_state_abb == "TN") %>%
   group_by(year, data_relation) %>%
