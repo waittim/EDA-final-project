@@ -9,8 +9,7 @@ h1b_df <- DATA
 ```
 
 
-# SECTION 1: BACKGROUND
-# SLIDE 7: MAP
+
 ```{r animation map for all jobs}
 DATA_certificate <- DATA %>%
   filter(case_status == "certified") %>%
@@ -38,8 +37,7 @@ d1$save('rMaps.html', cdn = TRUE)
 htmltools::includeHTML("rMaps.html")
 ```
 
-# SECTION 2: STEM
-# SLIDE 9: Stem and non-stem histogram
+
 ```{r stem-nonstem bar chart, fig.height=2.6, fig.width=2.3}
 DATA %>%
   group_by(year, stem) %>%
@@ -65,7 +63,6 @@ DATA %>%
 ```
 
 
-# SLIDE 10: STEM and non-STEM boxplot: "Prevailing wage boxplot throughout years"
 ```{r Prevailing wage of stem-nonstem boxplot}
 DATA %>%
   filter(prevailing_wage >= 0 & prevailing_wage <= 600000) %>%
@@ -97,7 +94,6 @@ DATA %>%
 ```
 
 
-# SLIDE 11: Stem and non-stem prevailing wage distribution in 2018
 ```{r prevailing wage density in 2018}
 DATA %>%
   filter(year == 2018) %>%
@@ -139,7 +135,6 @@ DATA %>%
 ```
 
 
-# SLIDE 12 AND 13: bar plot: stem jobs
 ```{r stem jobs bars}
 dt <- DATA %>%
   mutate(job_title = ifelse(
@@ -239,7 +234,7 @@ dt %>%
   theme(panel.grid.major.y = element_blank())
 ```
 
-# Slide 15
+
 ```{r data jobs number per year,fig.width=4, fig.height=4}
 dt <- DATA %>%
   filter(
@@ -277,7 +272,6 @@ p1 <- dt %>%
 p1
 ```
 
-# slide 16
 
 ```{r data job salary boxplot}
 filtered_job <- DATA %>%
@@ -327,7 +321,6 @@ filtered_job %>%
 ```
 
 
-# Slide 17
 ```{r data jobs in top companies per year}
 top_com <- DATA %>%
   filter(
@@ -410,8 +403,8 @@ ggplot(spa_data, aes(x = year, y = n, group = employer_name)) +
 ```
 
 
-# Slide 17
-# Top Tech Companies and Their Trends
+
+
 ```{r data job num in top tech per year}
 soc_top_tech <- c("Apple",
                   "Microsoft",
@@ -464,7 +457,7 @@ DATA %>%
 ```
 
 
-# Data jobs in top companies 
+
 ```{r clean names for tech companies}
 filtered_job_all <- DATA %>%
   filter(
