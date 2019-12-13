@@ -395,7 +395,7 @@ state_maps_tn <- state_maps %>%
 # focus on TX
 ```{r}
 
-tx_states <- c("TX", "OK", "AR", "LA")
+tx_states <- c("TX")
 
 df_18_tx <- filtered_job %>% 
   filter(worksite_state_abb %in% tx_states) %>% 
@@ -422,7 +422,7 @@ df_18_tx <- df_18_tx %>%
 points_tx <- df_18_tx %>% 
   ungroup() %>% 
   select(lon, lat, max_job, max) %>% 
-  slice(1:119)
+  slice(1:87)
 
 #points_tx
 
