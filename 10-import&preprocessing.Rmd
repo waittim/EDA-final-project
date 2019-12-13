@@ -422,7 +422,7 @@ df_18_tx <- df_18_tx %>%
 points_tx <- df_18_tx %>% 
   ungroup() %>% 
   select(lon, lat, max_job, max) %>% 
-  slice(1:21)
+  slice(1:119)
 
 #points_tx
 
@@ -459,7 +459,7 @@ df_18_wa <- df_18_wa %>%
 points_wa <- df_18_wa %>% 
   ungroup() %>% 
   select(lon, lat, max_job, max) %>% 
-  slice(1:21)
+  slice(1:32)
 
 
 
@@ -499,9 +499,9 @@ df_18_fl <- df_18_fl %>%
 points_fl <- df_18_fl %>% 
   ungroup() %>% 
   select(lon, lat, max_job, max) %>% 
-  slice(1:21)
+  slice(1:118)
 
-#points_tx
+
 
 
 state_maps_fl <- state_maps %>% 
