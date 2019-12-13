@@ -819,7 +819,7 @@ d1$save('rMaps_data.html', cdn = TRUE)
 ```
 
 ```{r show animation map for data jobs}
-htmltools::includeHTML("rMaps.html")
+htmltools::includeHTML("rMaps_data.html")
 ```
 
 
