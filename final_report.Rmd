@@ -203,8 +203,12 @@ dt %>%
   summarise(n = n()) %>%
   arrange(-n) %>%
   slice(1:20) %>%
-  mutate(cat = ifelse(str_detect(job_title, "analyst|data"), "data", "non-data")) %>%
-  arrange(n) %>%
+  mutate(cat = case_when(
+    str_detect(job_title, "systems|programmer") ~ "non-data",
+    str_detect(job_title, "analyst|data") ~ "data",
+    TRUE ~ "non-data"
+  )) %>%
+  arrange(n) %>% 
   ggbarplot(
     "job_title",
     "n",
@@ -227,7 +231,6 @@ dt %>%
   summarise(n = n()) %>%
   arrange(-n) %>%
   slice(1:20) %>%
-  mutate(cat = ifelse(str_detect(job_title, "analyst|data"), "data", "non-data")) %>%
   arrange(n) %>%
   ggbarplot(
     "job_title",
@@ -307,7 +310,7 @@ filtered_job$data_job_title <-
   )
 
 
-filtered_job %>% group_by(data_job_title) %>% summarise(mean = mean(prevailing_wage))
+#filtered_job %>% group_by(data_job_title) %>% summarise(mean = mean(prevailing_wage))
 filtered_job %>%
   ggplot(aes(y = prevailing_wage, x = data_job_title)) +
   geom_boxplot(
@@ -502,128 +505,52 @@ filtered_job_all <- DATA %>%
   
 ```
 
-#IBM
 
-
+## IBM 
 
 ```{r}
-top_com <- DATA %>%
-  filter(
-    data_job_title %in% c(
-      "Business Analyst",
-      "Data Analyst",
-      "Data Engineer",
-      "Data Scientist"
-    )
-  ) %>%
-  group_by(employer_name) %>%
+h1b_ibm <- h1b_df %>%
+  filter(str_detect(employer_name, 'ibm'))
+
+```
+
+```{r}
+h1b_ibm <- h1b_ibm %>%
+  group_by(data_job_title, year) %>%
   summarise(n = n()) %>%
-  arrange(-n) %>%
-  slice(1:20) %>%
-  ungroup()
+  arrange(-n)
+```
 
-top_com <- top_com$employer_name
-
-ibm_data <- DATA %>%
-  filter(str_detect(employer_name, "ibm")) %>%
-  group_by(job_title, year) %>%
-  summarise(n = n()) %>%
-  mutate(data_job_title =
-           ifelse(
-             str_detect(job_title, "business") &
-               (
-                 str_detect(job_title, "analyst") |
-                   str_detect(job_title, "intelligence")
-               ),
-             "Business Analyst",
-             NA
-           )) %>%
-  mutate(data_job_title =
-           ifelse(
-             str_detect(job_title, "data") &
-               (
-                 str_detect(job_title, "engineer") |
-                   str_detect(job_title, "warehouse")
-               ),
-             "Data Engineer",
-             data_job_title
-           )) %>%
-  mutate(data_job_title =
-           ifelse(
-             str_detect(job_title, "data") & str_detect(job_title, "scientist"),
-             "Data Scientist",
-             data_job_title
-           )) %>%
-  mutate(data_job_title =
-           ifelse(
-             str_detect(job_title, "data") &
-               str_detect(job_title, "analyst|analytics"),
-             "Data Analyst",
-             data_job_title
-           )) %>%
-  mutate(data_job_title =
-           ifelse(
-             str_detect(job_title, "machine|deep") &
-               str_detect(job_title, "learning"),
-             "Data Scientist",
-             data_job_title
-           )) %>%
-  mutate(data_job_title =
-           ifelse(
-             str_detect(job_title, "product") &
-               str_detect(job_title, "analyst|engineer|data"),
-             "Data Analyst",
-             data_job_title
-           )) %>%
-  mutate(data_job_title =
-           ifelse(
-             str_detect(job_title, "product") & str_detect(job_title, "manager"),
-             "Product Manager",
-             data_job_title
-           ))
-
-con = c("infosys limited",
-        "deloitte consulting llp",
-        "amazon",
-        "facebook",
-        "ibm")
-myColor <- c("#465881", "#FFB6C1", "#00909e", "#00B2E4", "#FC2967")
-
-# c(amazon, "deloitte", "#facebook", "ibm", "info")
-
-ggplot(ibm_data, aes(x = year, y = n, group = job_title)) +
+```{r fig.height=3, fig.width=2.5}
+con = c("Business Analyst",
+        "Data Engineer",
+        "Data Scientist",
+        "Data Analyst")
+ggplot(h1b_ibm, aes(x = year, y = n, group = data_job_title)) +
   geom_line(alpha = 0.3,
             size = 0.2) +
-  labs(x = "Year",
+  labs(title = "",
+       x = "Year",
        y = "Number",
-       col = "") +
-  theme_classic() +
+       col = 'Job Title') +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5)) +
   geom_line(
-    data = subset(
-      ibm_data,
-      data_job_title %in% c(
-        "Business Analyst",
-        "Data Analyst",
-        "Data Engineer",
-        "Data Scientist"
-      )
-    ),
+    data = subset(h1b_ibm, data_job_title %in% con),
     aes(col = data_job_title),
-    size = 1.2
-  ) +
-  theme(
-    plot.title = element_text(size = 14),
-    text = element_text(size = 12),
-    axis.title = element_text(face = "bold"),
-    axis.text.x = element_text(size = 11),
-    legend.position = "top",
+    size = 1.1
   ) +
   scale_color_manual(values = c("#FC2967", "#465881", "#00909e", "#00B2E4"),
                      name = "") +
-  ylim(0, 150)
+  theme(
+    plot.title = element_text(size = 14, family = "Helvetica"),
+    text = element_text(size = 12, family = "Helvetica"),
+    #axis.title = element_text(face="bold"),
+    axis.text.x = element_text(size = 11),
+    legend.position = "none"
+  ) +
+  coord_cartesian(ylim = c(0, 1000))
 ```
-
-
 
 
 
@@ -870,334 +797,8 @@ filtered_job_all %>%
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
-## Facebook
-
-```{r}
-h1b_facebook <- h1b_df %>%
-  filter(employer_name == 'facebook') %>%
-  group_by(data_job_title, year) %>%
-  summarise(n = n()) %>%
-  arrange(-n)
-  
-```
 
 
-
-```{r}
-con = c("Data Scientist",
-        "software engineer",
-        "Data Engineer",
-        'research scientist')
-ggplot(h1b_facebook, aes(x = year, y = n, group = data_job_title)) +
-  geom_line(alpha = 0.3,
-            size = 0.2) +
-  labs(title = "H1B in Facebook",
-       x = "Year",
-       y = "Number",
-       col = 'Job Title') +
-  theme_light() +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  geom_line(
-    data = subset(h1b_facebook, data_job_title %in% con),
-    aes(col = data_job_title),
-    size = 0.7
-  ) +
-  theme(
-    plot.title = element_text(
-      size = 14,
-      family = "Helvetica",
-      face = "bold"
-    ),
-    text = element_text(size = 12, family = "Helvetica"),
-    axis.title = element_text(face = "bold"),
-    axis.text.x = element_text(size = 11)
-  ) +
-  scale_color_discrete(labels = c(
-    "Data Engineer",
-    "Data Scientist",
-    "Research Scientist",
-    "Software Engineer"
-  ))
-
-```
-
-## Amazon
-
-```{r}
-h1b_amazon <- h1b_df %>%
-  filter(str_detect(employer_name, 'amazon')) %>%
-  ungroup(data_job_title) %>%
-  mutate(job_title = ifelse(
-    str_detect(data_job_title, 'software development engineer'),
-    'software development engineer',
-    ifelse(
-      str_detect(data_job_title, 'technical program manager'),
-      'technical program manager',
-      data_job_title
-    )
-  )) %>%
-  group_by(data_job_title, year) %>%
-  summarise(n = n()) %>%
-  arrange(-n)
-
-```
-
-```{r}
-con = c(
-  "Data Scientist",
-  "software development engineer",
-  "business analyst",
-  "Data Engineer",
-  "technical program manager"
-)
-ggplot(h1b_amazon, aes(x = year, y = n, group = data_job_title)) +
-  geom_line(alpha = 0.3,
-            size = 0.2) +
-  labs(title = "H1B in Amazon",
-       x = "Year",
-       y = "Number",
-       col = 'Job Title') +
-  theme_light() +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  geom_line(
-    data = subset(h1b_amazon, data_job_title %in% con),
-    aes(col = data_job_title),
-    size = 0.7
-  ) +
-  theme(
-    plot.title = element_text(
-      size = 14,
-      family = "Helvetica",
-      face = "bold"
-    ),
-    text = element_text(size = 12, family = "Helvetica"),
-    axis.title = element_text(face = "bold"),
-    axis.text.x = element_text(size = 11)
-  ) +
-  scale_color_discrete(
-    labels = c(
-      "Business Analyst",
-      "Data Engineer",
-      "Data Scientist",
-      "Software Development Engineer",
-      "Technical Program Manager"
-    )
-  )
-```
-
-
-## Microsoft
-
-```{r}
-h1b_micro <- h1b_df %>%
-  filter(str_detect(employer_name, 'microsoft')) %>%
-  ungroup(data_job_title) %>%
-  mutate(job_title = ifelse(
-    str_detect(
-      data_job_title,
-      'software engineer|software development engineer'
-    ),
-    'software engineer',
-    ifelse(
-      str_detect(data_job_title, 'program manager'),
-      'program manager',
-      data_job_title
-    )
-  )) %>%
-  group_by(data_job_title, year) %>%
-  summarise(n = n()) %>%
-  arrange(-n)
-  
-```
-
-```{r}
-con = c("Data Scientist", "software engineer", "program manager")
-ggplot(h1b_micro, aes(x = year, y = n, group = data_job_title)) +
-  geom_line(alpha = 0.3,
-            size = 0.2) +
-  labs(title = "H1B in Microsoft",
-       x = "Year",
-       y = "Number",
-       col = 'Job Title') +
-  theme_light() +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  geom_line(
-    data = subset(h1b_micro, data_job_title %in% con),
-    aes(col = data_job_title),
-    size = 0.7
-  ) +
-  theme(
-    plot.title = element_text(
-      size = 14,
-      family = "Helvetica",
-      face = "bold"
-    ),
-    text = element_text(size = 12, family = "Helvetica"),
-    axis.title = element_text(face = "bold"),
-    axis.text.x = element_text(size = 11)
-  ) +
-  scale_color_discrete(labels = c("Data Scientist", "Program Manager", "Software Engineer"))
-```
-
-
-## Google
-
-```{r}
-h1b_google <- h1b_df %>%
-  filter(str_detect(employer_name, 'google'))
-
-```
-
-```{r}
-h1b_google <- h1b_google %>%
-  ungroup(job_title) %>%
-  mutate(job_title = ifelse(
-    str_detect(job_title, 'software engineer'),
-    'software engineer',
-    ifelse(
-      str_detect(job_title, 'hardware engineer'),
-      'hardware engineer',
-      job_title
-    )
-  )) %>%
-  group_by(job_title, year) %>%
-  summarise(n = n()) %>%
-  arrange(-n)
-```
-
-```{r}
-con = c(
-  "Data Scientist",
-  "software engineer",
-  "program manager",
-  "product manager",
-  "business analyst"
-)
-ggplot(h1b_google, aes(x = year, y = n, group = job_title)) +
-  geom_line(alpha = 0.3,
-            size = 0.2) +
-  labs(title = "H1B in Google",
-       x = "Year",
-       y = "Number",
-       col = 'Job Title') +
-  theme_light() +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  geom_line(
-    data = subset(h1b_google, job_title %in% con),
-    aes(col = job_title),
-    size = 0.7
-  ) +
-  theme(
-    plot.title = element_text(
-      size = 14,
-      family = "Helvetica",
-      face = "bold"
-    ),
-    text = element_text(size = 12, family = "Helvetica"),
-    axis.title = element_text(face = "bold"),
-    axis.text.x = element_text(size = 11)
-  ) +
-  scale_color_discrete(
-    labels = c(
-      "Business Analyst",
-      "Data Scientist",
-      "Product Manager",
-      "Program Manager",
-      "Software Engineer"
-    )
-  )
-```
-
-
-## IBM 
-
-```{r}
-h1b_ibm <- h1b_df %>%
-  filter(str_detect(employer_name, 'ibm'))
-
-```
-
-```{r}
-h1b_ibm <- h1b_ibm %>%
-  group_by(data_job_title, year) %>%
-  summarise(n = n()) %>%
-  arrange(-n)
-```
-
-```{r fig.height=3, fig.width=2.5}
-con = c("Business Analyst",
-        "Data Engineer",
-        "Data Scientist",
-        "Data Analyst")
-ggplot(h1b_ibm, aes(x = year, y = n, group = data_job_title)) +
-  geom_line(alpha = 0.3,
-            size = 0.2) +
-  labs(title = "",
-       x = "Year",
-       y = "Number",
-       col = 'Job Title') +
-  theme_minimal() +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  geom_line(
-    data = subset(h1b_ibm, data_job_title %in% con),
-    aes(col = data_job_title),
-    size = 1.1
-  ) +
-  scale_color_manual(values = c("#FC2967", "#465881", "#00909e", "#00B2E4"),
-                     name = "") +
-  theme(
-    plot.title = element_text(size = 14, family = "Helvetica"),
-    text = element_text(size = 12, family = "Helvetica"),
-    #axis.title = element_text(face="bold"),
-    axis.text.x = element_text(size = 11),
-    legend.position = "none"
-  ) +
-  coord_cartesian(ylim = c(0, 1000))
-```
-
-## Uber
-
-```{r}
-h1b_uber <- h1b_df %>%
-  filter(str_detect(employer_name, 'uber')) %>%
-  ungroup(data_job_title) %>%
-  mutate(data_job_title = ifelse(
-    str_detect(data_job_title, 'software engineer'),
-    'Software Engineer',
-    data_job_title
-  )) %>%
-  group_by(data_job_title, year) %>%
-  summarise(n = n()) %>%
-  arrange(-n)
-```
-
-```{r}
-con = c("Software Engineer", "Data Scientist", "Data Analyst")
-ggplot(h1b_uber, aes(x = year, y = n, group = data_job_title)) +
-  geom_line(alpha = 0.3,
-            size = 0.2) +
-  labs(title = "H1B in Uber",
-       x = "Year",
-       y = "Number",
-       col = 'Job Title') +
-  theme_light() +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  geom_line(
-    data = subset(h1b_uber, data_job_title %in% con),
-    aes(col = data_job_title),
-    size = 0.7
-  ) +
-  theme(
-    plot.title = element_text(
-      size = 14,
-      family = "Helvetica",
-      face = "bold"
-    ),
-    text = element_text(size = 12, family = "Helvetica"),
-    axis.title = element_text(face = "bold"),
-    axis.text.x = element_text(size = 11)
-  )
-```
 
 
 # Data job per state in 2018
