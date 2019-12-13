@@ -92,19 +92,9 @@ DATA <- DATA %>%
   ))
 ```
 
-# define job level & data related & sde related 
+# define data related 
 ```{r}
 DATA <- DATA %>%
-  mutate(
-    job_level = case_when(
-      grepl("senior", job_title) ~ "high level",
-      grepl("director", job_title) ~ "high level",
-      grepl("lead", job_title) ~ "high level",
-      grepl("chief", job_title) ~ "high level",
-      grepl("principal", job_title) ~ "high level",
-      TRUE ~ "undefined"
-    )
-  ) %>%
   mutate(
     data_relation = case_when(
       grepl("data", job_title) ~ "data_related",
