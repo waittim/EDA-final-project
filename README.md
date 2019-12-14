@@ -4,7 +4,7 @@
 
 The datasets are from the [Department of Labor's](https://www.foreignlaborcert.doleta.gov/performancedata.cfm#dis) website. We collected five year's worth of H-1B petition data (2014 to 2018). There are over 3,000,000 observations in total.
 
-The final report can be find here:
+The final report can be find here: [Final report](EDA_Final_Report.pdf)
 
 # Content
 ---
