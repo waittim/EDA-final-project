@@ -5,10 +5,11 @@
 The datasets are from the [Department of Labor's](https://www.foreignlaborcert.doleta.gov/performancedata.cfm#dis) website.
 
 ## H1B
-Requirements
-Why is H1B Popular?
-Caveats
-H1B Historic Timeline
+
+- Requirements
+- Why is H1B Popular?
+- Caveats
+- H1B Historic Timeline
 ## Exploration
 Purpose
 Dataset
