@@ -135,7 +135,7 @@ DATA %>%
 ```
 
 
-```{r stem jobs bars}
+```{r stem(data) jobs barplot}
 dt <- DATA %>%
   mutate(job_title = ifelse(
     str_detect(job_title, "business") &
