@@ -7,9 +7,9 @@ The datasets are from the [Department of Labor's](https://www.foreignlaborcert.d
 The final report can be find here: [Final Report: H1B Visa Analysis](EDA_Final_Report.pdf)
 
 **Instructions On Running The Code**
-1. Extract the transformed zip file in the data file
+1. Extract the file "transformed.rar" manully in the ~/data 
 2. Run the import-feature-engineering.Rmd file
-3. Run the final report.Rmd file as needed. 
+3. Run the final report.Rmd file as needed
 
 # Content
 ---
