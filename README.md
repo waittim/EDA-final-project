@@ -11,9 +11,10 @@ The datasets are from the [Department of Labor's](https://www.foreignlaborcert.d
 - Caveats
 - H1B Historic Timeline
 ## Exploration
-Purpose
-Dataset
-Number of Applications Per State
+
+- Purpose
+- Dataset
+- Number of Applications Per State
 ## STEM
 Top Jobs In STEM in 2018
 ## Data Related Jobs Trends
