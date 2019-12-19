@@ -1771,28 +1771,28 @@ summary {
                   &quot;Google&quot;,
                   &quot;Ibm&quot;,
                   &quot;Cisco&quot;)
-spag &lt;- h1b_df %&gt;% 
-  filter(case_status ==  &quot;certified&quot;) %&gt;% 
-#  filter(str_detect(job_title,&quot;data|analyst|machine learning|deep learning|nlp|intelligence|business  nalyst&quot;)==TRUE) %&gt;% 
+spag &lt;- h1b_df %&gt;%
+  filter(case_status ==  &quot;certified&quot;) %&gt;%
+#  filter(str_detect(job_title,&quot;data|analyst|machine learning|deep learning|nlp|intelligence|business  nalyst&quot;)==TRUE) %&gt;%
 #  filter(str_detect(job_title, &quot;programmer|systems|technology|quality|management|jc65|budget|test&quot; )==FALSE) %&gt;%
-  mutate(job_title = ifelse(str_detect(job_title, &quot;business&quot;)&amp; (str_detect(job_title, &quot;analyst&quot;)|str_detect(job_title, &quot;intelligence&quot;)) , &quot;business analyst&quot;, job_title)) %&gt;% 
-  mutate(job_title = ifelse(str_detect(job_title, &quot;data&quot;)&amp; (str_detect(job_title, &quot;engineer&quot;)|str_detect(job_title, &quot;warehouse&quot;)), &quot;Data Engineer&quot;, job_title)) %&gt;% 
-  mutate(job_title = ifelse(str_detect(job_title, &quot;data&quot;)&amp; str_detect(job_title, &quot;scientist&quot;), &quot;Data Scientist&quot;, job_title)) %&gt;% 
-  mutate(job_title = ifelse(str_detect(job_title, &quot;data&quot;)&amp; str_detect(job_title, &quot;analyst&quot;), &quot;Data Analyst&quot;, job_title)) %&gt;% 
-  mutate(job_title = ifelse(str_detect(job_title, &quot;machine|deep&quot;)&amp; str_detect(job_title, &quot;learning&quot;), &quot;Deep Learning &amp; Machine Learning&quot;, job_title)) %&gt;% 
-  mutate(job_title = ifelse(str_detect(job_title, &quot;product&quot;) &amp; str_detect(job_title, &quot;analyst|engineer|data&quot;), &quot;Data Product Analyst&quot;, job_title)) %&gt;% 
-  filter(job_title %in% c(&quot;business analyst&quot;,&quot;Data Engineer&quot;,&quot;Deep Learning &amp; Machine Learning&quot;,&quot;Data Analyst&quot;, &quot;Data Scientist&quot;, &quot;Data Product Analyst&quot;)) %&gt;% 
+  mutate(job_title = ifelse(str_detect(job_title, &quot;business&quot;)&amp; (str_detect(job_title, &quot;analyst&quot;)|str_detect(job_title, &quot;intelligence&quot;)) , &quot;business analyst&quot;, job_title)) %&gt;%
+  mutate(job_title = ifelse(str_detect(job_title, &quot;data&quot;)&amp; (str_detect(job_title, &quot;engineer&quot;)|str_detect(job_title, &quot;warehouse&quot;)), &quot;Data Engineer&quot;, job_title)) %&gt;%
+  mutate(job_title = ifelse(str_detect(job_title, &quot;data&quot;)&amp; str_detect(job_title, &quot;scientist&quot;), &quot;Data Scientist&quot;, job_title)) %&gt;%
+  mutate(job_title = ifelse(str_detect(job_title, &quot;data&quot;)&amp; str_detect(job_title, &quot;analyst&quot;), &quot;Data Analyst&quot;, job_title)) %&gt;%
+  mutate(job_title = ifelse(str_detect(job_title, &quot;machine|deep&quot;)&amp; str_detect(job_title, &quot;learning&quot;), &quot;Deep Learning &amp; Machine Learning&quot;, job_title)) %&gt;%
+  mutate(job_title = ifelse(str_detect(job_title, &quot;product&quot;) &amp; str_detect(job_title, &quot;analyst|engineer|data&quot;), &quot;Data Product Analyst&quot;, job_title)) %&gt;%
+  filter(job_title %in% c(&quot;business analyst&quot;,&quot;Data Engineer&quot;,&quot;Deep Learning &amp; Machine Learning&quot;,&quot;Data Analyst&quot;, &quot;Data Scientist&quot;, &quot;Data Product Analyst&quot;)) %&gt;%
     mutate(employer_name = ifelse(str_detect(employer_name,'apple inc'), 'Apple',
                           ifelse(str_detect(employer_name,'microsoft'), 'Microsoft',
                           ifelse(str_detect(employer_name,'amazon'),'Amazon',
                           ifelse(str_detect(employer_name,'cisco sys'),'Cisco',
                           ifelse(str_detect(employer_name,'facebook'),'Facebook',
                           ifelse(str_detect(employer_name,'google'),'Google',
-                          ifelse(str_detect(employer_name, 'ibm'),'IBM',employer_name)))))))) %&gt;% 
-  filter(job_title %in% data_jobs) %&gt;% 
-  group_by(employer_name) %&gt;% 
-  top_n(20) %&gt;% 
-  summarise(n = n()) %&gt;% 
+                          ifelse(str_detect(employer_name, 'ibm'),'IBM',employer_name)))))))) %&gt;%
+  filter(job_title %in% data_jobs) %&gt;%
+  group_by(employer_name) %&gt;%
+  top_n(20) %&gt;%
+  summarise(n = n()) %&gt;%
   ungroup() </code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
@@ -1821,20 +1821,20 @@ spag &lt;- h1b_df %&gt;%
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaDFiX2RmICU+JSBcbiAgZmlsdGVyKGNhc2Vfc3RhdHVzID09ICBcImNlcnRpZmllZFwiKSAlPiUgXG4jICBmaWx0ZXIoc3RyX2RldGVjdChqb2JfdGl0bGUsXCJkYXRhfGFuYWx5c3R8bWFjaGluZSBsZWFybmluZ3xkZWVwIGxlYXJuaW5nfG5scHxpbnRlbGxpZ2VuY2V8YnVzaW5lc3MgIG5hbHlzdFwiKT09VFJVRSkgJT4lIFxuIyAgZmlsdGVyKHN0cl9kZXRlY3Qoam9iX3RpdGxlLCBcInByb2dyYW1tZXJ8c3lzdGVtc3x0ZWNobm9sb2d5fHF1YWxpdHl8bWFuYWdlbWVudHxqYzY1fGJ1ZGdldHx0ZXN0XCIgKT09RkFMU0UpICU+JVxuICBtdXRhdGUoam9iX3RpdGxlID0gaWZlbHNlKHN0cl9kZXRlY3Qoam9iX3RpdGxlLCBcImJ1c2luZXNzXCIpJiAoc3RyX2RldGVjdChqb2JfdGl0bGUsIFwiYW5hbHlzdFwiKXxzdHJfZGV0ZWN0KGpvYl90aXRsZSwgXCJpbnRlbGxpZ2VuY2VcIikpICwgXCJidXNpbmVzcyBhbmFseXN0XCIsIGpvYl90aXRsZSkpICU+JSBcbiAgbXV0YXRlKGpvYl90aXRsZSA9IGlmZWxzZShzdHJfZGV0ZWN0KGpvYl90aXRsZSwgXCJkYXRhXCIpJiAoc3RyX2RldGVjdChqb2JfdGl0bGUsIFwiZW5naW5lZXJcIil8c3RyX2RldGVjdChqb2JfdGl0bGUsIFwid2FyZWhvdXNlXCIpKSwgXCJEYXRhIEVuZ2luZWVyXCIsIGpvYl90aXRsZSkpICU+JSBcbiAgbXV0YXRlKGpvYl90aXRsZSA9IGlmZWxzZShzdHJfZGV0ZWN0KGpvYl90aXRsZSwgXCJkYXRhXCIpJiBzdHJfZGV0ZWN0KGpvYl90aXRsZSwgXCJzY2llbnRpc3RcIiksIFwiRGF0YSBTY2llbnRpc3RcIiwgam9iX3RpdGxlKSkgJT4lIFxuICBtdXRhdGUoam9iX3RpdGxlID0gaWZlbHNlKHN0cl9kZXRlY3Qoam9iX3RpdGxlLCBcImRhdGFcIikmIHN0cl9kZXRlY3Qoam9iX3RpdGxlLCBcImFuYWx5c3RcIiksIFwiRGF0YSBBbmFseXN0XCIsIGpvYl90aXRsZSkpICU+JSBcbiAgbXV0YXRlKGpvYl90aXRsZSA9IGlmZWxzZShzdHJfZGV0ZWN0KGpvYl90aXRsZSwgXCJtYWNoaW5lfGRlZXBcIikmIHN0cl9kZXRlY3Qoam9iX3RpdGxlLCBcImxlYXJuaW5nXCIpLCBcIkRlZXAgTGVhcm5pbmcgJiBNYWNoaW5lIExlYXJuaW5nXCIsIGpvYl90aXRsZSkpICU+JSBcbiAgbXV0YXRlKGpvYl90aXRsZSA9IGlmZWxzZShzdHJfZGV0ZWN0KGpvYl90aXRsZSwgXCJwcm9kdWN0XCIpICYgc3RyX2RldGVjdChqb2JfdGl0bGUsIFwiYW5hbHlzdHxlbmdpbmVlcnxkYXRhXCIpLCBcIkRhdGEgUHJvZHVjdCBBbmFseXN0XCIsIGpvYl90aXRsZSkpICU+JSBcbiAgZmlsdGVyKGpvYl90aXRsZSAlaW4lIGMoXCJidXNpbmVzcyBhbmFseXN0XCIsXCJEYXRhIEVuZ2luZWVyXCIsXCJEZWVwIExlYXJuaW5nICYgTWFjaGluZSBMZWFybmluZ1wiLFwiRGF0YSBBbmFseXN0XCIsIFwiRGF0YSBTY2llbnRpc3RcIiwgXCJEYXRhIFByb2R1Y3QgQW5hbHlzdFwiKSkgJT4lIFxuICBncm91cF9ieShqb2JfdGl0bGUsIHllYXIpICU+JSBcbiAgc3VtbWFyaXNlKG4gPSBuKCkpICU+JSBcbiAgYXJyYW5nZSgtbikgJT4lIFxuICAgIGdncGxvdChhZXMoeCA9IHllYXIsIHkgPSBuKSkrXG4gICAgZ2VvbV9saW5lKGFlcyhjb2xvciA9IGpvYl90aXRsZSksc2l6ZSA9IDEuMDUpK1xuICAgIGxhYnMoIHkgPSBcIk51bWJlciBvZiBBcHBsaWNhdGlvbnNcIiwgeCA9IFwiWWVhclwiKStcbiAgICB0aGVtZV9idygpXG5gYGAifQ== -->
-<pre class="r"><code>h1b_df %&gt;% 
-  filter(case_status ==  &quot;certified&quot;) %&gt;% 
-#  filter(str_detect(job_title,&quot;data|analyst|machine learning|deep learning|nlp|intelligence|business  nalyst&quot;)==TRUE) %&gt;% 
+<pre class="r"><code>h1b_df %&gt;%
+  filter(case_status ==  &quot;certified&quot;) %&gt;%
+#  filter(str_detect(job_title,&quot;data|analyst|machine learning|deep learning|nlp|intelligence|business  nalyst&quot;)==TRUE) %&gt;%
 #  filter(str_detect(job_title, &quot;programmer|systems|technology|quality|management|jc65|budget|test&quot; )==FALSE) %&gt;%
-  mutate(job_title = ifelse(str_detect(job_title, &quot;business&quot;)&amp; (str_detect(job_title, &quot;analyst&quot;)|str_detect(job_title, &quot;intelligence&quot;)) , &quot;business analyst&quot;, job_title)) %&gt;% 
-  mutate(job_title = ifelse(str_detect(job_title, &quot;data&quot;)&amp; (str_detect(job_title, &quot;engineer&quot;)|str_detect(job_title, &quot;warehouse&quot;)), &quot;Data Engineer&quot;, job_title)) %&gt;% 
-  mutate(job_title = ifelse(str_detect(job_title, &quot;data&quot;)&amp; str_detect(job_title, &quot;scientist&quot;), &quot;Data Scientist&quot;, job_title)) %&gt;% 
-  mutate(job_title = ifelse(str_detect(job_title, &quot;data&quot;)&amp; str_detect(job_title, &quot;analyst&quot;), &quot;Data Analyst&quot;, job_title)) %&gt;% 
-  mutate(job_title = ifelse(str_detect(job_title, &quot;machine|deep&quot;)&amp; str_detect(job_title, &quot;learning&quot;), &quot;Deep Learning &amp; Machine Learning&quot;, job_title)) %&gt;% 
-  mutate(job_title = ifelse(str_detect(job_title, &quot;product&quot;) &amp; str_detect(job_title, &quot;analyst|engineer|data&quot;), &quot;Data Product Analyst&quot;, job_title)) %&gt;% 
-  filter(job_title %in% c(&quot;business analyst&quot;,&quot;Data Engineer&quot;,&quot;Deep Learning &amp; Machine Learning&quot;,&quot;Data Analyst&quot;, &quot;Data Scientist&quot;, &quot;Data Product Analyst&quot;)) %&gt;% 
-  group_by(job_title, year) %&gt;% 
-  summarise(n = n()) %&gt;% 
-  arrange(-n) %&gt;% 
+  mutate(job_title = ifelse(str_detect(job_title, &quot;business&quot;)&amp; (str_detect(job_title, &quot;analyst&quot;)|str_detect(job_title, &quot;intelligence&quot;)) , &quot;business analyst&quot;, job_title)) %&gt;%
+  mutate(job_title = ifelse(str_detect(job_title, &quot;data&quot;)&amp; (str_detect(job_title, &quot;engineer&quot;)|str_detect(job_title, &quot;warehouse&quot;)), &quot;Data Engineer&quot;, job_title)) %&gt;%
+  mutate(job_title = ifelse(str_detect(job_title, &quot;data&quot;)&amp; str_detect(job_title, &quot;scientist&quot;), &quot;Data Scientist&quot;, job_title)) %&gt;%
+  mutate(job_title = ifelse(str_detect(job_title, &quot;data&quot;)&amp; str_detect(job_title, &quot;analyst&quot;), &quot;Data Analyst&quot;, job_title)) %&gt;%
+  mutate(job_title = ifelse(str_detect(job_title, &quot;machine|deep&quot;)&amp; str_detect(job_title, &quot;learning&quot;), &quot;Deep Learning &amp; Machine Learning&quot;, job_title)) %&gt;%
+  mutate(job_title = ifelse(str_detect(job_title, &quot;product&quot;) &amp; str_detect(job_title, &quot;analyst|engineer|data&quot;), &quot;Data Product Analyst&quot;, job_title)) %&gt;%
+  filter(job_title %in% c(&quot;business analyst&quot;,&quot;Data Engineer&quot;,&quot;Deep Learning &amp; Machine Learning&quot;,&quot;Data Analyst&quot;, &quot;Data Scientist&quot;, &quot;Data Product Analyst&quot;)) %&gt;%
+  group_by(job_title, year) %&gt;%
+  summarise(n = n()) %&gt;%
+  arrange(-n) %&gt;%
     ggplot(aes(x = year, y = n))+
     geom_line(aes(color = job_title),size = 1.05)+
     labs( y = &quot;Number of Applications&quot;, x = &quot;Year&quot;)+
@@ -1849,38 +1849,38 @@ spag &lt;- h1b_df %&gt;%
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5kYXRhX3JlbGF0ZWRfdG9wPC0gaDFiX2RmICU+JSBcbiAgZmlsdGVyKGNhc2Vfc3RhdHVzID09ICBcImNlcnRpZmllZFwiKSAlPiUgXG4jICBmaWx0ZXIoc3RyX2RldGVjdChqb2JfdGl0bGUsXCJkYXRhfGFuYWx5c3R8bWFjaGluZSBsZWFybmluZ3xkZWVwIGxlYXJuaW5nfG5scHxpbnRlbGxpZ2VuY2V8YnVzaW5lc3MgIG5hbHlzdFwiKT09VFJVRSkgJT4lIFxuIyAgZmlsdGVyKHN0cl9kZXRlY3Qoam9iX3RpdGxlLCBcInByb2dyYW1tZXJ8c3lzdGVtc3x0ZWNobm9sb2d5fHF1YWxpdHl8bWFuYWdlbWVudHxqYzY1fGJ1ZGdldHx0ZXN0XCIgKT09RkFMU0UpICU+JVxuICBtdXRhdGUoam9iX3RpdGxlID0gaWZlbHNlKHN0cl9kZXRlY3Qoam9iX3RpdGxlLCBcImJ1c2luZXNzXCIpJiAoc3RyX2RldGVjdChqb2JfdGl0bGUsIFwiYW5hbHlzdFwiKXxzdHJfZGV0ZWN0KGpvYl90aXRsZSwgXCJpbnRlbGxpZ2VuY2VcIikpICwgXCJCdXNpbmVzcyBBbmFseXN0XCIsIGpvYl90aXRsZSkpICU+JSBcbiAgbXV0YXRlKGpvYl90aXRsZSA9IGlmZWxzZShzdHJfZGV0ZWN0KGpvYl90aXRsZSwgXCJkYXRhXCIpJiAoc3RyX2RldGVjdChqb2JfdGl0bGUsIFwiZW5naW5lZXJcIil8c3RyX2RldGVjdChqb2JfdGl0bGUsIFwid2FyZWhvdXNlXCIpKSwgXCJEYXRhIEVuZ2luZWVyXCIsIGpvYl90aXRsZSkpICU+JSBcbiAgbXV0YXRlKGpvYl90aXRsZSA9IGlmZWxzZShzdHJfZGV0ZWN0KGpvYl90aXRsZSwgXCJkYXRhXCIpICYgc3RyX2RldGVjdChqb2JfdGl0bGUsIFwic2NpZW50aXN0XCIpLCBcIkRhdGEgU2NpZW50aXN0XCIsIGpvYl90aXRsZSkpICU+JSBcbiAgbXV0YXRlKGpvYl90aXRsZSA9IGlmZWxzZShzdHJfZGV0ZWN0KGpvYl90aXRsZSwgXCJkYXRhXCIpICYgc3RyX2RldGVjdChqb2JfdGl0bGUsIFwiYW5hbHlzdFwiKSwgXCJEYXRhIEFuYWx5c3RcIiwgam9iX3RpdGxlKSkgJT4lIFxuICBtdXRhdGUoam9iX3RpdGxlID0gaWZlbHNlKHN0cl9kZXRlY3Qoam9iX3RpdGxlLCBcIm1hY2hpbmV8ZGVlcFwiKSAmIHN0cl9kZXRlY3Qoam9iX3RpdGxlLCBcImxlYXJuaW5nXCIpLCBcIkRlZXAgTGVhcm5pbmcgJiBNYWNoaW5lIExlYXJuaW5nXCIsIGpvYl90aXRsZSkpICU+JSBcbiAgbXV0YXRlKGpvYl90aXRsZSA9IGlmZWxzZShzdHJfZGV0ZWN0KGpvYl90aXRsZSwgXCJwcm9kdWN0XCIpICYgc3RyX2RldGVjdChqb2JfdGl0bGUsIFwiYW5hbHlzdHxlbmdpbmVlcnxkYXRhXCIpLCBcIkRhdGEgUHJvZHVjdCBBbmFseXN0XCIsIGpvYl90aXRsZSkpICU+JSBcbiAgZmlsdGVyKGpvYl90aXRsZSAlaW4lIGMoXCJCdXNpbmVzcyBBbmFseXN0XCIsXCJEYXRhIEVuZ2luZWVyXCIsXCJEZWVwIExlYXJuaW5nICYgTWFjaGluZSBMZWFybmluZ1wiLFwiRGF0YSBBbmFseXN0XCIsIFwiRGF0YSBTY2llbnRpc3RcIiwgXCJEYXRhIFByb2R1Y3QgQW5hbHlzdFwiKSkgJT4lXG4gIGdyb3VwX2J5KGVtcGxveWVyX25hbWUpICU+JSBcbiAgc3VtbWFyaXNlKG4gPSBuKCkpICU+JSBcbiAgYXJyYW5nZSgtbikgJT4lIFxuICB1bmdyb3VwKCkgJT4lIFxuICB0b3BfbigxMClcblxuZGF0YV9yZWxhdGVkX3RvcCA8LSBhcy52ZWN0b3IoZGF0YV9yZWxhdGVkX3RvcCRlbXBsb3llcl9uYW1lKVxuXG5oMWJfZGYgJT4lIFxuICBmaWx0ZXIoZW1wbG95ZXJfbmFtZSAlaW4lIGRhdGFfcmVsYXRlZF90b3ApICU+JSBcbiMgIGZpbHRlcihlbXBsb3llcl9uYW1lICE9IFwiY2FwZ2VtaW5pIGFtZXJpY2EgaW5jXCIpICU+JSBcbiAgZmlsdGVyKGNhc2Vfc3RhdHVzID09ICBcImNlcnRpZmllZFwiKSAlPiVcbiAgbXV0YXRlKGpvYl90aXRsZSA9IGlmZWxzZShzdHJfZGV0ZWN0KGpvYl90aXRsZSwgXCJidXNpbmVzc1wiKSYgKHN0cl9kZXRlY3Qoam9iX3RpdGxlLCBcImFuYWx5c3RcIil8c3RyX2RldGVjdChqb2JfdGl0bGUsIFwiaW50ZWxsaWdlbmNlXCIpKSAsIFwiQnVzaW5lc3MgQW5hbHlzdFwiLCBqb2JfdGl0bGUpKSAlPiUgXG4gIG11dGF0ZShqb2JfdGl0bGUgPSBpZmVsc2Uoc3RyX2RldGVjdChqb2JfdGl0bGUsIFwiZGF0YVwiKSYgKHN0cl9kZXRlY3Qoam9iX3RpdGxlLCBcImVuZ2luZWVyXCIpfHN0cl9kZXRlY3Qoam9iX3RpdGxlLCBcIndhcmVob3VzZVwiKSksIFwiRGF0YSBFbmdpbmVlclwiLCBqb2JfdGl0bGUpKSAlPiUgXG4gIG11dGF0ZShqb2JfdGl0bGUgPSBpZmVsc2Uoc3RyX2RldGVjdChqb2JfdGl0bGUsIFwiZGF0YVwiKSAmIHN0cl9kZXRlY3Qoam9iX3RpdGxlLCBcInNjaWVudGlzdFwiKSwgXCJEYXRhIFNjaWVudGlzdFwiLCBqb2JfdGl0bGUpKSAlPiUgXG4gIG11dGF0ZShqb2JfdGl0bGUgPSBpZmVsc2Uoc3RyX2RldGVjdChqb2JfdGl0bGUsIFwiZGF0YVwiKSAmIHN0cl9kZXRlY3Qoam9iX3RpdGxlLCBcImFuYWx5c3RcIiksIFwiRGF0YSBBbmFseXN0XCIsIGpvYl90aXRsZSkpICU+JSBcbiAgbXV0YXRlKGpvYl90aXRsZSA9IGlmZWxzZShzdHJfZGV0ZWN0KGpvYl90aXRsZSwgXCJtYWNoaW5lfGRlZXBcIikgJiBzdHJfZGV0ZWN0KGpvYl90aXRsZSwgXCJsZWFybmluZ1wiKSwgXCJEZWVwIExlYXJuaW5nICYgTWFjaGluZSBMZWFybmluZ1wiLCBqb2JfdGl0bGUpKSAlPiUgXG4gIG11dGF0ZShqb2JfdGl0bGUgPSBpZmVsc2Uoc3RyX2RldGVjdChqb2JfdGl0bGUsIFwicHJvZHVjdFwiKSAmIHN0cl9kZXRlY3Qoam9iX3RpdGxlLCBcImFuYWx5c3R8ZW5naW5lZXJ8ZGF0YVwiKSwgXCJEYXRhIFByb2R1Y3QgQW5hbHlzdFwiLCBqb2JfdGl0bGUpKSAlPiUgXG4gIGZpbHRlcihqb2JfdGl0bGUgJWluJSBjKFwiQnVzaW5lc3MgQW5hbHlzdFwiLFwiRGF0YSBFbmdpbmVlclwiLFwiRGVlcCBMZWFybmluZyAmIE1hY2hpbmUgTGVhcm5pbmdcIixcIkRhdGEgQW5hbHlzdFwiLCBcIkRhdGEgU2NpZW50aXN0XCIsIFwiRGF0YSBQcm9kdWN0IEFuYWx5c3RcIikpICU+JVxuICBncm91cF9ieShlbXBsb3llcl9uYW1lLCB5ZWFyKSAlPiUgXG4gIHN1bW1hcmlzZShuID0gbigpKSAlPiUgXG4gIGdncGxvdChhZXMoeCA9IHllYXIsIHkgPSBuKSkrXG4gIGdlb21fbGluZShhZXMoY29sb3IgPSBlbXBsb3llcl9uYW1lKSwgc2l6ZSA9IDEuMDUpK1xuICBsYWJzKCB5ID0gXCJOdW1iZXIgb2YgQXBwbGljYXRpb25zXCIsIHggPSBcIlllYXJcIikrXG4gICAgdGhlbWVfYncoKVxuXG5cblxuYGBgIn0= -->
 <pre class="r"><code>
-data_related_top&lt;- h1b_df %&gt;% 
-  filter(case_status ==  &quot;certified&quot;) %&gt;% 
-#  filter(str_detect(job_title,&quot;data|analyst|machine learning|deep learning|nlp|intelligence|business  nalyst&quot;)==TRUE) %&gt;% 
+data_related_top&lt;- h1b_df %&gt;%
+  filter(case_status ==  &quot;certified&quot;) %&gt;%
+#  filter(str_detect(job_title,&quot;data|analyst|machine learning|deep learning|nlp|intelligence|business  nalyst&quot;)==TRUE) %&gt;%
 #  filter(str_detect(job_title, &quot;programmer|systems|technology|quality|management|jc65|budget|test&quot; )==FALSE) %&gt;%
-  mutate(job_title = ifelse(str_detect(job_title, &quot;business&quot;)&amp; (str_detect(job_title, &quot;analyst&quot;)|str_detect(job_title, &quot;intelligence&quot;)) , &quot;Business Analyst&quot;, job_title)) %&gt;% 
-  mutate(job_title = ifelse(str_detect(job_title, &quot;data&quot;)&amp; (str_detect(job_title, &quot;engineer&quot;)|str_detect(job_title, &quot;warehouse&quot;)), &quot;Data Engineer&quot;, job_title)) %&gt;% 
-  mutate(job_title = ifelse(str_detect(job_title, &quot;data&quot;) &amp; str_detect(job_title, &quot;scientist&quot;), &quot;Data Scientist&quot;, job_title)) %&gt;% 
-  mutate(job_title = ifelse(str_detect(job_title, &quot;data&quot;) &amp; str_detect(job_title, &quot;analyst&quot;), &quot;Data Analyst&quot;, job_title)) %&gt;% 
-  mutate(job_title = ifelse(str_detect(job_title, &quot;machine|deep&quot;) &amp; str_detect(job_title, &quot;learning&quot;), &quot;Deep Learning &amp; Machine Learning&quot;, job_title)) %&gt;% 
-  mutate(job_title = ifelse(str_detect(job_title, &quot;product&quot;) &amp; str_detect(job_title, &quot;analyst|engineer|data&quot;), &quot;Data Product Analyst&quot;, job_title)) %&gt;% 
+  mutate(job_title = ifelse(str_detect(job_title, &quot;business&quot;)&amp; (str_detect(job_title, &quot;analyst&quot;)|str_detect(job_title, &quot;intelligence&quot;)) , &quot;Business Analyst&quot;, job_title)) %&gt;%
+  mutate(job_title = ifelse(str_detect(job_title, &quot;data&quot;)&amp; (str_detect(job_title, &quot;engineer&quot;)|str_detect(job_title, &quot;warehouse&quot;)), &quot;Data Engineer&quot;, job_title)) %&gt;%
+  mutate(job_title = ifelse(str_detect(job_title, &quot;data&quot;) &amp; str_detect(job_title, &quot;scientist&quot;), &quot;Data Scientist&quot;, job_title)) %&gt;%
+  mutate(job_title = ifelse(str_detect(job_title, &quot;data&quot;) &amp; str_detect(job_title, &quot;analyst&quot;), &quot;Data Analyst&quot;, job_title)) %&gt;%
+  mutate(job_title = ifelse(str_detect(job_title, &quot;machine|deep&quot;) &amp; str_detect(job_title, &quot;learning&quot;), &quot;Deep Learning &amp; Machine Learning&quot;, job_title)) %&gt;%
+  mutate(job_title = ifelse(str_detect(job_title, &quot;product&quot;) &amp; str_detect(job_title, &quot;analyst|engineer|data&quot;), &quot;Data Product Analyst&quot;, job_title)) %&gt;%
   filter(job_title %in% c(&quot;Business Analyst&quot;,&quot;Data Engineer&quot;,&quot;Deep Learning &amp; Machine Learning&quot;,&quot;Data Analyst&quot;, &quot;Data Scientist&quot;, &quot;Data Product Analyst&quot;)) %&gt;%
-  group_by(employer_name) %&gt;% 
-  summarise(n = n()) %&gt;% 
-  arrange(-n) %&gt;% 
-  ungroup() %&gt;% 
+  group_by(employer_name) %&gt;%
+  summarise(n = n()) %&gt;%
+  arrange(-n) %&gt;%
+  ungroup() %&gt;%
   top_n(10)
 
 data_related_top &lt;- as.vector(data_related_top$employer_name)
 
-h1b_df %&gt;% 
-  filter(employer_name %in% data_related_top) %&gt;% 
-#  filter(employer_name != &quot;capgemini america inc&quot;) %&gt;% 
+h1b_df %&gt;%
+  filter(employer_name %in% data_related_top) %&gt;%
+#  filter(employer_name != &quot;capgemini america inc&quot;) %&gt;%
   filter(case_status ==  &quot;certified&quot;) %&gt;%
-  mutate(job_title = ifelse(str_detect(job_title, &quot;business&quot;)&amp; (str_detect(job_title, &quot;analyst&quot;)|str_detect(job_title, &quot;intelligence&quot;)) , &quot;Business Analyst&quot;, job_title)) %&gt;% 
-  mutate(job_title = ifelse(str_detect(job_title, &quot;data&quot;)&amp; (str_detect(job_title, &quot;engineer&quot;)|str_detect(job_title, &quot;warehouse&quot;)), &quot;Data Engineer&quot;, job_title)) %&gt;% 
-  mutate(job_title = ifelse(str_detect(job_title, &quot;data&quot;) &amp; str_detect(job_title, &quot;scientist&quot;), &quot;Data Scientist&quot;, job_title)) %&gt;% 
-  mutate(job_title = ifelse(str_detect(job_title, &quot;data&quot;) &amp; str_detect(job_title, &quot;analyst&quot;), &quot;Data Analyst&quot;, job_title)) %&gt;% 
-  mutate(job_title = ifelse(str_detect(job_title, &quot;machine|deep&quot;) &amp; str_detect(job_title, &quot;learning&quot;), &quot;Deep Learning &amp; Machine Learning&quot;, job_title)) %&gt;% 
-  mutate(job_title = ifelse(str_detect(job_title, &quot;product&quot;) &amp; str_detect(job_title, &quot;analyst|engineer|data&quot;), &quot;Data Product Analyst&quot;, job_title)) %&gt;% 
+  mutate(job_title = ifelse(str_detect(job_title, &quot;business&quot;)&amp; (str_detect(job_title, &quot;analyst&quot;)|str_detect(job_title, &quot;intelligence&quot;)) , &quot;Business Analyst&quot;, job_title)) %&gt;%
+  mutate(job_title = ifelse(str_detect(job_title, &quot;data&quot;)&amp; (str_detect(job_title, &quot;engineer&quot;)|str_detect(job_title, &quot;warehouse&quot;)), &quot;Data Engineer&quot;, job_title)) %&gt;%
+  mutate(job_title = ifelse(str_detect(job_title, &quot;data&quot;) &amp; str_detect(job_title, &quot;scientist&quot;), &quot;Data Scientist&quot;, job_title)) %&gt;%
+  mutate(job_title = ifelse(str_detect(job_title, &quot;data&quot;) &amp; str_detect(job_title, &quot;analyst&quot;), &quot;Data Analyst&quot;, job_title)) %&gt;%
+  mutate(job_title = ifelse(str_detect(job_title, &quot;machine|deep&quot;) &amp; str_detect(job_title, &quot;learning&quot;), &quot;Deep Learning &amp; Machine Learning&quot;, job_title)) %&gt;%
+  mutate(job_title = ifelse(str_detect(job_title, &quot;product&quot;) &amp; str_detect(job_title, &quot;analyst|engineer|data&quot;), &quot;Data Product Analyst&quot;, job_title)) %&gt;%
   filter(job_title %in% c(&quot;Business Analyst&quot;,&quot;Data Engineer&quot;,&quot;Deep Learning &amp; Machine Learning&quot;,&quot;Data Analyst&quot;, &quot;Data Scientist&quot;, &quot;Data Product Analyst&quot;)) %&gt;%
-  group_by(employer_name, year) %&gt;% 
-  summarise(n = n()) %&gt;% 
+  group_by(employer_name, year) %&gt;%
+  summarise(n = n()) %&gt;%
   ggplot(aes(x = year, y = n))+
   geom_line(aes(color = employer_name), size = 1.05)+
   labs( y = &quot;Number of Applications&quot;, x = &quot;Year&quot;)+
@@ -1904,14 +1904,14 @@ h1b_df %&gt;%
                   &quot;cisco sys&quot;)
 
 
-h1b_df %&gt;% 
+h1b_df %&gt;%
   filter(case_status ==  &quot;certified&quot;) %&gt;%
-  mutate(job_title = ifelse(str_detect(job_title, &quot;business&quot;)&amp; (str_detect(job_title, &quot;analyst&quot;)|str_detect(job_title, &quot;intelligence&quot;)) , &quot;Business Analyst&quot;, job_title)) %&gt;% 
-  mutate(job_title = ifelse(str_detect(job_title, &quot;data&quot;)&amp; (str_detect(job_title, &quot;engineer&quot;)|str_detect(job_title, &quot;warehouse&quot;)), &quot;Data Engineer&quot;, job_title)) %&gt;% 
-  mutate(job_title = ifelse(str_detect(job_title, &quot;data&quot;) &amp; str_detect(job_title, &quot;scientist&quot;), &quot;Data Scientist&quot;, job_title)) %&gt;% 
-  mutate(job_title = ifelse(str_detect(job_title, &quot;data&quot;) &amp; str_detect(job_title, &quot;analyst&quot;), &quot;Data Analyst&quot;, job_title)) %&gt;% 
-  mutate(job_title = ifelse(str_detect(job_title, &quot;machine|deep&quot;) &amp; str_detect(job_title, &quot;learning&quot;), &quot;Deep Learning &amp; Machine Learning&quot;, job_title)) %&gt;% 
-  mutate(job_title = ifelse(str_detect(job_title, &quot;product&quot;) &amp; str_detect(job_title, &quot;analyst|engineer|data&quot;), &quot;Data Product Analyst&quot;, job_title)) %&gt;% 
+  mutate(job_title = ifelse(str_detect(job_title, &quot;business&quot;)&amp; (str_detect(job_title, &quot;analyst&quot;)|str_detect(job_title, &quot;intelligence&quot;)) , &quot;Business Analyst&quot;, job_title)) %&gt;%
+  mutate(job_title = ifelse(str_detect(job_title, &quot;data&quot;)&amp; (str_detect(job_title, &quot;engineer&quot;)|str_detect(job_title, &quot;warehouse&quot;)), &quot;Data Engineer&quot;, job_title)) %&gt;%
+  mutate(job_title = ifelse(str_detect(job_title, &quot;data&quot;) &amp; str_detect(job_title, &quot;scientist&quot;), &quot;Data Scientist&quot;, job_title)) %&gt;%
+  mutate(job_title = ifelse(str_detect(job_title, &quot;data&quot;) &amp; str_detect(job_title, &quot;analyst&quot;), &quot;Data Analyst&quot;, job_title)) %&gt;%
+  mutate(job_title = ifelse(str_detect(job_title, &quot;machine|deep&quot;) &amp; str_detect(job_title, &quot;learning&quot;), &quot;Deep Learning &amp; Machine Learning&quot;, job_title)) %&gt;%
+  mutate(job_title = ifelse(str_detect(job_title, &quot;product&quot;) &amp; str_detect(job_title, &quot;analyst|engineer|data&quot;), &quot;Data Product Analyst&quot;, job_title)) %&gt;%
   filter(job_title %in% c(&quot;Business Analyst&quot;,&quot;Data Engineer&quot;,&quot;Deep Learning &amp; Machine Learning&quot;,&quot;Data Analyst&quot;, &quot;Data Scientist&quot;, &quot;Data Product Analyst&quot;)) %&gt;%
   mutate(employer_name = ifelse(str_detect(employer_name,'apple'), 'Apple',
                           ifelse(str_detect(employer_name,'microsoft'), 'Microsoft',
@@ -1919,11 +1919,11 @@ h1b_df %&gt;%
                           ifelse(str_detect(employer_name,'cisco sys'),'Cisco',
                           ifelse(str_detect(employer_name,'facebook'),'Facebook',
                           ifelse(str_detect(employer_name,'google'),'Google',
-                          ifelse(str_detect(employer_name, 'ibm'),'IBM','no')))))))) %&gt;% 
-  group_by(employer_name, year) %&gt;% 
-  summarise(tot = n()) %&gt;% 
-  filter(!employer_name %in% c(&quot;no&quot;, NA)) %&gt;% 
-  ungroup() %&gt;% 
+                          ifelse(str_detect(employer_name, 'ibm'),'IBM','no')))))))) %&gt;%
+  group_by(employer_name, year) %&gt;%
+  summarise(tot = n()) %&gt;%
+  filter(!employer_name %in% c(&quot;no&quot;, NA)) %&gt;%
+  ungroup() %&gt;%
   ggplot()+
   geom_line(aes(x = year, y = tot, color = employer_name), size = 1.05)+
   labs( y = &quot;Number of Applications&quot;, x = &quot;Year&quot;)+
@@ -1949,10 +1949,10 @@ soc_top_tech &lt;- c(&quot;Apple&quot;,
                   &quot;Cisco&quot;)
 
 
-h1b_df %&gt;% 
-  filter(data_job_title %in% data_related_top) %&gt;% 
-  group_by(employer_name, year) %&gt;% 
-  summarise(n = n()) %&gt;% 
+h1b_df %&gt;%
+  filter(data_job_title %in% data_related_top) %&gt;%
+  group_by(employer_name, year) %&gt;%
+  summarise(n = n()) %&gt;%
   ggplot(aes(x = year, y = n))+
   geom_line(aes(color = employer_name), size = 1.05)+
   labs( y = &quot;Number of Applications&quot;, x = &quot;Year&quot;)+
@@ -1983,14 +1983,14 @@ ggplot(filtered_job_all, aes(x = year, y = n, group = employer_name)) +
                   &quot;Google&quot;,
                   &quot;Ibm&quot;,
                   &quot;Cisco&quot;)
-filtered_job_all &lt;- DATA %&gt;% 
-  filter(data_job_title %in% c(&quot;Business Analyst&quot;,&quot;Data Analyst&quot;, &quot;Data Engineer&quot;, &quot;Data Scientist&quot;)) %&gt;% 
+filtered_job_all &lt;- DATA %&gt;%
+  filter(data_job_title %in% c(&quot;Business Analyst&quot;,&quot;Data Analyst&quot;, &quot;Data Engineer&quot;, &quot;Data Scientist&quot;)) %&gt;%
   mutate(employer_name = ifelse(str_detect(employer_name,'apple'), 'Apple',
                           ifelse(str_detect(employer_name,'microsoft'), 'Microsoft',
                           ifelse(str_detect(employer_name,'amazon'),'Amazon',
                           ifelse(str_detect(employer_name,'facebook'),'Facebook',
                           ifelse(str_detect(employer_name,'google'),'Google',
-                          ifelse(str_detect(employer_name, 'ibm'),'IBM',employer_name))))))) 
+                          ifelse(str_detect(employer_name, 'ibm'),'IBM',employer_name)))))))
   </code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
@@ -1998,10 +1998,10 @@ filtered_job_all &lt;- DATA %&gt;%
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZmlsdGVyZWRfam9iX2FsbCAlPiUgXG4gIGZpbHRlcihlbXBsb3llcl9uYW1lID09ICdJQk0nKSAlPiUgXG4gIGdyb3VwX2J5KGRhdGFfam9iX3RpdGxlLCB5ZWFyKSAlPiUgXG4gIHN1bW1hcmlzZShuID0gbigpKSAlPiUgXG4gIGdncGxvdChhZXMoeCA9IHllYXIsIHkgPSBuKSkrXG4gIGdlb21fcG9pbnQoYWVzKGNvbG9yID0gZGF0YV9qb2JfdGl0bGUpLCBzaXplID0gMikgK1xuICBnZW9tX2xpbmUoYWVzKGNvbG9yID0gZGF0YV9qb2JfdGl0bGUpLHNpemUgPSAxLjIpK1xuICBsYWJzKCB5ID0gXCJcIiwgeCA9IFwiWWVhclwiLCB0aXRsZSA9IFwiXCIsIGZhY2UgPSBcImJvbGRcIiwgc2l6ZSA9IDE0KStcbiAgdGhlbWVfbWluaW1hbCgpK1xuICB0aGVtZShsZWdlbmQucG9zaXRpb24gPSBcInRvcFwiLFxuICAgICAgICBheGlzLnRleHQgPSBlbGVtZW50X3RleHQoc2l6ZSA9IDE1KSxcbiAgICAgICAgYXhpcy50aXRsZS54ID0gZWxlbWVudF90ZXh0KHNpemUgPSAxNSlcbiAgICAgICAgKSArXG4gIHRoZW1lKHBsb3QudGl0bGUgPSBlbGVtZW50X3RleHQoaGp1c3Q9MC41KSlcbmBgYCJ9 -->
-<pre class="r"><code>filtered_job_all %&gt;% 
-  filter(employer_name == 'IBM') %&gt;% 
-  group_by(data_job_title, year) %&gt;% 
-  summarise(n = n()) %&gt;% 
+<pre class="r"><code>filtered_job_all %&gt;%
+  filter(employer_name == 'IBM') %&gt;%
+  group_by(data_job_title, year) %&gt;%
+  summarise(n = n()) %&gt;%
   ggplot(aes(x = year, y = n))+
   geom_point(aes(color = data_job_title), size = 2) +
   geom_line(aes(color = data_job_title),size = 1.2)+
@@ -2021,10 +2021,10 @@ filtered_job_all &lt;- DATA %&gt;%
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZmlsdGVyZWRfam9iX2FsbCAlPiUgXG4gIGZpbHRlcihzdHJfZGV0ZWN0KGVtcGxveWVyX25hbWUsICdpbmZvc3lzJykpICU+JSBcbiAgZ3JvdXBfYnkoZGF0YV9qb2JfdGl0bGUsIHllYXIpICU+JSBcbiAgc3VtbWFyaXNlKG4gPSBuKCkpICU+JSBcbiAgZ2dwbG90KGFlcyh4ID0geWVhciwgeSA9IG4pKStcbiAgZ2VvbV9wb2ludChhZXMoY29sb3IgPSBkYXRhX2pvYl90aXRsZSksIHNpemUgPSAyKSArXG4gIGdlb21fbGluZShhZXMoY29sb3IgPSBkYXRhX2pvYl90aXRsZSksc2l6ZSA9IDEuMikrXG4gIGxhYnMoIHkgPSBcIlwiLCB4ID0gXCJZZWFyXCIsIHRpdGxlID0gXCJcIiwgZmFjZSA9IFwiYm9sZFwiLCBzaXplID0gMTQpK1xuICB0aGVtZV9taW5pbWFsKCkrXG4gIHRoZW1lKGxlZ2VuZC5wb3NpdGlvbiA9IFwidG9wXCIsXG4gICAgICAgIGF4aXMudGV4dCA9IGVsZW1lbnRfdGV4dChzaXplID0gMTUpLFxuICAgICAgICBheGlzLnRpdGxlLnggPSBlbGVtZW50X3RleHQoc2l6ZSA9IDE1KVxuICAgICAgICApICtcbiAgdGhlbWUocGxvdC50aXRsZSA9IGVsZW1lbnRfdGV4dChoanVzdD0wLjUpKVxuYGBgIn0= -->
-<pre class="r"><code>filtered_job_all %&gt;% 
-  filter(str_detect(employer_name, 'infosys')) %&gt;% 
-  group_by(data_job_title, year) %&gt;% 
-  summarise(n = n()) %&gt;% 
+<pre class="r"><code>filtered_job_all %&gt;%
+  filter(str_detect(employer_name, 'infosys')) %&gt;%
+  group_by(data_job_title, year) %&gt;%
+  summarise(n = n()) %&gt;%
   ggplot(aes(x = year, y = n))+
   geom_point(aes(color = data_job_title), size = 2) +
   geom_line(aes(color = data_job_title),size = 1.2)+
@@ -2044,10 +2044,10 @@ filtered_job_all &lt;- DATA %&gt;%
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZmlsdGVyZWRfam9iX2FsbCAlPiUgXG4gIGZpbHRlcihlbXBsb3llcl9uYW1lID09ICdNaWNyb3NvZnQnKSAlPiUgXG4gIGdyb3VwX2J5KGRhdGFfam9iX3RpdGxlLCB5ZWFyKSAlPiUgXG4gIHN1bW1hcmlzZShuID0gbigpKSAlPiUgXG4gIGdncGxvdChhZXMoeCA9IHllYXIsIHkgPSBuKSkrXG4gIGdlb21fcG9pbnQoYWVzKGNvbG9yID0gZGF0YV9qb2JfdGl0bGUpLCBzaXplID0gMikgK1xuICBnZW9tX2xpbmUoYWVzKGNvbG9yID0gZGF0YV9qb2JfdGl0bGUpLHNpemUgPSAxLjIpK1xuICBsYWJzKCB5ID0gXCJcIiwgeCA9IFwiWWVhclwiLCB0aXRsZSA9IFwiXCIsIGZhY2UgPSBcImJvbGRcIiwgc2l6ZSA9IDE0KStcbiAgdGhlbWVfbWluaW1hbCgpK1xuICB0aGVtZShsZWdlbmQucG9zaXRpb24gPSBcInRvcFwiLFxuICAgICAgICBheGlzLnRleHQgPSBlbGVtZW50X3RleHQoc2l6ZSA9IDE1KSxcbiAgICAgICAgYXhpcy50aXRsZS54ID0gZWxlbWVudF90ZXh0KHNpemUgPSAxNSlcbiAgICAgICAgKSArXG4gIHRoZW1lKHBsb3QudGl0bGUgPSBlbGVtZW50X3RleHQoaGp1c3Q9MC41KSlcbmBgYCJ9 -->
-<pre class="r"><code>filtered_job_all %&gt;% 
-  filter(employer_name == 'Microsoft') %&gt;% 
-  group_by(data_job_title, year) %&gt;% 
-  summarise(n = n()) %&gt;% 
+<pre class="r"><code>filtered_job_all %&gt;%
+  filter(employer_name == 'Microsoft') %&gt;%
+  group_by(data_job_title, year) %&gt;%
+  summarise(n = n()) %&gt;%
   ggplot(aes(x = year, y = n))+
   geom_point(aes(color = data_job_title), size = 2) +
   geom_line(aes(color = data_job_title),size = 1.2)+
@@ -2064,13 +2064,14 @@ filtered_job_all &lt;- DATA %&gt;%
 <!-- rnb-plot-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+<p>clean zip code</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZmlsdGVyZWRfam9iX2FsbCAlPiUgXG4gIGZpbHRlcihlbXBsb3llcl9uYW1lID09ICdBbWF6b24nKSAlPiUgXG4gIGdyb3VwX2J5KGRhdGFfam9iX3RpdGxlLCB5ZWFyKSAlPiUgXG4gIHN1bW1hcmlzZShuID0gbigpKSAlPiUgXG4gIGdncGxvdChhZXMoeCA9IHllYXIsIHkgPSBuKSkrXG4gIGdlb21fcG9pbnQoYWVzKGNvbG9yID0gZGF0YV9qb2JfdGl0bGUpLCBzaXplID0gMikgK1xuICBnZW9tX2xpbmUoYWVzKGNvbG9yID0gZGF0YV9qb2JfdGl0bGUpLHNpemUgPSAxLjIpK1xuICBsYWJzKCB5ID0gXCJcIiwgeCA9IFwiWWVhclwiLCB0aXRsZSA9IFwiXCIsIGZhY2UgPSBcImJvbGRcIiwgc2l6ZSA9IDE0KStcbiAgdGhlbWVfbWluaW1hbCgpK1xuICB0aGVtZShsZWdlbmQucG9zaXRpb24gPSBcInRvcFwiLFxuICAgICAgICBheGlzLnRleHQgPSBlbGVtZW50X3RleHQoc2l6ZSA9IDE1KSxcbiAgICAgICAgYXhpcy50aXRsZS54ID0gZWxlbWVudF90ZXh0KHNpemUgPSAxNSlcbiAgICAgICAgKSArXG4gIHRoZW1lKHBsb3QudGl0bGUgPSBlbGVtZW50X3RleHQoaGp1c3Q9MC41KSlcbmBgYCJ9 -->
-<pre class="r"><code>filtered_job_all %&gt;% 
-  filter(employer_name == 'Amazon') %&gt;% 
-  group_by(data_job_title, year) %&gt;% 
-  summarise(n = n()) %&gt;% 
+<pre class="r"><code>filtered_job_all %&gt;%
+  filter(employer_name == 'Amazon') %&gt;%
+  group_by(data_job_title, year) %&gt;%
+  summarise(n = n()) %&gt;%
   ggplot(aes(x = year, y = n))+
   geom_point(aes(color = data_job_title), size = 2) +
   geom_line(aes(color = data_job_title),size = 1.2)+
@@ -2090,10 +2091,10 @@ filtered_job_all &lt;- DATA %&gt;%
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZmlsdGVyZWRfam9iX2FsbCAlPiUgXG4gIGZpbHRlcihzdHJfZGV0ZWN0KGVtcGxveWVyX25hbWUsIFwiZGVsb2l0dGVcIikpICU+JSBcbiAgZ3JvdXBfYnkoZGF0YV9qb2JfdGl0bGUsIHllYXIpICU+JSBcbiAgc3VtbWFyaXNlKG4gPSBuKCkpICU+JSBcbiAgZ2dwbG90KGFlcyh4ID0geWVhciwgeSA9IG4pKStcbiAgZ2VvbV9wb2ludChhZXMoY29sb3IgPSBkYXRhX2pvYl90aXRsZSksIHNpemUgPSAyKSArXG4gIGdlb21fbGluZShhZXMoY29sb3IgPSBkYXRhX2pvYl90aXRsZSksc2l6ZSA9IDEuMikrXG4gIGxhYnMoIHkgPSBcIlwiLCB4ID0gXCJZZWFyXCIsIHRpdGxlID0gXCJcIiwgZmFjZSA9IFwiYm9sZFwiLCBzaXplID0gMTQpK1xuICB0aGVtZV9taW5pbWFsKCkrXG4gIHRoZW1lKGxlZ2VuZC5wb3NpdGlvbiA9IFwidG9wXCIsXG4gICAgICAgIGF4aXMudGV4dCA9IGVsZW1lbnRfdGV4dChzaXplID0gMTUpLFxuICAgICAgICBheGlzLnRpdGxlLnggPSBlbGVtZW50X3RleHQoc2l6ZSA9IDE1KVxuICAgICAgICApICtcbiAgdGhlbWUocGxvdC50aXRsZSA9IGVsZW1lbnRfdGV4dChoanVzdD0wLjUpKVxuYGBgIn0= -->
-<pre class="r"><code>filtered_job_all %&gt;% 
-  filter(str_detect(employer_name, &quot;deloitte&quot;)) %&gt;% 
-  group_by(data_job_title, year) %&gt;% 
-  summarise(n = n()) %&gt;% 
+<pre class="r"><code>filtered_job_all %&gt;%
+  filter(str_detect(employer_name, &quot;deloitte&quot;)) %&gt;%
+  group_by(data_job_title, year) %&gt;%
+  summarise(n = n()) %&gt;%
   ggplot(aes(x = year, y = n))+
   geom_point(aes(color = data_job_title), size = 2) +
   geom_line(aes(color = data_job_title),size = 1.2)+
@@ -2113,10 +2114,10 @@ filtered_job_all &lt;- DATA %&gt;%
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZmlsdGVyZWRfam9iX2FsbCAlPiUgXG4gIGZpbHRlcihzdHJfZGV0ZWN0KGVtcGxveWVyX25hbWUsIFwiRmFjZWJvb2tcIikpICU+JSBcbiAgZ3JvdXBfYnkoZGF0YV9qb2JfdGl0bGUsIHllYXIpICU+JSBcbiAgc3VtbWFyaXNlKG4gPSBuKCkpICU+JSBcbiAgZ2dwbG90KGFlcyh4ID0geWVhciwgeSA9IG4pKStcbiAgZ2VvbV9wb2ludChhZXMoY29sb3IgPSBkYXRhX2pvYl90aXRsZSksIHNpemUgPSAyKSArXG4gIGdlb21fbGluZShhZXMoY29sb3IgPSBkYXRhX2pvYl90aXRsZSksc2l6ZSA9IDEuMikrXG4gIGxhYnMoIHkgPSBcIlwiLCB4ID0gXCJZZWFyXCIsIHRpdGxlID0gXCJcIiwgZmFjZSA9IFwiYm9sZFwiLCBzaXplID0gMTQpK1xuICB0aGVtZV9taW5pbWFsKCkrXG4gIHRoZW1lKGxlZ2VuZC5wb3NpdGlvbiA9IFwidG9wXCIsXG4gICAgICAgIGF4aXMudGV4dCA9IGVsZW1lbnRfdGV4dChzaXplID0gMTUpLFxuICAgICAgICBheGlzLnRpdGxlLnggPSBlbGVtZW50X3RleHQoc2l6ZSA9IDE1KVxuICAgICAgICApICtcbiAgdGhlbWUocGxvdC50aXRsZSA9IGVsZW1lbnRfdGV4dChoanVzdD0wLjUpKVxuYGBgIn0= -->
-<pre class="r"><code>filtered_job_all %&gt;% 
-  filter(str_detect(employer_name, &quot;Facebook&quot;)) %&gt;% 
-  group_by(data_job_title, year) %&gt;% 
-  summarise(n = n()) %&gt;% 
+<pre class="r"><code>filtered_job_all %&gt;%
+  filter(str_detect(employer_name, &quot;Facebook&quot;)) %&gt;%
+  group_by(data_job_title, year) %&gt;%
+  summarise(n = n()) %&gt;%
   ggplot(aes(x = year, y = n))+
   geom_point(aes(color = data_job_title), size = 2) +
   geom_line(aes(color = data_job_title),size = 1.2)+
@@ -2136,10 +2137,10 @@ filtered_job_all &lt;- DATA %&gt;%
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZmlsdGVyZWRfam9iX2FsbCAlPiUgXG4gIGZpbHRlcihzdHJfZGV0ZWN0KGVtcGxveWVyX25hbWUsIFwiQXBwbGVcIikpICU+JSBcbiAgZ3JvdXBfYnkoZGF0YV9qb2JfdGl0bGUsIHllYXIpICU+JSBcbiAgc3VtbWFyaXNlKG4gPSBuKCkpICU+JSBcbiAgZ2dwbG90KGFlcyh4ID0geWVhciwgeSA9IG4pKStcbiAgZ2VvbV9wb2ludChhZXMoY29sb3IgPSBkYXRhX2pvYl90aXRsZSksIHNpemUgPSAyKSArXG4gIGdlb21fbGluZShhZXMoY29sb3IgPSBkYXRhX2pvYl90aXRsZSksc2l6ZSA9IDEuMikrXG4gIGxhYnMoIHkgPSBcIlwiLCB4ID0gXCJZZWFyXCIsIHRpdGxlID0gXCJcIiwgZmFjZSA9IFwiYm9sZFwiLCBzaXplID0gMTQpK1xuICB0aGVtZV9taW5pbWFsKCkrXG4gIHRoZW1lKGxlZ2VuZC5wb3NpdGlvbiA9IFwidG9wXCIsXG4gICAgICAgIGF4aXMudGV4dCA9IGVsZW1lbnRfdGV4dChzaXplID0gMTUpLFxuICAgICAgICBheGlzLnRpdGxlLnggPSBlbGVtZW50X3RleHQoc2l6ZSA9IDE1KVxuICAgICAgICApICtcbiAgdGhlbWUocGxvdC50aXRsZSA9IGVsZW1lbnRfdGV4dChoanVzdD0wLjUpKVxuYGBgIn0= -->
-<pre class="r"><code>filtered_job_all %&gt;% 
-  filter(str_detect(employer_name, &quot;Apple&quot;)) %&gt;% 
-  group_by(data_job_title, year) %&gt;% 
-  summarise(n = n()) %&gt;% 
+<pre class="r"><code>filtered_job_all %&gt;%
+  filter(str_detect(employer_name, &quot;Apple&quot;)) %&gt;%
+  group_by(data_job_title, year) %&gt;%
+  summarise(n = n()) %&gt;%
   ggplot(aes(x = year, y = n))+
   geom_point(aes(color = data_job_title), size = 2) +
   geom_line(aes(color = data_job_title),size = 1.2)+

@@ -16,7 +16,7 @@ library(zipcode)
 ## Import data
 
 ```{r warning=FALSE}
-H1B18<-read_csv(unzip("data/h1b18.csv.zip")) %>% 
+H1B18<-read_csv(unzip("data/h1b18.csv.zip")) %>%
   clean_names()
 file.remove("h1b18.csv")
 ```
@@ -29,38 +29,38 @@ file.remove("h1b18.csv")
 
 Filter H1B visa_class
 ```{r}
-H1B18_clean <- H1B18 %>% 
+H1B18_clean <- H1B18 %>%
   filter(visa_class=="H-1B")
 ```
 
-Uppercase -> lowercase 
+Uppercase -> lowercase
 ```{r}
-H1B18_clean <- H1B18_clean %>% 
-  mutate(case_status=tolower(case_status)) %>% 
-  mutate(visa_class = tolower(visa_class)) %>% 
-  mutate(employer_name=tolower(employer_name)) %>% 
-  mutate(employer_city=tolower(employer_city)) %>% 
-  mutate(employer_state=tolower(employer_state)) %>% 
-  mutate(job_title=tolower(job_title)) %>% 
+H1B18_clean <- H1B18_clean %>%
+  mutate(case_status=tolower(case_status)) %>%
+  mutate(visa_class = tolower(visa_class)) %>%
+  mutate(employer_name=tolower(employer_name)) %>%
+  mutate(employer_city=tolower(employer_city)) %>%
+  mutate(employer_state=tolower(employer_state)) %>%
+  mutate(job_title=tolower(job_title)) %>%
   mutate(soc_name=tolower(soc_name)) %>%  
-  mutate(pw_unit_of_pay = tolower(pw_unit_of_pay)) %>% 
+  mutate(pw_unit_of_pay = tolower(pw_unit_of_pay)) %>%
   mutate(wage_unit_of_pay = tolower(wage_unit_of_pay))
 ```
 
 Lubridate all of the date
 ```{r}
-H1B18_clean <- H1B18_clean %>% 
-  mutate(case_submitted = mdy(case_submitted)) %>% 
-  mutate(decision_date = mdy(decision_date)) %>% 
-  mutate(employment_start_date = mdy(employment_start_date)) %>% 
-  mutate(employment_end_date = mdy(employment_end_date)) 
+H1B18_clean <- H1B18_clean %>%
+  mutate(case_submitted = mdy(case_submitted)) %>%
+  mutate(decision_date = mdy(decision_date)) %>%
+  mutate(employment_start_date = mdy(employment_start_date)) %>%
+  mutate(employment_end_date = mdy(employment_end_date))
 ```
 
 Logical column transfer
 ```{r}
-H1B18_clean <- H1B18_clean %>% 
+H1B18_clean <- H1B18_clean %>%
   mutate(full_time_position = case_when(full_time_position=="Y"~1,
-                                        full_time_position=="N"~0)) %>% 
+                                        full_time_position=="N"~0)) %>%
   mutate(full_time_position=factor(full_time_position))
 ```
 
@@ -69,8 +69,8 @@ factor column transfer
 # unique(H1B18$pw_unit_of_pay)
 # unique(H1B18$wage_unit_of_pay)
 
-H1B18_clean <- H1B18_clean %>% 
-  mutate(pw_unit_of_pay = factor(pw_unit_of_pay)) %>% 
+H1B18_clean <- H1B18_clean %>%
+  mutate(pw_unit_of_pay = factor(pw_unit_of_pay)) %>%
   mutate(wage_unit_of_pay = factor(wage_unit_of_pay))
 ```
 
@@ -79,7 +79,7 @@ clean zip code
 H1B18_clean$employer_postal_code <- strtrim(H1B18_clean$employer_postal_code, 5)
 ```
 
-Remove all of missing value 
+Remove all of missing value
 ```{r}
 H1B18_clean <- na.omit(H1B18_clean)
 ```
@@ -100,8 +100,8 @@ zipcode <- zipcode[complete.cases(zipcode), ]
 names(zipcode)
 names(H1B18_clean)
 
-H1B18_clean <- H1B18_clean %>% 
-  inner_join(zipcode, c("employer_postal_code" = "zip")) %>% 
+H1B18_clean <- H1B18_clean %>%
+  inner_join(zipcode, c("employer_postal_code" = "zip")) %>%
   select(-c("visa_class", "city", "state"))
 
 names(H1B18_clean)
@@ -114,4 +114,3 @@ names(H1B18_clean)
 ```{r}
 H1B18 <- H1B18_clean
 ```
-
