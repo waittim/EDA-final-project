@@ -1,0 +1,235 @@
+---
+title: "20-soc-analysis"
+output: html_notebook
+---
+
+
+```{r}
+h1b_df <- DATA
+```
+
+#soc field grouped by year
+```{r}
+h1b_df %>% 
+  filter(year == 2018)%>% 
+  group_by(soc_field) %>% 
+  summarise(n = n())  %>% 
+  arrange(-n)
+
+top_6_soc <- h1b_df %>% 
+  group_by(soc_field, year) %>% 
+  summarise(n = n()) %>% 
+  filter(soc_field %in% c(15,13,17,11,19,29)) %>% 
+  ungroup()
+
+```
+soc fields 15, 13, 17, 11 and 19 have had the most aplications
+    15-0000 Computer and Mathematical Occupations
+    13-0000 Business and Financial Operations Occupations
+    17-0000 Architecture and Engineering Occupations
+    11-0000 Management Occupations
+    19-0000 Life, Physical, and Social Science Occupations
+    29-0000 Healthcare Practitioners and Technical Occupations
+    
+    
+```{r}
+top_6_soc$soc_name[top_6_soc$soc_field == 15] <- 'Computer and Mathematical Occupations'
+top_6_soc$soc_name[top_6_soc$soc_field == 13] <- 'Business and Financial Operations Occupations'
+top_6_soc$soc_name[top_6_soc$soc_field == 17] <- 'Architecture and Engineering Occupations'
+top_6_soc$soc_name[top_6_soc$soc_field == 11] <- 'Management Occupations'
+top_6_soc$soc_name[top_6_soc$soc_field == 19] <- 'Life, Physical, and Social Science Occupations'
+top_6_soc$soc_name[top_6_soc$soc_field == 29] <- 'Healthcare Practitioners and Technical Occupations'
+
+```
+
+    
+
+#Analysis of all other except for 15
+```{r}
+top_6_soc %>% 
+  filter(!soc_field== 15) %>% 
+  ggplot(aes(x = year, y = n))+
+  geom_line(aes(color = soc_name), size = 1.05)+
+  labs( y = "Number of Applications", x = "Year")+
+  theme_bw()
+```
+
+
+#Analysis of 15 by itself
+```{r}
+top_6_soc %>% 
+  filter(soc_field == 15) %>% 
+  ggplot(aes(x = year, y = n))+
+  geom_line(color = 'red', size = 1.15)+
+  theme_bw()
+```
+
+#Analysis of top job titles in soc == 15
+```{r}
+soc_tech_14 <- h1b_df %>% 
+  filter(year == 2014) %>% 
+  filter(soc_field == 15) %>% 
+  group_by(employer_name) %>% 
+  summarise(n = n()) %>% 
+  arrange(-n) %>% 
+  ungroup
+
+soc_tech_18 <- h1b_df %>% 
+  filter(year == 2018) %>% 
+  filter(soc_field == 15) %>% 
+  group_by(employer_name) %>% 
+  summarise(n = n()) %>% 
+  arrange(-n) %>% 
+  ungroup
+
+soc_tech_16 <- h1b_df %>% 
+  filter(year == 2018) %>% 
+  filter(soc_field == 15) %>% 
+  group_by(employer_name) %>% 
+  summarise(n = n()) %>% 
+  arrange(-n) %>% 
+  ungroup
+
+soc_tech_year <- h1b_df %>% 
+  filter(soc_field == 15) %>% 
+  group_by(employer_name, year) %>% 
+  summarise(n = n()) %>% 
+  arrange(-n) %>% 
+  ungroup
+
+
+soc_tech_year <- h1b_df %>% 
+  filter(soc_field == 15) %>% 
+  group_by(employer_name, year) %>% 
+  summarise(n = n()) %>% 
+  arrange(-n) %>% 
+  ungroup
+
+
+h1b_df %>% 
+  mutate(job_title = ifelse(str_detect(job_title,"data"), 'data', "no")) %>% 
+  group_by(job_title, year) %>% 
+  summarise(n = n()) %>% 
+  ggplot(aes(x = year, y = n))+
+  geom_line(aes(color = job_title), size = 1.05)+
+  labs( y = "Number of Applications", x = "Year")+
+  theme_bw()
+  
+
+h1b_df %>% 
+  filter(str_detect(job_title,"data|analyst|machine learning|deep learning|nlp|intelligence|business  nalyst")==TRUE) %>% 
+  filter(str_detect(job_title, "programmer|systems|technology|quality|management|jc65|budget|test" )==FALSE) %>% 
+  group_by(job_title) %>% 
+  summarise(n = n()) %>% 
+  arrange(-n)
+
+
+
+data <- c("business analyst", "analyst", "data", "software")
+
+
+!str_detect(data, "data|analyst|machine learning|deep learning|nlp|intelligence|business analyst")
+
+```
+
+```{r}
+soc_10_14 <- soc_tech_14 %>% 
+  top_n(15)
+
+soc_10_18 <- soc_tech_18 %>% 
+  top_n(15)
+
+soc_top <- as.vector(intersect(soc_10_14$employer_name,soc_10_18$employer_name))
+soc_top
+
+```
+
+#Analysis of how the #of applications for top companies has changed
+
+```{r}
+soc_tech_year %>% 
+  filter(employer_name %in% soc_top) %>% 
+  ggplot(aes(x = year, y = n))+
+  geom_line(aes(color = employer_name), size = 1.05)+
+  labs( y = "Number of Applications", x = "Year")+
+  theme_bw()
+  
+```
+
+#Top Tech Companies
+```{r}
+#Apple
+soc_tech_year %>% 
+  filter(str_detect(employer_name, 'apple inc')) %>% 
+  mutate(employer_name = 'Apple')
+
+#Microsoft
+soc_tech_year %>% 
+  filter(str_detect(employer_name, 'microsoft')) %>% 
+  mutate(employer_name = 'Microsoft')
+
+#Samsung
+soc_tech_year %>% 
+  filter(str_detect(employer_name, 'samsung')) %>% 
+  mutate(employer_name = 'Samsung')
+
+#Intel
+soc_tech_year %>% 
+  filter(str_detect(employer_name, 'intel corp|intel mob|intel ame|intel mas|intel fed')) %>% 
+  mutate(employer_name = 'Intel')
+
+#Google
+soc_tech_year %>% 
+  filter(str_detect(employer_name, 'google'))%>% 
+  mutate(employer_name = 'Google')
+  
+#Facebook
+soc_tech_year %>% 
+  filter(str_detect(employer_name, 'facebook')) %>% 
+  mutate(employer_name = 'Facebook')
+
+#IBM
+soc_tech_year %>% 
+  filter(str_detect(employer_name, 'ibm')) %>% 
+  mutate(employer_name = 'IBM')
+
+#Amazon
+soc_tech_year %>% 
+  filter(str_detect(employer_name, 'amazon')) 
+
+#Netflix
+soc_tech_year %>% 
+  filter(str_detect(employer_name, 'netflix')) 
+
+#LinkedIn
+soc_tech_year %>% 
+  filter(str_detect(employer_name, 'linkedin')) 
+
+#Cisco
+soc_tech_year %>% 
+  filter(str_detect(employer_name, 'c')) 
+
+
+
+soc_tech_top <- soc_tech_year %>% 
+  mutate(employer_name = ifelse(str_detect(employer_name,'apple inc'), 'Apple',
+                          ifelse(str_detect(employer_name,'microsoft'), 'Microsoft',
+                          ifelse(str_detect(employer_name,'amazon'),'Amazon',
+                          ifelse(str_detect(employer_name,'cisco sys'),'Cisco',
+                          ifelse(str_detect(employer_name,'facebook'),'Facebook',
+                          ifelse(str_detect(employer_name,'google'),'Google',
+                          ifelse(str_detect(employer_name, 'ibm'),'IBM','no'))))))))
+
+         
+soc_tech_top %>% 
+  group_by(employer_name, year) %>% 
+  summarise(tot = sum(n)) %>% 
+  filter(!employer_name %in% c("no","IBM", NA)) %>% 
+  ungroup() %>% 
+  ggplot(aes(x = year, y = tot))+
+  geom_line(aes(color = employer_name), size = 1.05)+
+  labs( y = "Number of Applications", x = "Year")+
+  theme_bw()
+
+```
+

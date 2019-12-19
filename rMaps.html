@@ -1,0 +1,2160 @@
+<!doctype HTML>
+<meta charset = 'utf-8'>
+<html>
+  <head>
+    
+    
+    
+    <script src='http://d3js.org/d3.v3.min.js' type='text/javascript'></script>
+    
+    <script src='http://d3js.org/topojson.v1.min.js' type='text/javascript'></script>
+    
+    <script src='http://datamaps.github.io/scripts/datamaps.all.min.js' type='text/javascript'></script>
+    
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.min.js' type='text/javascript'></script>
+    
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.1/angular.min.js' type='text/javascript'></script>
+    
+    
+    <style>
+    .rChart {
+      display: block;
+      margin-left: auto; 
+      margin-right: auto;
+      width: 800px;
+      height: 400px;
+    }  
+    </style>
+    
+  </head>
+  <body ng-app ng-controller='rChartsCtrl'>
+    
+    
+            <div class='container'>
+              <input id='slider' type='range' min=2014 max=2018 ng-model='year' width=200>
+              <span ng-bind='year'></span>
+              <div id='chart17cec66e9478' class='rChart datamaps'></div>          
+            </div>
+            <script>
+              function rChartsCtrl($scope){
+                $scope.year = 2014;
+                $scope.$watch('year', function(newYear){
+                  mapchart17cec66e9478.updateChoropleth(chartParams.newData[newYear]);
+                })
+              }
+           </script>    
+    <script id='popup-template' type='text/x-handlebars-template'>
+    
+</script>
+<script>
+  var chartParams = {
+ "dom": "chart17cec66e9478",
+"width":      800,
+"height":      400,
+"scope": "usa",
+"fills": {
+ "(1,178]": "#F7FBFF",
+"(178,464]": "#DEEBF7",
+"(464,1.45e+03]": "#C6DBEF",
+"(1.45e+03,2.21e+03]": "#9ECAE1",
+"(2.21e+03,3.31e+03]": "#6BAED6",
+"(3.31e+03,6.49e+03]": "#4292C6",
+"(6.49e+03,1.44e+04]": "#2171B5",
+"(1.44e+04,2.14e+04]": "#08519C",
+"(2.14e+04,1.13e+05]": "#08306B" 
+},
+"legend": false,
+"labels": true,
+"geographyConfig": {
+ "popupTemplate": function(geo, data) {return '<div class=\"hoverinfo\"><strong>' + data.worksite_state_abb + '<br>' + data.num + '</strong></div>';} 
+},
+"bodyattrs": "ng-app ng-controller='rChartsCtrl'",
+"newData": {
+ "2014": {
+ "AK": {
+ "worksite_state_abb": "AK",
+"year":     2014,
+"num": 199,
+"fillKey": "(178,464]" 
+},
+"AL": {
+ "worksite_state_abb": "AL",
+"year":     2014,
+"num": 1489,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"AR": {
+ "worksite_state_abb": "AR",
+"year":     2014,
+"num": 2112,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"AZ": {
+ "worksite_state_abb": "AZ",
+"year":     2014,
+"num": 6486,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"CA": {
+ "worksite_state_abb": "CA",
+"year":     2014,
+"num": 84136,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"CO": {
+ "worksite_state_abb": "CO",
+"year":     2014,
+"num": 4858,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"CT": {
+ "worksite_state_abb": "CT",
+"year":     2014,
+"num": 7853,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"DC": {
+ "worksite_state_abb": "DC",
+"year":     2014,
+"num": 3128,
+"fillKey": "(2.21e+03,3.31e+03]" 
+},
+"DE": {
+ "worksite_state_abb": "DE",
+"year":     2014,
+"num": 2738,
+"fillKey": "(2.21e+03,3.31e+03]" 
+},
+"FL": {
+ "worksite_state_abb": "FL",
+"year":     2014,
+"num": 15322,
+"fillKey": "(1.44e+04,2.14e+04]" 
+},
+"GA": {
+ "worksite_state_abb": "GA",
+"year":     2014,
+"num": 15953,
+"fillKey": "(1.44e+04,2.14e+04]" 
+},
+"GU": {
+ "worksite_state_abb": "GU",
+"year":     2014,
+"num": 217,
+"fillKey": "(178,464]" 
+},
+"HI": {
+ "worksite_state_abb": "HI",
+"year":     2014,
+"num": 473,
+"fillKey": "(464,1.45e+03]" 
+},
+"IA": {
+ "worksite_state_abb": "IA",
+"year":     2014,
+"num": 2747,
+"fillKey": "(2.21e+03,3.31e+03]" 
+},
+"ID": {
+ "worksite_state_abb": "ID",
+"year":     2014,
+"num": 522,
+"fillKey": "(464,1.45e+03]" 
+},
+"IL": {
+ "worksite_state_abb": "IL",
+"year":     2014,
+"num": 24100,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"IN": {
+ "worksite_state_abb": "IN",
+"year":     2014,
+"num": 4603,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"KS": {
+ "worksite_state_abb": "KS",
+"year":     2014,
+"num": 2085,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"KY": {
+ "worksite_state_abb": "KY",
+"year":     2014,
+"num": 1940,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"LA": {
+ "worksite_state_abb": "LA",
+"year":     2014,
+"num": 1526,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"MA": {
+ "worksite_state_abb": "MA",
+"year":     2014,
+"num": 17003,
+"fillKey": "(1.44e+04,2.14e+04]" 
+},
+"MD": {
+ "worksite_state_abb": "MD",
+"year":     2014,
+"num": 8006,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"ME": {
+ "worksite_state_abb": "ME",
+"year":     2014,
+"num": 660,
+"fillKey": "(464,1.45e+03]" 
+},
+"MI": {
+ "worksite_state_abb": "MI",
+"year":     2014,
+"num": 11790,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"MN": {
+ "worksite_state_abb": "MN",
+"year":     2014,
+"num": 8010,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"MO": {
+ "worksite_state_abb": "MO",
+"year":     2014,
+"num": 5346,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"MP": {
+ "worksite_state_abb": "MP",
+"year":     2014,
+"num": 97,
+"fillKey": "(1,178]" 
+},
+"MS": {
+ "worksite_state_abb": "MS",
+"year":     2014,
+"num": 569,
+"fillKey": "(464,1.45e+03]" 
+},
+"MT": {
+ "worksite_state_abb": "MT",
+"year":     2014,
+"num": 106,
+"fillKey": "(1,178]" 
+},
+"NC": {
+ "worksite_state_abb": "NC",
+"year":     2014,
+"num": 11893,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"ND": {
+ "worksite_state_abb": "ND",
+"year":     2014,
+"num": 414,
+"fillKey": "(178,464]" 
+},
+"NE": {
+ "worksite_state_abb": "NE",
+"year":     2014,
+"num": 1410,
+"fillKey": "(464,1.45e+03]" 
+},
+"NH": {
+ "worksite_state_abb": "NH",
+"year":     2014,
+"num": 1453,
+"fillKey": "(464,1.45e+03]" 
+},
+"NJ": {
+ "worksite_state_abb": "NJ",
+"year":     2014,
+"num": 32692,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"NM": {
+ "worksite_state_abb": "NM",
+"year":     2014,
+"num": 755,
+"fillKey": "(464,1.45e+03]" 
+},
+"NV": {
+ "worksite_state_abb": "NV",
+"year":     2014,
+"num": 1018,
+"fillKey": "(464,1.45e+03]" 
+},
+"NY": {
+ "worksite_state_abb": "NY",
+"year":     2014,
+"num": 41618,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"OH": {
+ "worksite_state_abb": "OH",
+"year":     2014,
+"num": 11974,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"OK": {
+ "worksite_state_abb": "OK",
+"year":     2014,
+"num": 1577,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"OR": {
+ "worksite_state_abb": "OR",
+"year":     2014,
+"num": 4014,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"PA": {
+ "worksite_state_abb": "PA",
+"year":     2014,
+"num": 16989,
+"fillKey": "(1.44e+04,2.14e+04]" 
+},
+"PR": {
+ "worksite_state_abb": "PR",
+"year":     2014,
+"num": 163,
+"fillKey": "(1,178]" 
+},
+"RI": {
+ "worksite_state_abb": "RI",
+"year":     2014,
+"num": 2055,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"SC": {
+ "worksite_state_abb": "SC",
+"year":     2014,
+"num": 1799,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"SD": {
+ "worksite_state_abb": "SD",
+"year":     2014,
+"num": 242,
+"fillKey": "(178,464]" 
+},
+"TN": {
+ "worksite_state_abb": "TN",
+"year":     2014,
+"num": 3942,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"TX": {
+ "worksite_state_abb": "TX",
+"year":     2014,
+"num": 44626,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"UT": {
+ "worksite_state_abb": "UT",
+"year":     2014,
+"num": 2051,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"VA": {
+ "worksite_state_abb": "VA",
+"year":     2014,
+"num": 13321,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"VI": {
+ "worksite_state_abb": "VI",
+"year":     2014,
+"num": 81,
+"fillKey": "(1,178]" 
+},
+"VT": {
+ "worksite_state_abb": "VT",
+"year":     2014,
+"num": 314,
+"fillKey": "(178,464]" 
+},
+"WA": {
+ "worksite_state_abb": "WA",
+"year":     2014,
+"num": 15460,
+"fillKey": "(1.44e+04,2.14e+04]" 
+},
+"WI": {
+ "worksite_state_abb": "WI",
+"year":     2014,
+"num": 4960,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"WV": {
+ "worksite_state_abb": "WV",
+"year":     2014,
+"num": 337,
+"fillKey": "(178,464]" 
+},
+"WY": {
+ "worksite_state_abb": "WY",
+"year":     2014,
+"num": 104,
+"fillKey": "(1,178]" 
+} 
+},
+"2015": {
+ "AK": {
+ "worksite_state_abb": "AK",
+"year":     2015,
+"num": 157,
+"fillKey": "(1,178]" 
+},
+"AL": {
+ "worksite_state_abb": "AL",
+"year":     2015,
+"num": 1597,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"AR": {
+ "worksite_state_abb": "AR",
+"year":     2015,
+"num": 2773,
+"fillKey": "(2.21e+03,3.31e+03]" 
+},
+"AZ": {
+ "worksite_state_abb": "AZ",
+"year":     2015,
+"num": 7769,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"CA": {
+ "worksite_state_abb": "CA",
+"year":     2015,
+"num": 99881,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"CO": {
+ "worksite_state_abb": "CO",
+"year":     2015,
+"num": 5796,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"CT": {
+ "worksite_state_abb": "CT",
+"year":     2015,
+"num": 9038,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"DC": {
+ "worksite_state_abb": "DC",
+"year":     2015,
+"num": 3488,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"DE": {
+ "worksite_state_abb": "DE",
+"year":     2015,
+"num": 3367,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"FL": {
+ "worksite_state_abb": "FL",
+"year":     2015,
+"num": 18122,
+"fillKey": "(1.44e+04,2.14e+04]" 
+},
+"FM": {
+ "worksite_state_abb": "FM",
+"year":     2015,
+"num": 1,
+"fillKey": null 
+},
+"GA": {
+ "worksite_state_abb": "GA",
+"year":     2015,
+"num": 20557,
+"fillKey": "(1.44e+04,2.14e+04]" 
+},
+"GU": {
+ "worksite_state_abb": "GU",
+"year":     2015,
+"num": 438,
+"fillKey": "(178,464]" 
+},
+"HI": {
+ "worksite_state_abb": "HI",
+"year":     2015,
+"num": 465,
+"fillKey": "(464,1.45e+03]" 
+},
+"IA": {
+ "worksite_state_abb": "IA",
+"year":     2015,
+"num": 2803,
+"fillKey": "(2.21e+03,3.31e+03]" 
+},
+"ID": {
+ "worksite_state_abb": "ID",
+"year":     2015,
+"num": 652,
+"fillKey": "(464,1.45e+03]" 
+},
+"IL": {
+ "worksite_state_abb": "IL",
+"year":     2015,
+"num": 29296,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"IN": {
+ "worksite_state_abb": "IN",
+"year":     2015,
+"num": 5301,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"KS": {
+ "worksite_state_abb": "KS",
+"year":     2015,
+"num": 2303,
+"fillKey": "(2.21e+03,3.31e+03]" 
+},
+"KY": {
+ "worksite_state_abb": "KY",
+"year":     2015,
+"num": 2213,
+"fillKey": "(2.21e+03,3.31e+03]" 
+},
+"LA": {
+ "worksite_state_abb": "LA",
+"year":     2015,
+"num": 2212,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"MA": {
+ "worksite_state_abb": "MA",
+"year":     2015,
+"num": 20315,
+"fillKey": "(1.44e+04,2.14e+04]" 
+},
+"MD": {
+ "worksite_state_abb": "MD",
+"year":     2015,
+"num": 9279,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"ME": {
+ "worksite_state_abb": "ME",
+"year":     2015,
+"num": 659,
+"fillKey": "(464,1.45e+03]" 
+},
+"MH": {
+ "worksite_state_abb": "MH",
+"year":     2015,
+"num": 1,
+"fillKey": null 
+},
+"MI": {
+ "worksite_state_abb": "MI",
+"year":     2015,
+"num": 15828,
+"fillKey": "(1.44e+04,2.14e+04]" 
+},
+"MN": {
+ "worksite_state_abb": "MN",
+"year":     2015,
+"num": 9002,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"MO": {
+ "worksite_state_abb": "MO",
+"year":     2015,
+"num": 6210,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"MP": {
+ "worksite_state_abb": "MP",
+"year":     2015,
+"num": 61,
+"fillKey": "(1,178]" 
+},
+"MS": {
+ "worksite_state_abb": "MS",
+"year":     2015,
+"num": 638,
+"fillKey": "(464,1.45e+03]" 
+},
+"MT": {
+ "worksite_state_abb": "MT",
+"year":     2015,
+"num": 171,
+"fillKey": "(1,178]" 
+},
+"NC": {
+ "worksite_state_abb": "NC",
+"year":     2015,
+"num": 15553,
+"fillKey": "(1.44e+04,2.14e+04]" 
+},
+"ND": {
+ "worksite_state_abb": "ND",
+"year":     2015,
+"num": 461,
+"fillKey": "(178,464]" 
+},
+"NE": {
+ "worksite_state_abb": "NE",
+"year":     2015,
+"num": 1527,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"NH": {
+ "worksite_state_abb": "NH",
+"year":     2015,
+"num": 1776,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"NJ": {
+ "worksite_state_abb": "NJ",
+"year":     2015,
+"num": 42794,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"NM": {
+ "worksite_state_abb": "NM",
+"year":     2015,
+"num": 879,
+"fillKey": "(464,1.45e+03]" 
+},
+"NV": {
+ "worksite_state_abb": "NV",
+"year":     2015,
+"num": 1121,
+"fillKey": "(464,1.45e+03]" 
+},
+"NY": {
+ "worksite_state_abb": "NY",
+"year":     2015,
+"num": 47274,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"OH": {
+ "worksite_state_abb": "OH",
+"year":     2015,
+"num": 14264,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"OK": {
+ "worksite_state_abb": "OK",
+"year":     2015,
+"num": 1788,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"OR": {
+ "worksite_state_abb": "OR",
+"year":     2015,
+"num": 4186,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"PA": {
+ "worksite_state_abb": "PA",
+"year":     2015,
+"num": 20046,
+"fillKey": "(1.44e+04,2.14e+04]" 
+},
+"PR": {
+ "worksite_state_abb": "PR",
+"year":     2015,
+"num": 187,
+"fillKey": "(178,464]" 
+},
+"PW": {
+ "worksite_state_abb": "PW",
+"year":     2015,
+"num": 1,
+"fillKey": null 
+},
+"RI": {
+ "worksite_state_abb": "RI",
+"year":     2015,
+"num": 2666,
+"fillKey": "(2.21e+03,3.31e+03]" 
+},
+"SC": {
+ "worksite_state_abb": "SC",
+"year":     2015,
+"num": 2426,
+"fillKey": "(2.21e+03,3.31e+03]" 
+},
+"SD": {
+ "worksite_state_abb": "SD",
+"year":     2015,
+"num": 337,
+"fillKey": "(178,464]" 
+},
+"TN": {
+ "worksite_state_abb": "TN",
+"year":     2015,
+"num": 4557,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"TX": {
+ "worksite_state_abb": "TX",
+"year":     2015,
+"num": 54736,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"UT": {
+ "worksite_state_abb": "UT",
+"year":     2015,
+"num": 2427,
+"fillKey": "(2.21e+03,3.31e+03]" 
+},
+"VA": {
+ "worksite_state_abb": "VA",
+"year":     2015,
+"num": 16876,
+"fillKey": "(1.44e+04,2.14e+04]" 
+},
+"VI": {
+ "worksite_state_abb": "VI",
+"year":     2015,
+"num": 70,
+"fillKey": "(1,178]" 
+},
+"VT": {
+ "worksite_state_abb": "VT",
+"year":     2015,
+"num": 313,
+"fillKey": "(178,464]" 
+},
+"WA": {
+ "worksite_state_abb": "WA",
+"year":     2015,
+"num": 19095,
+"fillKey": "(1.44e+04,2.14e+04]" 
+},
+"WI": {
+ "worksite_state_abb": "WI",
+"year":     2015,
+"num": 6247,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"WV": {
+ "worksite_state_abb": "WV",
+"year":     2015,
+"num": 478,
+"fillKey": "(464,1.45e+03]" 
+},
+"WY": {
+ "worksite_state_abb": "WY",
+"year":     2015,
+"num": 118,
+"fillKey": "(1,178]" 
+} 
+},
+"2016": {
+ "AK": {
+ "worksite_state_abb": "AK",
+"year":     2016,
+"num": 154,
+"fillKey": "(1,178]" 
+},
+"AL": {
+ "worksite_state_abb": "AL",
+"year":     2016,
+"num": 1721,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"AR": {
+ "worksite_state_abb": "AR",
+"year":     2016,
+"num": 3053,
+"fillKey": "(2.21e+03,3.31e+03]" 
+},
+"AZ": {
+ "worksite_state_abb": "AZ",
+"year":     2016,
+"num": 8647,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"CA": {
+ "worksite_state_abb": "CA",
+"year":     2016,
+"num": 103361,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"CO": {
+ "worksite_state_abb": "CO",
+"year":     2016,
+"num": 5479,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"CT": {
+ "worksite_state_abb": "CT",
+"year":     2016,
+"num": 8846,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"DC": {
+ "worksite_state_abb": "DC",
+"year":     2016,
+"num": 3517,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"DE": {
+ "worksite_state_abb": "DE",
+"year":     2016,
+"num": 3058,
+"fillKey": "(2.21e+03,3.31e+03]" 
+},
+"FL": {
+ "worksite_state_abb": "FL",
+"year":     2016,
+"num": 18492,
+"fillKey": "(1.44e+04,2.14e+04]" 
+},
+"GA": {
+ "worksite_state_abb": "GA",
+"year":     2016,
+"num": 22152,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"GU": {
+ "worksite_state_abb": "GU",
+"year":     2016,
+"num": 289,
+"fillKey": "(178,464]" 
+},
+"HI": {
+ "worksite_state_abb": "HI",
+"year":     2016,
+"num": 432,
+"fillKey": "(178,464]" 
+},
+"IA": {
+ "worksite_state_abb": "IA",
+"year":     2016,
+"num": 2501,
+"fillKey": "(2.21e+03,3.31e+03]" 
+},
+"ID": {
+ "worksite_state_abb": "ID",
+"year":     2016,
+"num": 765,
+"fillKey": "(464,1.45e+03]" 
+},
+"IL": {
+ "worksite_state_abb": "IL",
+"year":     2016,
+"num": 31122,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"IN": {
+ "worksite_state_abb": "IN",
+"year":     2016,
+"num": 5357,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"KS": {
+ "worksite_state_abb": "KS",
+"year":     2016,
+"num": 2445,
+"fillKey": "(2.21e+03,3.31e+03]" 
+},
+"KY": {
+ "worksite_state_abb": "KY",
+"year":     2016,
+"num": 2323,
+"fillKey": "(2.21e+03,3.31e+03]" 
+},
+"LA": {
+ "worksite_state_abb": "LA",
+"year":     2016,
+"num": 1874,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"MA": {
+ "worksite_state_abb": "MA",
+"year":     2016,
+"num": 21543,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"MD": {
+ "worksite_state_abb": "MD",
+"year":     2016,
+"num": 9342,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"ME": {
+ "worksite_state_abb": "ME",
+"year":     2016,
+"num": 629,
+"fillKey": "(464,1.45e+03]" 
+},
+"MH": {
+ "worksite_state_abb": "MH",
+"year":     2016,
+"num": 4,
+"fillKey": "(1,178]" 
+},
+"MI": {
+ "worksite_state_abb": "MI",
+"year":     2016,
+"num": 18175,
+"fillKey": "(1.44e+04,2.14e+04]" 
+},
+"MN": {
+ "worksite_state_abb": "MN",
+"year":     2016,
+"num": 8865,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"MO": {
+ "worksite_state_abb": "MO",
+"year":     2016,
+"num": 6851,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"MP": {
+ "worksite_state_abb": "MP",
+"year":     2016,
+"num": 120,
+"fillKey": "(1,178]" 
+},
+"MS": {
+ "worksite_state_abb": "MS",
+"year":     2016,
+"num": 699,
+"fillKey": "(464,1.45e+03]" 
+},
+"MT": {
+ "worksite_state_abb": "MT",
+"year":     2016,
+"num": 158,
+"fillKey": "(1,178]" 
+},
+"NC": {
+ "worksite_state_abb": "NC",
+"year":     2016,
+"num": 16506,
+"fillKey": "(1.44e+04,2.14e+04]" 
+},
+"ND": {
+ "worksite_state_abb": "ND",
+"year":     2016,
+"num": 454,
+"fillKey": "(178,464]" 
+},
+"NE": {
+ "worksite_state_abb": "NE",
+"year":     2016,
+"num": 1767,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"NH": {
+ "worksite_state_abb": "NH",
+"year":     2016,
+"num": 1677,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"NJ": {
+ "worksite_state_abb": "NJ",
+"year":     2016,
+"num": 42601,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"NM": {
+ "worksite_state_abb": "NM",
+"year":     2016,
+"num": 925,
+"fillKey": "(464,1.45e+03]" 
+},
+"NV": {
+ "worksite_state_abb": "NV",
+"year":     2016,
+"num": 1172,
+"fillKey": "(464,1.45e+03]" 
+},
+"NY": {
+ "worksite_state_abb": "NY",
+"year":     2016,
+"num": 50955,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"OH": {
+ "worksite_state_abb": "OH",
+"year":     2016,
+"num": 14554,
+"fillKey": "(1.44e+04,2.14e+04]" 
+},
+"OK": {
+ "worksite_state_abb": "OK",
+"year":     2016,
+"num": 1724,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"OR": {
+ "worksite_state_abb": "OR",
+"year":     2016,
+"num": 4120,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"PA": {
+ "worksite_state_abb": "PA",
+"year":     2016,
+"num": 21033,
+"fillKey": "(1.44e+04,2.14e+04]" 
+},
+"PR": {
+ "worksite_state_abb": "PR",
+"year":     2016,
+"num": 162,
+"fillKey": "(1,178]" 
+},
+"PW": {
+ "worksite_state_abb": "PW",
+"year":     2016,
+"num": 1,
+"fillKey": null 
+},
+"RI": {
+ "worksite_state_abb": "RI",
+"year":     2016,
+"num": 2240,
+"fillKey": "(2.21e+03,3.31e+03]" 
+},
+"SC": {
+ "worksite_state_abb": "SC",
+"year":     2016,
+"num": 2510,
+"fillKey": "(2.21e+03,3.31e+03]" 
+},
+"SD": {
+ "worksite_state_abb": "SD",
+"year":     2016,
+"num": 294,
+"fillKey": "(178,464]" 
+},
+"TN": {
+ "worksite_state_abb": "TN",
+"year":     2016,
+"num": 4943,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"TX": {
+ "worksite_state_abb": "TX",
+"year":     2016,
+"num": 59424,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"UT": {
+ "worksite_state_abb": "UT",
+"year":     2016,
+"num": 2534,
+"fillKey": "(2.21e+03,3.31e+03]" 
+},
+"VA": {
+ "worksite_state_abb": "VA",
+"year":     2016,
+"num": 16623,
+"fillKey": "(1.44e+04,2.14e+04]" 
+},
+"VI": {
+ "worksite_state_abb": "VI",
+"year":     2016,
+"num": 51,
+"fillKey": "(1,178]" 
+},
+"VT": {
+ "worksite_state_abb": "VT",
+"year":     2016,
+"num": 315,
+"fillKey": "(178,464]" 
+},
+"WA": {
+ "worksite_state_abb": "WA",
+"year":     2016,
+"num": 20335,
+"fillKey": "(1.44e+04,2.14e+04]" 
+},
+"WI": {
+ "worksite_state_abb": "WI",
+"year":     2016,
+"num": 6202,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"WV": {
+ "worksite_state_abb": "WV",
+"year":     2016,
+"num": 469,
+"fillKey": "(464,1.45e+03]" 
+},
+"WY": {
+ "worksite_state_abb": "WY",
+"year":     2016,
+"num": 104,
+"fillKey": "(1,178]" 
+} 
+},
+"2017": {
+ "AK": {
+ "worksite_state_abb": "AK",
+"year":     2017,
+"num": 170,
+"fillKey": "(1,178]" 
+},
+"AL": {
+ "worksite_state_abb": "AL",
+"year":     2017,
+"num": 1473,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"AR": {
+ "worksite_state_abb": "AR",
+"year":     2017,
+"num": 2439,
+"fillKey": "(2.21e+03,3.31e+03]" 
+},
+"AZ": {
+ "worksite_state_abb": "AZ",
+"year":     2017,
+"num": 8393,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"CA": {
+ "worksite_state_abb": "CA",
+"year":     2017,
+"num": 102854,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"CO": {
+ "worksite_state_abb": "CO",
+"year":     2017,
+"num": 5742,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"CT": {
+ "worksite_state_abb": "CT",
+"year":     2017,
+"num": 7138,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"DC": {
+ "worksite_state_abb": "DC",
+"year":     2017,
+"num": 3585,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"DE": {
+ "worksite_state_abb": "DE",
+"year":     2017,
+"num": 3002,
+"fillKey": "(2.21e+03,3.31e+03]" 
+},
+"FL": {
+ "worksite_state_abb": "FL",
+"year":     2017,
+"num": 18996,
+"fillKey": "(1.44e+04,2.14e+04]" 
+},
+"FM": {
+ "worksite_state_abb": "FM",
+"year":     2017,
+"num": 1,
+"fillKey": null 
+},
+"GA": {
+ "worksite_state_abb": "GA",
+"year":     2017,
+"num": 19905,
+"fillKey": "(1.44e+04,2.14e+04]" 
+},
+"GU": {
+ "worksite_state_abb": "GU",
+"year":     2017,
+"num": 293,
+"fillKey": "(178,464]" 
+},
+"HI": {
+ "worksite_state_abb": "HI",
+"year":     2017,
+"num": 447,
+"fillKey": "(178,464]" 
+},
+"IA": {
+ "worksite_state_abb": "IA",
+"year":     2017,
+"num": 2666,
+"fillKey": "(2.21e+03,3.31e+03]" 
+},
+"ID": {
+ "worksite_state_abb": "ID",
+"year":     2017,
+"num": 766,
+"fillKey": "(464,1.45e+03]" 
+},
+"IL": {
+ "worksite_state_abb": "IL",
+"year":     2017,
+"num": 28387,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"IN": {
+ "worksite_state_abb": "IN",
+"year":     2017,
+"num": 5243,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"KS": {
+ "worksite_state_abb": "KS",
+"year":     2017,
+"num": 2371,
+"fillKey": "(2.21e+03,3.31e+03]" 
+},
+"KY": {
+ "worksite_state_abb": "KY",
+"year":     2017,
+"num": 2371,
+"fillKey": "(2.21e+03,3.31e+03]" 
+},
+"LA": {
+ "worksite_state_abb": "LA",
+"year":     2017,
+"num": 1643,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"MA": {
+ "worksite_state_abb": "MA",
+"year":     2017,
+"num": 21691,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"MD": {
+ "worksite_state_abb": "MD",
+"year":     2017,
+"num": 9094,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"ME": {
+ "worksite_state_abb": "ME",
+"year":     2017,
+"num": 599,
+"fillKey": "(464,1.45e+03]" 
+},
+"MI": {
+ "worksite_state_abb": "MI",
+"year":     2017,
+"num": 17400,
+"fillKey": "(1.44e+04,2.14e+04]" 
+},
+"MN": {
+ "worksite_state_abb": "MN",
+"year":     2017,
+"num": 9181,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"MO": {
+ "worksite_state_abb": "MO",
+"year":     2017,
+"num": 6993,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"MP": {
+ "worksite_state_abb": "MP",
+"year":     2017,
+"num": 284,
+"fillKey": "(178,464]" 
+},
+"MS": {
+ "worksite_state_abb": "MS",
+"year":     2017,
+"num": 638,
+"fillKey": "(464,1.45e+03]" 
+},
+"MT": {
+ "worksite_state_abb": "MT",
+"year":     2017,
+"num": 158,
+"fillKey": "(1,178]" 
+},
+"NC": {
+ "worksite_state_abb": "NC",
+"year":     2017,
+"num": 15025,
+"fillKey": "(1.44e+04,2.14e+04]" 
+},
+"ND": {
+ "worksite_state_abb": "ND",
+"year":     2017,
+"num": 386,
+"fillKey": "(178,464]" 
+},
+"NE": {
+ "worksite_state_abb": "NE",
+"year":     2017,
+"num": 1853,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"NH": {
+ "worksite_state_abb": "NH",
+"year":     2017,
+"num": 1254,
+"fillKey": "(464,1.45e+03]" 
+},
+"NJ": {
+ "worksite_state_abb": "NJ",
+"year":     2017,
+"num": 36960,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"NM": {
+ "worksite_state_abb": "NM",
+"year":     2017,
+"num": 747,
+"fillKey": "(464,1.45e+03]" 
+},
+"NV": {
+ "worksite_state_abb": "NV",
+"year":     2017,
+"num": 1274,
+"fillKey": "(464,1.45e+03]" 
+},
+"NY": {
+ "worksite_state_abb": "NY",
+"year":     2017,
+"num": 48062,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"OH": {
+ "worksite_state_abb": "OH",
+"year":     2017,
+"num": 13609,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"OK": {
+ "worksite_state_abb": "OK",
+"year":     2017,
+"num": 1496,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"OR": {
+ "worksite_state_abb": "OR",
+"year":     2017,
+"num": 4105,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"PA": {
+ "worksite_state_abb": "PA",
+"year":     2017,
+"num": 18818,
+"fillKey": "(1.44e+04,2.14e+04]" 
+},
+"PR": {
+ "worksite_state_abb": "PR",
+"year":     2017,
+"num": 537,
+"fillKey": "(464,1.45e+03]" 
+},
+"PW": {
+ "worksite_state_abb": "PW",
+"year":     2017,
+"num": 2,
+"fillKey": "(1,178]" 
+},
+"RI": {
+ "worksite_state_abb": "RI",
+"year":     2017,
+"num": 2162,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"SC": {
+ "worksite_state_abb": "SC",
+"year":     2017,
+"num": 2505,
+"fillKey": "(2.21e+03,3.31e+03]" 
+},
+"SD": {
+ "worksite_state_abb": "SD",
+"year":     2017,
+"num": 251,
+"fillKey": "(178,464]" 
+},
+"TN": {
+ "worksite_state_abb": "TN",
+"year":     2017,
+"num": 6018,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"TX": {
+ "worksite_state_abb": "TX",
+"year":     2017,
+"num": 57687,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"UT": {
+ "worksite_state_abb": "UT",
+"year":     2017,
+"num": 2699,
+"fillKey": "(2.21e+03,3.31e+03]" 
+},
+"VA": {
+ "worksite_state_abb": "VA",
+"year":     2017,
+"num": 15566,
+"fillKey": "(1.44e+04,2.14e+04]" 
+},
+"VI": {
+ "worksite_state_abb": "VI",
+"year":     2017,
+"num": 45,
+"fillKey": "(1,178]" 
+},
+"VT": {
+ "worksite_state_abb": "VT",
+"year":     2017,
+"num": 363,
+"fillKey": "(178,464]" 
+},
+"WA": {
+ "worksite_state_abb": "WA",
+"year":     2017,
+"num": 22571,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"WI": {
+ "worksite_state_abb": "WI",
+"year":     2017,
+"num": 5740,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"WV": {
+ "worksite_state_abb": "WV",
+"year":     2017,
+"num": 395,
+"fillKey": "(178,464]" 
+},
+"WY": {
+ "worksite_state_abb": "WY",
+"year":     2017,
+"num": 113,
+"fillKey": "(1,178]" 
+} 
+},
+"2018": {
+ "AK": {
+ "worksite_state_abb": "AK",
+"year":     2018,
+"num": 174,
+"fillKey": "(1,178]" 
+},
+"AL": {
+ "worksite_state_abb": "AL",
+"year":     2018,
+"num": 1695,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"AR": {
+ "worksite_state_abb": "AR",
+"year":     2018,
+"num": 3191,
+"fillKey": "(2.21e+03,3.31e+03]" 
+},
+"AZ": {
+ "worksite_state_abb": "AZ",
+"year":     2018,
+"num": 8922,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"CA": {
+ "worksite_state_abb": "CA",
+"year":     2018,
+"num": 112818,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"CO": {
+ "worksite_state_abb": "CO",
+"year":     2018,
+"num": 6556,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"CT": {
+ "worksite_state_abb": "CT",
+"year":     2018,
+"num": 7874,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"DC": {
+ "worksite_state_abb": "DC",
+"year":     2018,
+"num": 3670,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"DE": {
+ "worksite_state_abb": "DE",
+"year":     2018,
+"num": 3520,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"FL": {
+ "worksite_state_abb": "FL",
+"year":     2018,
+"num": 20299,
+"fillKey": "(1.44e+04,2.14e+04]" 
+},
+"GA": {
+ "worksite_state_abb": "GA",
+"year":     2018,
+"num": 20701,
+"fillKey": "(1.44e+04,2.14e+04]" 
+},
+"GU": {
+ "worksite_state_abb": "GU",
+"year":     2018,
+"num": 257,
+"fillKey": "(178,464]" 
+},
+"HI": {
+ "worksite_state_abb": "HI",
+"year":     2018,
+"num": 455,
+"fillKey": "(178,464]" 
+},
+"IA": {
+ "worksite_state_abb": "IA",
+"year":     2018,
+"num": 2986,
+"fillKey": "(2.21e+03,3.31e+03]" 
+},
+"ID": {
+ "worksite_state_abb": "ID",
+"year":     2018,
+"num": 808,
+"fillKey": "(464,1.45e+03]" 
+},
+"IL": {
+ "worksite_state_abb": "IL",
+"year":     2018,
+"num": 28374,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"IN": {
+ "worksite_state_abb": "IN",
+"year":     2018,
+"num": 5940,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"KS": {
+ "worksite_state_abb": "KS",
+"year":     2018,
+"num": 2433,
+"fillKey": "(2.21e+03,3.31e+03]" 
+},
+"KY": {
+ "worksite_state_abb": "KY",
+"year":     2018,
+"num": 2496,
+"fillKey": "(2.21e+03,3.31e+03]" 
+},
+"LA": {
+ "worksite_state_abb": "LA",
+"year":     2018,
+"num": 1564,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"MA": {
+ "worksite_state_abb": "MA",
+"year":     2018,
+"num": 22804,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"MD": {
+ "worksite_state_abb": "MD",
+"year":     2018,
+"num": 9320,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"ME": {
+ "worksite_state_abb": "ME",
+"year":     2018,
+"num": 598,
+"fillKey": "(464,1.45e+03]" 
+},
+"MH": {
+ "worksite_state_abb": "MH",
+"year":     2018,
+"num": 1,
+"fillKey": null 
+},
+"MI": {
+ "worksite_state_abb": "MI",
+"year":     2018,
+"num": 18878,
+"fillKey": "(1.44e+04,2.14e+04]" 
+},
+"MN": {
+ "worksite_state_abb": "MN",
+"year":     2018,
+"num": 9679,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"MO": {
+ "worksite_state_abb": "MO",
+"year":     2018,
+"num": 7828,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"MP": {
+ "worksite_state_abb": "MP",
+"year":     2018,
+"num": 263,
+"fillKey": "(178,464]" 
+},
+"MS": {
+ "worksite_state_abb": "MS",
+"year":     2018,
+"num": 653,
+"fillKey": "(464,1.45e+03]" 
+},
+"MT": {
+ "worksite_state_abb": "MT",
+"year":     2018,
+"num": 197,
+"fillKey": "(178,464]" 
+},
+"NC": {
+ "worksite_state_abb": "NC",
+"year":     2018,
+"num": 16589,
+"fillKey": "(1.44e+04,2.14e+04]" 
+},
+"ND": {
+ "worksite_state_abb": "ND",
+"year":     2018,
+"num": 429,
+"fillKey": "(178,464]" 
+},
+"NE": {
+ "worksite_state_abb": "NE",
+"year":     2018,
+"num": 2183,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"NH": {
+ "worksite_state_abb": "NH",
+"year":     2018,
+"num": 1462,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"NJ": {
+ "worksite_state_abb": "NJ",
+"year":     2018,
+"num": 36550,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"NM": {
+ "worksite_state_abb": "NM",
+"year":     2018,
+"num": 875,
+"fillKey": "(464,1.45e+03]" 
+},
+"NV": {
+ "worksite_state_abb": "NV",
+"year":     2018,
+"num": 1496,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"NY": {
+ "worksite_state_abb": "NY",
+"year":     2018,
+"num": 51203,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"OH": {
+ "worksite_state_abb": "OH",
+"year":     2018,
+"num": 14336,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"OK": {
+ "worksite_state_abb": "OK",
+"year":     2018,
+"num": 1718,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"OR": {
+ "worksite_state_abb": "OR",
+"year":     2018,
+"num": 4029,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"PA": {
+ "worksite_state_abb": "PA",
+"year":     2018,
+"num": 23093,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"PR": {
+ "worksite_state_abb": "PR",
+"year":     2018,
+"num": 133,
+"fillKey": "(1,178]" 
+},
+"RI": {
+ "worksite_state_abb": "RI",
+"year":     2018,
+"num": 2062,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"SC": {
+ "worksite_state_abb": "SC",
+"year":     2018,
+"num": 2835,
+"fillKey": "(2.21e+03,3.31e+03]" 
+},
+"SD": {
+ "worksite_state_abb": "SD",
+"year":     2018,
+"num": 320,
+"fillKey": "(178,464]" 
+},
+"TN": {
+ "worksite_state_abb": "TN",
+"year":     2018,
+"num": 6538,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"TX": {
+ "worksite_state_abb": "TX",
+"year":     2018,
+"num": 56824,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"UT": {
+ "worksite_state_abb": "UT",
+"year":     2018,
+"num": 2894,
+"fillKey": "(2.21e+03,3.31e+03]" 
+},
+"VA": {
+ "worksite_state_abb": "VA",
+"year":     2018,
+"num": 16545,
+"fillKey": "(1.44e+04,2.14e+04]" 
+},
+"VI": {
+ "worksite_state_abb": "VI",
+"year":     2018,
+"num": 39,
+"fillKey": "(1,178]" 
+},
+"VT": {
+ "worksite_state_abb": "VT",
+"year":     2018,
+"num": 389,
+"fillKey": "(178,464]" 
+},
+"WA": {
+ "worksite_state_abb": "WA",
+"year":     2018,
+"num": 24859,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"WI": {
+ "worksite_state_abb": "WI",
+"year":     2018,
+"num": 5977,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"WV": {
+ "worksite_state_abb": "WV",
+"year":     2018,
+"num": 443,
+"fillKey": "(178,464]" 
+},
+"WY": {
+ "worksite_state_abb": "WY",
+"year":     2018,
+"num": 160,
+"fillKey": "(1,178]" 
+} 
+} 
+},
+"data": {
+ "AK": {
+ "worksite_state_abb": "AK",
+"year":     2014,
+"num": 199,
+"fillKey": "(178,464]" 
+},
+"AL": {
+ "worksite_state_abb": "AL",
+"year":     2014,
+"num": 1489,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"AR": {
+ "worksite_state_abb": "AR",
+"year":     2014,
+"num": 2112,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"AZ": {
+ "worksite_state_abb": "AZ",
+"year":     2014,
+"num": 6486,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"CA": {
+ "worksite_state_abb": "CA",
+"year":     2014,
+"num": 84136,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"CO": {
+ "worksite_state_abb": "CO",
+"year":     2014,
+"num": 4858,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"CT": {
+ "worksite_state_abb": "CT",
+"year":     2014,
+"num": 7853,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"DC": {
+ "worksite_state_abb": "DC",
+"year":     2014,
+"num": 3128,
+"fillKey": "(2.21e+03,3.31e+03]" 
+},
+"DE": {
+ "worksite_state_abb": "DE",
+"year":     2014,
+"num": 2738,
+"fillKey": "(2.21e+03,3.31e+03]" 
+},
+"FL": {
+ "worksite_state_abb": "FL",
+"year":     2014,
+"num": 15322,
+"fillKey": "(1.44e+04,2.14e+04]" 
+},
+"GA": {
+ "worksite_state_abb": "GA",
+"year":     2014,
+"num": 15953,
+"fillKey": "(1.44e+04,2.14e+04]" 
+},
+"GU": {
+ "worksite_state_abb": "GU",
+"year":     2014,
+"num": 217,
+"fillKey": "(178,464]" 
+},
+"HI": {
+ "worksite_state_abb": "HI",
+"year":     2014,
+"num": 473,
+"fillKey": "(464,1.45e+03]" 
+},
+"IA": {
+ "worksite_state_abb": "IA",
+"year":     2014,
+"num": 2747,
+"fillKey": "(2.21e+03,3.31e+03]" 
+},
+"ID": {
+ "worksite_state_abb": "ID",
+"year":     2014,
+"num": 522,
+"fillKey": "(464,1.45e+03]" 
+},
+"IL": {
+ "worksite_state_abb": "IL",
+"year":     2014,
+"num": 24100,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"IN": {
+ "worksite_state_abb": "IN",
+"year":     2014,
+"num": 4603,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"KS": {
+ "worksite_state_abb": "KS",
+"year":     2014,
+"num": 2085,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"KY": {
+ "worksite_state_abb": "KY",
+"year":     2014,
+"num": 1940,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"LA": {
+ "worksite_state_abb": "LA",
+"year":     2014,
+"num": 1526,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"MA": {
+ "worksite_state_abb": "MA",
+"year":     2014,
+"num": 17003,
+"fillKey": "(1.44e+04,2.14e+04]" 
+},
+"MD": {
+ "worksite_state_abb": "MD",
+"year":     2014,
+"num": 8006,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"ME": {
+ "worksite_state_abb": "ME",
+"year":     2014,
+"num": 660,
+"fillKey": "(464,1.45e+03]" 
+},
+"MI": {
+ "worksite_state_abb": "MI",
+"year":     2014,
+"num": 11790,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"MN": {
+ "worksite_state_abb": "MN",
+"year":     2014,
+"num": 8010,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"MO": {
+ "worksite_state_abb": "MO",
+"year":     2014,
+"num": 5346,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"MP": {
+ "worksite_state_abb": "MP",
+"year":     2014,
+"num": 97,
+"fillKey": "(1,178]" 
+},
+"MS": {
+ "worksite_state_abb": "MS",
+"year":     2014,
+"num": 569,
+"fillKey": "(464,1.45e+03]" 
+},
+"MT": {
+ "worksite_state_abb": "MT",
+"year":     2014,
+"num": 106,
+"fillKey": "(1,178]" 
+},
+"NC": {
+ "worksite_state_abb": "NC",
+"year":     2014,
+"num": 11893,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"ND": {
+ "worksite_state_abb": "ND",
+"year":     2014,
+"num": 414,
+"fillKey": "(178,464]" 
+},
+"NE": {
+ "worksite_state_abb": "NE",
+"year":     2014,
+"num": 1410,
+"fillKey": "(464,1.45e+03]" 
+},
+"NH": {
+ "worksite_state_abb": "NH",
+"year":     2014,
+"num": 1453,
+"fillKey": "(464,1.45e+03]" 
+},
+"NJ": {
+ "worksite_state_abb": "NJ",
+"year":     2014,
+"num": 32692,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"NM": {
+ "worksite_state_abb": "NM",
+"year":     2014,
+"num": 755,
+"fillKey": "(464,1.45e+03]" 
+},
+"NV": {
+ "worksite_state_abb": "NV",
+"year":     2014,
+"num": 1018,
+"fillKey": "(464,1.45e+03]" 
+},
+"NY": {
+ "worksite_state_abb": "NY",
+"year":     2014,
+"num": 41618,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"OH": {
+ "worksite_state_abb": "OH",
+"year":     2014,
+"num": 11974,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"OK": {
+ "worksite_state_abb": "OK",
+"year":     2014,
+"num": 1577,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"OR": {
+ "worksite_state_abb": "OR",
+"year":     2014,
+"num": 4014,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"PA": {
+ "worksite_state_abb": "PA",
+"year":     2014,
+"num": 16989,
+"fillKey": "(1.44e+04,2.14e+04]" 
+},
+"PR": {
+ "worksite_state_abb": "PR",
+"year":     2014,
+"num": 163,
+"fillKey": "(1,178]" 
+},
+"RI": {
+ "worksite_state_abb": "RI",
+"year":     2014,
+"num": 2055,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"SC": {
+ "worksite_state_abb": "SC",
+"year":     2014,
+"num": 1799,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"SD": {
+ "worksite_state_abb": "SD",
+"year":     2014,
+"num": 242,
+"fillKey": "(178,464]" 
+},
+"TN": {
+ "worksite_state_abb": "TN",
+"year":     2014,
+"num": 3942,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"TX": {
+ "worksite_state_abb": "TX",
+"year":     2014,
+"num": 44626,
+"fillKey": "(2.14e+04,1.13e+05]" 
+},
+"UT": {
+ "worksite_state_abb": "UT",
+"year":     2014,
+"num": 2051,
+"fillKey": "(1.45e+03,2.21e+03]" 
+},
+"VA": {
+ "worksite_state_abb": "VA",
+"year":     2014,
+"num": 13321,
+"fillKey": "(6.49e+03,1.44e+04]" 
+},
+"VI": {
+ "worksite_state_abb": "VI",
+"year":     2014,
+"num": 81,
+"fillKey": "(1,178]" 
+},
+"VT": {
+ "worksite_state_abb": "VT",
+"year":     2014,
+"num": 314,
+"fillKey": "(178,464]" 
+},
+"WA": {
+ "worksite_state_abb": "WA",
+"year":     2014,
+"num": 15460,
+"fillKey": "(1.44e+04,2.14e+04]" 
+},
+"WI": {
+ "worksite_state_abb": "WI",
+"year":     2014,
+"num": 4960,
+"fillKey": "(3.31e+03,6.49e+03]" 
+},
+"WV": {
+ "worksite_state_abb": "WV",
+"year":     2014,
+"num": 337,
+"fillKey": "(178,464]" 
+},
+"WY": {
+ "worksite_state_abb": "WY",
+"year":     2014,
+"num": 104,
+"fillKey": "(1,178]" 
+} 
+},
+"id": "chart17cec66e9478" 
+}
+  chartParams.element = document.getElementById('chart17cec66e9478')
+  
+  
+  
+  var mapchart17cec66e9478 = new Datamap(chartParams);
+  
+  
+    
+  // draw a bubble map if specified
+  if (chartParams.bubbles) {
+    var bubbles = chartParams.bubbles
+    mapchart17cec66e9478.bubbles(bubbles)
+  }
+  
+  if (chartParams.labels){
+    mapchart17cec66e9478.labels()
+  }
+  
+  if (chartParams.legend){
+    mapchart17cec66e9478.legend()
+  }
+  
+  setProjection = function( element, options ) {
+    var projection, path;
+ 
+      projection = d3.geo.albersUsa()
+        .scale(element.offsetWidth)
+        .translate([element.offsetWidth / 2, element.offsetHeight / 2]);
+ 
+    path = d3.geo.path()
+      .projection( projection );
+ 
+    return {path: path, projection: projection};
+  }
+</script>
+
+<style>
+.datamaps {
+  position: relative;
+}
+</style>
+    
+    <script></script>    
+  </body>
+</html>

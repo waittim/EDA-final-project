@@ -1,0 +1,86 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(readr)
+library(tidyverse)
+```
+```{r}
+require(devtools)
+install_github('ramnathv/rCharts@dev')
+install_github('ramnathv/rMaps')
+library(rMaps)
+```
+
+# all job
+```{r}
+DATA_certificate <- DATA %>% 
+  filter(case_status=="certified") %>% 
+  group_by(worksite_state_abb,year) %>% 
+  summarise(num=n())
+```
+
+```{r}
+DATA_new <-  DATA_certificate %>% 
+  ungroup(worksite_state_abb) %>% 
+  mutate(worksite_state_abb=str_to_upper(worksite_state_abb))
+```
+
+```{r}
+d1 <-
+  ichoropleth(
+    num ~ worksite_state_abb,
+    data = DATA_new,
+    animate = 'year',
+    ncuts = 9,
+    legend = FALSE,
+    geographyConfig = list(
+      popupTemplate = "#!function(geo, data) {return '<div class=\"hoverinfo\"><strong>' + data.worksite_state_abb + '<br>' + data.num + '</strong></div>';}!#"
+    )
+  )
+```
+
+
+
+```{r}
+d1$save('rMaps.html', cdn = TRUE)
+```
+
+----------------------
+#data jobs
+
+```{r}
+DATA_certificate_data <- DATA %>% 
+  filter(case_status=="certified") %>% 
+  filter(data_job_title %in% c("Business Analyst","Data Engineer","Data Analyst", "Data Scientist")) %>% 
+  group_by(worksite_state_abb,year) %>% 
+  summarise(num=n())
+```
+
+```{r}
+DATA_new_data <-  DATA_certificate_data %>% 
+  ungroup(worksite_state_abb) %>% 
+  mutate(worksite_state_abb=str_to_upper(worksite_state_abb))
+```
+
+```{r}
+d1 <-
+  ichoropleth(
+    num ~ worksite_state_abb,
+    data = DATA_new_data,
+    animate = 'year',
+    ncuts = 8,
+    legend = FALSE,
+    geographyConfig = list(
+      popupTemplate = "#!function(geo, data) {return '<div class=\"hoverinfo\"><strong>' + data.worksite_state_abb + '<br>' + data.num + '</strong></div>';}!#"
+    )
+  )
+```
+
+
+
+```{r}
+d1$save('rMaps_data.html', cdn = TRUE)
+```

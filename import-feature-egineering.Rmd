@@ -1,0 +1,590 @@
+---
+title: "Import-Feature-egineering"
+output: html_notebook
+---
+
+## Load packages
+```{r message = FALSE}
+library(tidyverse)
+library(janitor)
+library(assertr)
+library(stringr)
+library(lubridate)
+library(zipcode)
+library(gganimate)
+library(ggpubr)
+library(gridExtra)
+library(ggalluvial)
+library(purrrlyr)
+library(sf)
+require(devtools)
+install_github('ramnathv/rCharts@dev')
+install_github('ramnathv/rMaps')
+library(rMaps)
+```
+
+
+```{r}
+# Please extract the "transformed.rar" file manually first.
+original_file <- read_csv("data/transformed.csv") %>%
+  clean_names()
+# file.remove("data/transformed.csv")
+# Or just do not commit the data file
+stem <- read_csv("data/stem_list.csv")
+```
+
+```{r}
+DATA <- original_file %>%
+  mutate(case_status = str_to_lower(case_status)) %>%
+  mutate(employer_name = str_to_lower(employer_name)) %>%
+  mutate(soc_name = str_to_lower(soc_name)) %>%
+  mutate(job_title = str_to_lower(job_title)) %>%
+  mutate(full_time_position = case_when(full_time_position == "Y" ~ 1,
+                                        full_time_position == "N" ~ 0)) %>%
+  mutate(full_time_position = factor(full_time_position)) %>%
+  mutate(worksite_city = str_to_lower(worksite_city)) %>%
+  mutate(worksite_state_abb = str_to_upper(worksite_state_abb)) %>%
+  mutate(worksite_state_full = str_to_lower(worksite_state_full)) %>%
+  mutate(worksite = str_to_lower(worksite))
+
+head(DATA)
+```
+
+
+# Adding the new feature called `soc_field` to represent the higher level of job fields.
+```{r}
+DATA <- DATA %>%
+  filter(str_detect(soc_code, "^\\d{2}(-)\\d{4}$")) %>%
+  mutate(soc_field = substr(soc_code, start = 1, stop = 2)) %>%
+  filter(as.numeric(soc_field) %% 2 != 0) %>%
+  filter(soc_field != 71) %>%
+  select(soc_field, soc_code, job_title, everything())
+```
+
+
+# Conform the top tech companies's name
+```{r}
+DATA <- DATA %>%
+  mutate(employer_name = ifelse(
+    str_detect(employer_name, 'apple inc'),
+    'apple',
+    ifelse(
+      str_detect(employer_name, 'microsoft'),
+      'microsoft',
+      ifelse(
+        str_detect(employer_name, 'amazon'),
+        'amazon',
+        ifelse(
+          str_detect(employer_name, 'cisco sys'),
+          'cisco',
+          ifelse(
+            str_detect(employer_name, 'facebook'),
+            'facebook',
+            ifelse(
+              str_detect(employer_name, 'google'),
+              'google',
+              ifelse(str_detect(employer_name, 'ibm'), 'ibm', employer_name)
+            )
+          )
+        )
+      )
+    )
+  ))
+```
+
+# define data related 
+```{r}
+DATA <- DATA %>%
+  mutate(
+    data_relation = case_when(
+      grepl("data", job_title) ~ "data_related",
+      grepl("analy", job_title) ~ "data_related",
+      grepl("machine learning", job_title) ~ "data_related",
+      grepl("deep learning", job_title) ~ "data_related",
+      grepl("intelligence", job_title) ~ "data_related",
+      grepl("quantitative", job_title) ~ "data_related",
+      grepl("statistic", job_title) ~ "data_related",
+      grepl("sas", job_title) ~ "data_related",
+      grepl("sql", job_title) ~ "data_related",
+      grepl("oracle", job_title) ~ "data_related",
+      grepl("spss", job_title) ~ "data_related",
+      grepl("hadoop", job_title) ~ "data_related",
+      TRUE ~ "undefined"
+    )
+  ) %>%
+  mutate(
+    data_relation = case_when(
+      grepl("program", job_title) ~ "undefined",
+      grepl("system", job_title) ~ "undefined",
+      grepl("tech", job_title) ~ "undefined",
+      grepl("comput", job_title) ~ "undefined",
+      TRUE ~ data_relation
+    )
+  ) %>%
+  mutate(data_relation = case_when(
+    grepl("business system analyst", job_title) ~ "data_related",
+    TRUE ~ data_relation
+  ))  
+```
+
+```{r}
+DATA <- DATA %>%
+  mutate(data_job_title =
+           ifelse(
+             str_detect(job_title, "business") &
+               (
+                 str_detect(job_title, "analyst") |
+                   str_detect(job_title, "intelligence")
+               ),
+             "Business Analyst",
+             job_title
+           )) %>%
+  mutate(data_job_title =
+           ifelse(
+             str_detect(job_title, "data") &
+               (
+                 str_detect(job_title, "engineer") |
+                   str_detect(job_title, "warehouse")
+               ),
+             "Data Engineer",
+             data_job_title
+           )) %>%
+  mutate(data_job_title =
+           ifelse(
+             str_detect(job_title, "data") & str_detect(job_title, "scientist"),
+             "Data Scientist",
+             data_job_title
+           )) %>%
+  mutate(data_job_title =
+           ifelse(
+             str_detect(job_title, "data") &
+               str_detect(job_title, "analyst|analytics"),
+             "Data Analyst",
+             data_job_title
+           )) %>%
+  mutate(data_job_title =
+           ifelse(
+             str_detect(job_title, "machine|deep") &
+               str_detect(job_title, "learning"),
+             "Data Scientist",
+             data_job_title
+           )) %>%
+  mutate(data_job_title =
+           ifelse(
+             str_detect(job_title, "product") &
+               str_detect(job_title, "analyst|engineer|data"),
+             "Data Analyst",
+             data_job_title
+           )) %>%
+  mutate(data_job_title =
+           ifelse(
+             str_detect(job_title, "product") & str_detect(job_title, "manager"),
+             "Product Manager",
+             data_job_title
+           )) 
+  
+```
+
+
+# left_join: all stem occupations
+
+```{r}
+DATA <- DATA %>%
+  left_join(stem, by = "soc_code")
+DATA <- DATA %>%
+  mutate(stem = ifelse(is.na(stem), 0, 1))
+```
+
+
+# filter certified status
+
+```{r}
+DATA <- DATA %>%
+  filter(case_status == "certified")
+
+```
+
+
+
+# make df for data job with the highest number in each city 
+
+```{r}
+filtered_job <- DATA %>%
+  filter(year == 2018 | year == 2017) %>%
+  filter(
+    data_job_title %in% c(
+      "Business Analyst",
+      "Data Analyst",
+      "Data Engineer",
+      "Data Scientist"
+    )
+  )
+
+df_1718 <- filtered_job %>%
+  group_by(lon, lat, data_job_title) %>%
+  summarise(n = n()) %>%
+  pivot_wider(names_from = data_job_title, values_from = n) %>%
+  clean_names()
+
+df_1718[is.na(df_1718)] <- 0
+df_1718$max <- apply(df_1718[c(3, 4, 5, 6)], 1, max)
+df_1718
+```
+
+```{r}
+# row_handler funtion - deal with each row
+row_handler <- function(row.data) {
+  index <-
+    which(row.data == max(row.data))  # find the index of the max value
+  out <- names(row.data[index])[1]  # get the column from index
+  return(out)
+}
+
+# use row_handler function for each row, save the result to each row
+df_1718_max_nolat <- df_1718[c(3, 4, 5, 6)] %>%
+  by_row(..f = row_handler,
+         .collate = "rows",
+         .to = "max_job")
+
+df_1718$max_job <- df_1718_max_nolat$max_job
+df_1718 <- df_1718 %>%
+  mutate(
+    max_job = case_when(
+      max_job == "business_analyst" ~ "Business Analyst",
+      max_job == "data_analyst" ~ "Data Analyst",
+      max_job == "data_engineer" ~ "Data Engineer",
+      max_job == "data_scientist" ~ "Data Scientist"
+    )
+  )
+points <- df_1718 %>%
+  ungroup() %>%
+  select(lon, lat, max_job, max) %>%
+  filter(lat > 20) %>%
+  slice(4:1733)
+
+points
+```
+
+# import the US map
+```{r}
+data_dir <- "data/"
+options(tigris_use_cache = TRUE, tigris_refresh = FALSE)
+
+state_map_file  <- file.path(data_dir, "maps", "state_maps.Rds")
+county_map_file <- file.path(data_dir, "maps", "county_maps.Rds")
+
+if (file.exists(state_map_file)) {
+  state_maps <- read_rds(state_map_file)
+} else {
+  state_maps <- states(cb = TRUE, year = 2016, progress_bar = FALSE, 
+                       class = "sf") %>%
+    clean_names() %>% rename(state = stusps)
+  write_rds(state_maps, state_map_file)
+}
+
+if (file.exists(county_map_file)) {
+  county_maps <- read_rds(county_map_file)
+} else {
+  county_maps <- counties(state = c(state.abb, "DC"), cb = TRUE, year = 2016, 
+                          progress_bar = FALSE, class = "sf") %>%
+    clean_names()
+  write_rds(county_maps, county_map_file)
+}
+
+state_maps <- state_maps %>% 
+  filter(state %in% c("AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY")) %>% 
+  filter(! state %in% c("AK", "HI")) #%>%
+  #st_transform("+init=epsg:5070")   # NAD83
+```
+
+# focus on CA
+```{r}
+df_1718_ca <- filtered_job %>% 
+  filter(worksite_state_abb=="CA") %>% 
+  group_by(lon, lat, data_job_title) %>% 
+  summarise(n = n()) %>% 
+  pivot_wider(names_from = data_job_title, values_from = n) %>% 
+  clean_names() 
+
+df_1718_ca[is.na(df_1718_ca)] <- 0
+df_1718_ca$max <- apply(df_1718_ca[c(3,4,5,6)], 1, max)
+df_1718_ca
+
+
+
+df_1718_ca_max_nolat <- df_1718_ca[c(3,4,5,6)] %>%
+  by_row(..f = row_handler, .collate = "rows", .to = "max_job")
+
+df_1718_ca$max_job <- df_1718_ca_max_nolat$max_job
+df_1718_ca <- df_1718_ca %>% 
+  mutate(max_job = case_when(max_job == "business_analyst" ~ "Business Analyst",
+                             max_job == "data_analyst" ~ "Data Analyst",
+                             max_job == "data_engineer" ~ "Data Engineer",
+                             max_job == "data_scientist" ~ "Data Scientist"))
+points_ca <- df_1718_ca %>% 
+  ungroup() %>% 
+  select(lon, lat, max_job, max) %>% 
+  slice(1:201)
+
+points_ca
+
+
+state_maps_ca <- state_maps %>% 
+  filter(state == "CA")
+
+```
+
+# focus on northeast
+```{r}
+northeast_states<- c("ME","VT","NH","MA","NY","RI","CT","NJ","DE","DC","PA","MD","DC")
+
+df_1718_northeast <- filtered_job %>%
+  filter(worksite_state_abb %in% northeast_states) %>%
+  group_by(lon, lat, data_job_title) %>%
+  summarise(n = n()) %>%
+  pivot_wider(names_from = data_job_title, values_from = n) %>%
+  clean_names()
+
+df_1718_northeast[is.na(df_1718_northeast)] <- 0
+df_1718_northeast$max <- apply(df_1718_northeast[c(3, 4, 5, 6)], 1, max)
+
+
+
+df_1718_northeast_max_nolat <- df_1718_northeast[c(3, 4, 5, 6)] %>%
+  by_row(..f = row_handler,
+         .collate = "rows",
+         .to = "max_job")
+
+df_1718_northeast$max_job <- df_1718_northeast_max_nolat$max_job
+df_1718_northeast <- df_1718_northeast %>%
+  mutate(
+    max_job = case_when(
+      max_job == "business_analyst" ~ "Business Analyst",
+      max_job == "data_analyst" ~ "Data Analyst",
+      max_job == "data_engineer" ~ "Data Engineer",
+      max_job == "data_scientist" ~ "Data Scientist"
+    )
+  )
+points_northeast <- df_1718_northeast %>%
+  ungroup() %>%
+  select(lon, lat, max_job, max)  %>%
+  slice(1:596)
+
+
+
+state_maps_northeast <- state_maps %>%
+  filter(state %in% northeast_states)
+
+```
+
+# focus on midwest
+```{r}
+midwest_states <- c("IL", "MI", "IN", "OH", "MN", "WI")
+
+df_1718_midwest <- filtered_job %>%
+  filter(worksite_state_abb %in% midwest_states) %>%
+  group_by(lon, lat, data_job_title) %>%
+  summarise(n = n()) %>%
+  pivot_wider(names_from = data_job_title, values_from = n) %>%
+  clean_names()
+
+df_1718_midwest[is.na(df_1718_midwest)] <- 0
+df_1718_midwest$max <- apply(df_1718_midwest[c(3, 4, 5, 6)], 1, max)
+
+
+
+df_1718_midwest_max_nolat <- df_1718_midwest[c(3, 4, 5, 6)] %>%
+  by_row(..f = row_handler,
+         .collate = "rows",
+         .to = "max_job")
+
+df_1718_midwest$max_job <- df_1718_midwest_max_nolat$max_job
+df_1718_midwest <- df_1718_midwest %>%
+  mutate(
+    max_job = case_when(
+      max_job == "business_analyst" ~ "Business Analyst",
+      max_job == "data_analyst" ~ "Data Analyst",
+      max_job == "data_engineer" ~ "Data Engineer",
+      max_job == "data_scientist" ~ "Data Scientist"
+    )
+  )
+points_midwest <- df_1718_midwest %>%
+  ungroup() %>%
+  select(lon, lat, max_job, max)  %>%
+  slice(1:345)
+
+
+
+state_maps_midwest <- state_maps %>%
+  filter(state %in% midwest_states)
+
+```
+
+# focus on TN
+```{r}
+df_1718_tn <- filtered_job %>%
+  filter(worksite_state_abb == "TN") %>%
+  group_by(lon, lat, data_job_title) %>%
+  summarise(n = n()) %>%
+  pivot_wider(names_from = data_job_title, values_from = n) %>%
+  clean_names()
+
+df_1718_tn[is.na(df_1718_tn)] <- 0
+df_1718_tn$max <- apply(df_1718_tn[c(3, 4, 5, 6)], 1, max)
+
+
+
+df_1718_tn_max_nolat <- df_1718_tn[c(3, 4, 5, 6)] %>%
+  by_row(..f = row_handler,
+         .collate = "rows",
+         .to = "max_job")
+
+df_1718_tn$max_job <- df_1718_tn_max_nolat$max_job
+df_1718_tn <- df_1718_tn %>%
+  mutate(
+    max_job = case_when(
+      max_job == "business_analyst" ~ "Business Analyst",
+      max_job == "data_analyst" ~ "Data Analyst",
+      max_job == "data_engineer" ~ "Data Engineer",
+      max_job == "data_scientist" ~ "Data Scientist"
+    )
+  )
+points_tn <- df_1718_tn %>%
+  ungroup() %>%
+  select(lon, lat, max_job, max) %>%
+  slice(1:21)
+
+
+
+state_maps_tn <- state_maps %>%
+  filter(state == "TN")
+
+```
+
+# focus on TX
+```{r}
+tx_states <- c("TX")
+
+df_1718_tx <- filtered_job %>%
+  filter(worksite_state_abb %in% tx_states) %>%
+  group_by(lon, lat, data_job_title) %>%
+  summarise(n = n()) %>%
+  pivot_wider(names_from = data_job_title, values_from = n) %>%
+  clean_names()
+
+df_1718_tx[is.na(df_1718_tx)] <- 0
+df_1718_tx$max <- apply(df_1718_tx[c(3, 4, 5, 6)], 1, max)
+
+
+
+df_1718_tx_max_nolat <- df_1718_tx[c(3, 4, 5, 6)] %>%
+  by_row(..f = row_handler,
+         .collate = "rows",
+         .to = "max_job")
+
+df_1718_tx$max_job <- df_1718_tx_max_nolat$max_job
+df_1718_tx <- df_1718_tx %>%
+  mutate(
+    max_job = case_when(
+      max_job == "business_analyst" ~ "Business Analyst",
+      max_job == "data_analyst" ~ "Data Analyst",
+      max_job == "data_engineer" ~ "Data Engineer",
+      max_job == "data_scientist" ~ "Data Scientist"
+    )
+  )
+points_tx <- df_1718_tx %>%
+  ungroup() %>%
+  select(lon, lat, max_job, max) %>%
+  slice(1:87)
+
+
+
+state_maps_tx <- state_maps %>%
+  filter(state %in% tx_states)
+
+```
+
+# focus on WA
+```{r}
+df_1718_wa <- filtered_job %>%
+  filter(worksite_state_abb == "WA") %>%
+  group_by(lon, lat, data_job_title) %>%
+  summarise(n = n()) %>%
+  pivot_wider(names_from = data_job_title, values_from = n) %>%
+  clean_names()
+
+df_1718_wa[is.na(df_1718_wa)] <- 0
+df_1718_wa$max <- apply(df_1718_wa[c(3, 4, 5, 6)], 1, max)
+
+
+
+df_1718_wa_max_nolat <- df_1718_wa[c(3, 4, 5, 6)] %>%
+  by_row(..f = row_handler,
+         .collate = "rows",
+         .to = "max_job")
+
+df_1718_wa$max_job <- df_1718_wa_max_nolat$max_job
+df_1718_wa <- df_1718_wa %>%
+  mutate(
+    max_job = case_when(
+      max_job == "business_analyst" ~ "Business Analyst",
+      max_job == "data_analyst" ~ "Data Analyst",
+      max_job == "data_engineer" ~ "Data Engineer",
+      max_job == "data_scientist" ~ "Data Scientist"
+    )
+  )
+points_wa <- df_1718_wa %>%
+  ungroup() %>%
+  select(lon, lat, max_job, max) %>%
+  slice(1:32)
+
+
+
+state_maps_wa <- state_maps %>%
+  filter(state == "WA")
+
+```
+
+
+# focus on FL
+```{r}
+fl_states <- c("FL", "GA")
+
+
+df_1718_fl <- filtered_job %>%
+  filter(worksite_state_abb %in% fl_states) %>%
+  group_by(lon, lat, data_job_title) %>%
+  summarise(n = n()) %>%
+  pivot_wider(names_from = data_job_title, values_from = n) %>%
+  clean_names()
+
+df_1718_fl[is.na(df_1718_fl)] <- 0
+df_1718_fl$max <- apply(df_1718_fl[c(3, 4, 5, 6)], 1, max)
+
+
+
+df_1718_fl_max_nolat <- df_1718_fl[c(3, 4, 5, 6)] %>%
+  by_row(..f = row_handler,
+         .collate = "rows",
+         .to = "max_job")
+
+df_1718_fl$max_job <- df_1718_fl_max_nolat$max_job
+df_1718_fl <- df_1718_fl %>%
+  mutate(
+    max_job = case_when(
+      max_job == "business_analyst" ~ "Business Analyst",
+      max_job == "data_analyst" ~ "Data Analyst",
+      max_job == "data_engineer" ~ "Data Engineer",
+      max_job == "data_scientist" ~ "Data Scientist"
+    )
+  )
+points_fl <- df_1718_fl %>%
+  ungroup() %>%
+  select(lon, lat, max_job, max) %>%
+  slice(1:118)
+
+
+state_maps_fl <- state_maps %>%
+  filter(state %in% fl_states)
+
+```

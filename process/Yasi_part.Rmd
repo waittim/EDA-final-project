@@ -1,0 +1,755 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(readr)
+library(ggpubr)
+library("gridExtra")
+```
+
+# Summary statistics
+
+```{r fig.height=7, fig.width=6}
+
+p1 <- df %>% 
+  mutate(case_recode = case_when(case_status == 'certified' ~ 'certified',
+                                 TRUE ~ 'not certified')) %>% 
+  group_by(year, case_recode) %>% 
+  summarise(n = n()) %>% 
+  pivot_wider(names_from = "case_recode",
+               values_from = "n") %>% 
+  mutate(pp = certified / (certified + `not certified`), 
+         total = certified + `not certified`) %>% 
+  ggplot(aes(x = year, y = pp)) +
+  geom_point()+
+  geom_line() +
+ # coord_cartesian(ylim = c(0, 1)) + 
+  scale_y_continuous(labels = function(x){paste0(x*100, '%')}) +
+  theme_minimal() +
+  labs(y="certified proportion", x="\n Year")
+p1
+
+
+p2 <- df %>% 
+  mutate(case_recode = case_when(case_status == 'certified' ~ 'certified',
+                                 TRUE ~ 'not certified')) %>% 
+  group_by(year, case_recode) %>% 
+  summarise(n = n()) %>% 
+
+  ggplot(aes(x = year, y = n, fill = case_recode)) +
+  
+  geom_bar(stat = "identity", position = position_stack(reverse = TRUE), alpha = 0.8) +
+  #coord_cartesian(ylim = c(0000, 850000)) + 
+  # geom_col(alpha = 0.5) +
+  labs(title="The number of applicants through out years: 2014 - 2018", y="Number", x="\n Year") + 
+  scale_fill_discrete(name = "Case status") +
+  scale_y_continuous(labels = function(x){paste0(x/1000, 'K')}) + 
+  theme_minimal() + 
+  theme(plot.title = element_text(hjust=0.5)) +
+  theme(legend.position = "top")+
+  scale_fill_manual(values = c("#0F2A48", "#00B2E4"))
+
+p2
+#
+grid.arrange(p1, p2, nrow  = 1)
+
+```
+
+
+# line plot on the certified applicants
+```{r}
+data %>% 
+  mutate(case_recode = case_when(case_status == 'certified' ~ 'certified',
+                                 TRUE ~ 'not certified')) %>% 
+  filter(case_recode == 'certified') %>% 
+  group_by(year) %>% 
+  summarise(n = n()) %>% 
+  ggplot(aes(x = year, y = n)) +
+  geom_point(alpha = 0.8) +
+  geom_line() + 
+  labs(title="The number of applicants through out years: 2014 - 2018", y="number", x="Year") + 
+  scale_y_continuous(labels = function(x){paste0(x/1000, 'K')}) + 
+  theme_minimal() + 
+  theme(plot.title = element_text(hjust=0.5))
+```
+
+
+```{r}
+new_df %>% 
+  filter(prevailing_wage >= 0 & prevailing_wage <= 300000) %>% 
+  summarise(n = n()) 
+
+
+df_sub <- new_df %>% filter(new_df$prevailing_wage > 0 & new_df$prevailing_wage < 500000) 
+
+dat <- with(density(df_sub$prevailing_wage), data.frame(x, y))
+
+ggplot(data = dat, mapping = aes(x = x, y = y)) +
+  geom_line()+
+    # geom_area(mapping = aes(x = ifelse(x >= 30 & x <= 155 , x, 0)), fill = "grey", alpha = 0.3) +
+    # xlim(10, 500) +
+    # geom_vline(xintercept = 30, color = 'grey', linetype ="longdash", size = .5) +
+    # geom_vline(xintercept = 154, color = 'grey',linetype ="longdash", size = .5) +
+  theme_classic() +
+  labs(x = "\n Price per Night ($)", y = "Density \n")
+    #theme(axis.text.x = element_text(size = 20, hjust = .5, vjust = .5),
+       # axis.text.y = element_text(size = 20),
+     #   axis.title = element_text(size = 20))
+
+
+
+
+```
+
+
+```{r}
+p3 <- new_df %>% filter(prevailing_wage >= 0 & prevailing_wage <= 400000) %>% 
+  
+  ggplot(aes(x = prevailing_wage, color = as.factor(year))) +
+  geom_density()+
+  #xlim(0, 300000) +
+  theme_classic() +
+  labs(x = "\n Prevailing wage ($)", y = "Density \n") +
+  scale_x_continuous(labels = function(x){paste0(x/1000, 'K')}) +
+  scale_y_continuous(labels = function(x){paste0(x * 1000, "* 10^3")})
+
+
+p3 + scale_color_discrete(name = "year")
+```
+
+
+
+
+```{r}
+cor(data$prevailing_wage, data$coli, use = "complete.obs")
+
+data %>% 
+  filter(year == 2018) %>% 
+  filter(!is.na(coli)) %>% 
+  select(coli, worksite_city, prevailing_wage) %>% 
+  group_by(coli) %>% 
+  summarise(mean_wage = mean(prevailing_wage)) %>% 
+  ggplot(aes(x = mean_wage, y = coli)) +
+  geom_point()+
+  coord_cartesian(xlim = c(0, 400000))
+
+
+data %>% 
+  filter(year == 2018) %>% 
+  select(worksite_city, lon, lat) %>% 
+  group_by(worksite_city) %>% 
+  summarise(n = n()) %>% 
+  arrange(worksite_city)
+```
+
+
+```{r fig.width=10, fig.height=4}
+
+data %>% 
+  filter(!is.na(coli)) %>% 
+  select(coli, worksite_city, prevailing_wage, year) %>% 
+  group_by(coli, year) %>% 
+  summarise(mean_wage = mean(prevailing_wage), n = n()) %>% 
+  ggplot(aes(x = n, y = coli)) +
+  geom_point()+
+  geom_smooth(method = "lm", se = FALSE)+ 
+  coord_cartesian(xlim = c(0, 20000)) + 
+  facet_wrap(~year, nrow = 1)
+
+
+```
+
+```{r}
+library(stringr)
+library(smaa)
+data %>% group_by(employer_name, year) %>% 
+  filter(str_detect(employer_name, "facebook")) %>% 
+  summarise(n = n()) %>% 
+  arrange(employer_name)
+
+
+new_df <- data %>% 
+  filter(str_detect(soc_code, "^\\d{2}(-)\\d{4}$")) %>% 
+  mutate(soc_field = substr(soc_code, start = 1, stop = 2)) %>% 
+  filter(as.numeric(soc_field) %% 2 != 0) %>% 
+  filter(soc_field != 71)
+  select(soc_field, soc_code, job_title, everything())
+
+new_df %>% 
+  group_by(soc_field, year) %>% 
+  summarise(n = n()) %>% 
+  filter(soc_field %in% c(11, 13, 15)) %>% 
+  ggplot(aes(x = year, y = n, group = soc_field)) + 
+  geom_line(aes(color = soc_field))
+
+new_df %>% 
+  group_by(year, soc_code, soc_name) %>% 
+  summarise(n = n()) %>% 
+  arrange(-n)
+
+```
+
+
+
+```{r}
+new_df %>% 
+  group_by(job_title, year, soc_field) %>% 
+  filter(soc_field == 15) %>%
+  filter(year == 2018) %>% 
+  summarise(n = n()) %>% 
+  arrange(-n)
+```
+
+
+
+```{r fig.width=10, fig.height=6} 
+
+top_6_soc <- DATA%>%
+  filter(case_status == "certified") %>% 
+  group_by(soc_field, year) %>% 
+  summarise(n = n()) %>%
+  arrange(-n) %>% 
+  filter(soc_field %in% c(15,13,17,11,19,29)) %>% 
+  ungroup()
+
+top_6_soc$soc_name[top_6_soc$soc_field == 15] <- 'Computer and Mathematical Occupations'
+top_6_soc$soc_name[top_6_soc$soc_field == 13] <- 'Business and Financial Operations Occupations'
+top_6_soc$soc_name[top_6_soc$soc_field == 17] <- 'Architecture and Engineering Occupations'
+top_6_soc$soc_name[top_6_soc$soc_field == 11] <- 'Management Occupations'
+top_6_soc$soc_name[top_6_soc$soc_field == 19] <- 'Life, Physical, and Social Science Occupations'
+top_6_soc$soc_name[top_6_soc$soc_field == 29] <- 'Healthcare Practitioners and Technical Occupations'
+
+p1 <- top_6_soc %>% 
+  #filter(!soc_field== 15) %>% 
+  ggplot(aes(x = year, y = n))+
+  geom_point(size = 3, aes(color = soc_name)) + 
+  geom_line(aes(color = soc_name), size = 1.05) +
+  labs( y = "", x = "Year (Other fields)")+
+  theme_minimal() +
+  scale_color_discrete(name = "") +
+  theme(legend.position = "top")+
+  guides(color=guide_legend(nrow=3,byrow=TRUE)) +
+ # labs(title = "Other fields") +
+  theme(axis.text.y=element_text(face = "bold",size = 11)) + 
+  coord_cartesian(ylim = c(15000, 60000))
+
+p2 <- top_6_soc %>% 
+  filter(soc_field == 15) %>% 
+  ggplot(aes(x = year, y = n))+
+  labs( y = "", x = "Year (Tech occupations)")+
+  theme_minimal() + 
+  geom_line(color = "chartreuse3", size = 1.15)+
+  theme(legend.position = "top")+  
+  #labs(title = "Tech occupations") +
+  theme(axis.text.y=element_text(face = "bold",size = 11))
+
+figure <- ggarrange(p2, p1, common.legend = TRUE)
+annotate_figure(figure,
+               top = text_grob("Applications on Top 6 field", color = "black", face = "bold", size = 14),
+               left = "Number of Applications")
+               #fig.lab = "Figure 1", fig.lab.face = "bold"
+
+```
+
+```{r}
+soc_tech_top %>% 
+  group_by(employer_name, year) %>% 
+  summarise(tot = sum(n)) %>% 
+  filter(!employer_name %in% c("no","IBM", NA)) %>% 
+  ungroup() %>% 
+  ggplot(aes(x = year, y = tot))+
+  geom_point()+
+  geom_line(aes(color = employer_name), size = 1.05)+
+  labs( y = "Number of Applications", x = "Year")+
+  theme_minimal()
+  
+```
+
+```{r}
+DATA %>% 
+  filter(employer_name %in% c('apple', 'microsoft', 'amazon', 'cisco', 'facebook', 'google')) %>% 
+  mutate(data_relation=case_when(grepl("data",job_title) ~ "data_related",
+                                 grepl("analy",job_title) ~ "data_related",
+                                 grepl("machine learning",job_title) ~ "data_related",
+                                 grepl("deep learning",job_title) ~ "data_related",
+                                 grepl("intelligence",job_title) ~ "data_related",
+                                 grepl("quan titative",job_title) ~ "data_related",
+                                 grepl("statistic",job_title) ~ "data_related",
+                                 grepl("sas",job_title) ~ "data_related",
+                                 grepl("sql",job_title) ~ "data_related",
+                                 grepl("oracle",job_title) ~ "data_related",
+                                 grepl("spss",job_title) ~ "data_related",
+                                 TRUE ~ "undefined")) %>% 
+  mutate(data_relation=case_when(grepl("program",job_title) ~ "undefined",
+                                 grepl("system",job_title) ~ "undefined",
+                                 grepl("tech",job_title) ~ "undefined",
+                                 grepl("comput",job_title) ~ "undefined",
+                                 TRUE ~ data_relation)) %>% 
+  mutate(data_relation=case_when(grepl("business system analyst",job_title) ~ "data_related",
+                                 TRUE ~ data_relation)) %>% 
+  group_by(year,employer_name, data_relation) %>% 
+  summarise(type_sum = n())  %>% 
+  group_by(year) %>% 
+  mutate(sum=sum(type_sum)) %>% 
+  mutate(type_ratio=type_sum / sum) %>%
+  ungroup() %>% 
+  filter(data_relation == "data_related") %>% 
+  ggplot()+
+  geom_line(aes(x=year,y=type_ratio,color=employer_name), size = 1.05)+
+  theme_bw()+
+  labs(y="Data related job ratio", x="Year")
+  
+
+```
+
+
+```{r}
+myColor_1 <- c("gray63", "#00AFBB", "#4699dd", "gray70", "#56ddc5")
+```
+
+
+```{r}
+DATA %>% 
+  group_by()
+  summarise(n = n())
+
+```
+
+```{r}
+df <- DATA
+```
+
+
+
+# Stem and non stem
+```{r fig.height=7, fig.width=6}
+df %>%
+  filter(case_status == "certified") %>% 
+  group_by(year, stem) %>% 
+  summarise(n = n()) %>% 
+  ggplot(aes(x = year, y = n, fill = as.factor(stem))) +
+  geom_bar(stat = "identity", position = position_stack(reverse = FALSE), alpha = 0.8) +
+  scale_fill_manual(values = c("#00B2E4", "#0F2A48"), name = "field", labels = c("non-stem", "stem")) +
+  labs(title="The number of Certifited \n Applications throughout years: 2014 - 2018", y="Number", x="\n Year") + 
+  scale_y_continuous(labels = function(x){paste0(x/1000, 'K')}) + 
+  theme_minimal() + 
+  theme(plot.title = element_text(hjust=0.5)) +
+  theme(legend.position = "top")
+```
+
+
+# 
+```{r}
+df %>%
+  filter(stem == 1) %>%
+  filter(prevailing_wage >= 0 & prevailing_wage <= 400000) %>% 
+  ggplot(aes(x = prevailing_wage, color = as.factor(year))) +
+  geom_density()+
+  theme_classic() +
+  labs(x = "\n Prevailing wage ($)", y = "Density \n") +
+  scale_x_continuous(labels = function(x){paste0(x/1000, 'K')}) +
+  scale_y_continuous(labels = function(x){paste0(x * 1000, "* 10^3")})
+
+df$stem = as.factor(df$stem)
+
+df %>%
+  filter(case_status == "certified") %>% 
+  filter(year == 2018) %>%
+  filter(prevailing_wage >= 0 & prevailing_wage <= 400000) %>% 
+  ggplot(aes(x = prevailing_wage, color = stem)) +
+  geom_density(adjust = 2)+
+  theme_classic() +
+  labs(x = "\n Prevailing wage ($)", y = "Density \n", title = "Distribution of prevailing wage in 2018") +
+  scale_x_continuous(labels = function(x){paste0(x/1000, 'K')}) +
+  scale_y_continuous(labels = function(x){paste0(x * 1000, "* 10^3")}) +
+  scale_color_manual(values = c("#00B2E4", "#0F2A48"), name = "field", labels = c("non-stem", "stem"))
+
+
+df %>%
+  filter(case_status == "certified") %>% 
+  filter(prevailing_wage >= 0 & prevailing_wage <= 600000) %>% 
+  ggplot(aes(x = as.factor(year), y = prevailing_wage)) +
+  geom_boxplot(aes(fill=stem), outlier.shape = NA, alpha=0.8, color = "white") +
+  theme_minimal() +
+  # labs(x = "\n Prevailing wage ($)", y = "Density \n", title = "Distribution of prevailing wage in 2018") +
+  scale_y_continuous(labels = function(x){paste0(x / 1000, "K")}) +
+  #scale_color_manual(values = c("#00B2E4", "#0F2A48"), name = "field", labels = c("non-stem", "stem")) +
+  scale_fill_manual(values = c("#00B2E4", "#0F2A48"), name = "field", labels = c("non-stem", "stem")) +
+  coord_cartesian(ylim = c(40000, 100000))
+
+
+```
+
+
+```{r}
+df_data <- df %>%
+  filter(case_status == "certified") %>% 
+  filter(data_relation == "data_related" & stem == 1) %>% 
+  filter(year == 2018) %>%
+  filter(prevailing_wage >= 0 & prevailing_wage <= 400000)
+
+
+df_sde <- df %>%
+  filter(case_status == "certified") %>% 
+  filter(sde_relation == "sde_related" & stem == 1) %>% 
+  filter(year == 2018) %>%
+  filter(prevailing_wage >= 0 & prevailing_wage <= 400000)
+
+df_non <- df %>% 
+  filter(case_status == "certified") %>% 
+  filter(sde_relation != "sde_related" & data_relation != "data_related" & stem == 1) %>% 
+  filter(year == 2018) %>%
+  filter(prevailing_wage >= 0 & prevailing_wage <= 400000)
+
+
+  # ggplot(aes(x = prevailing_wage)) +
+  # geom_density()+
+  # theme_classic() +
+  # labs(x = "\n Prevailing wage ($)", y = "Density \n", title = "Distribution of prevailing wage in 2018") +
+  # scale_x_continuous(labels = function(x){paste0(x/1000, 'K')}) +
+  # scale_y_continuous(labels = function(x){paste0(x * 1000, "* 10^3")}) +
+  # scale_color_manual(values = c("#00B2E4", "#0F2A48"), name = "field", labels = c("non-stem", "stem"))
+  # 
+  
+# df_sde %>% 
+#   ggplot(aes(x = prevailing_wage)) +
+#   geom_density(adjust = 5)+
+#   theme_classic() +
+#   labs(x = "\n Prevailing wage ($)", y = "Density \n", title = "Distribution of prevailing wage in 2018") +
+#   scale_x_continuous(labels = function(x){paste0(x/1000, 'K')}) +
+#   scale_y_continuous(labels = function(x){paste0(x * 1000, "* 10^3")}) +
+#   scale_color_manual(values = c("#00B2E4", "#0F2A48"), name = "field", labels = c("non-stem", "stem"))
+  
+ggplot() + 
+  geom_density(aes(x=prevailing_wage), colour="red", data=df_data, adjust = 5) +
+  geom_density(aes(x=prevailing_wage), colour="blue", data=df_sde, adjust = 5) +
+  geom_density(aes(x=prevailing_wage), colour="orange", data=df_non, adjust = 3)
+```
+
+```{r}
+df %>% 
+  filter(case_status == "certified") %>% 
+  filter(str_detect(job_title, "business")) %>% 
+  filter(str_detect(job_title, "analyst|analysis|analyzt|engineer|intelligence")) %>% 
+  group_by(year) %>% 
+  summarise(n = n())
+
+df %>% 
+  filter(case_status == "certified") %>% 
+  filter(str_detect(job_title, "data")) %>% 
+  filter(str_detect(job_title, "engineer")) %>% 
+  group_by(year) %>% 
+  summarise(n = n())
+
+df %>% 
+  filter(case_status == "certified") %>% 
+  filter(str_detect(job_title, "data")) %>% 
+  filter(str_detect(job_title, "scientist")) %>% 
+  group_by(year) %>% 
+  summarise(n = n())
+
+df %>% 
+  filter(case_status == "certified") %>% 
+  filter(str_detect(job_title, "deep learning|machine learning|ml|artificial intelligence")) %>% 
+ # filter(str_detect(job_title, "")) %>% 
+  group_by(year) %>% 
+  summarise(n = n())
+
+df %>% 
+  filter(case_status == "certified") %>% 
+  filter(str_detect(job_title, "data")) %>% 
+  filter(str_detect(job_title, "analyst|analysis|analyzt")) %>% 
+  group_by(year) %>% 
+  summarise(n = n()) %>% 
+  ggplot(aes(x = year, y = n))+
+  geom_line()
+
+df %>% 
+  filter(case_status == "certified") %>% 
+  filter(str_detect(job_title, "product")) %>% 
+  filter(str_detect(job_title, "analyst|data|engineer")) %>% 
+  group_by(year) %>% 
+  summarise(n = n())
+  
+```
+
+
+```{r fig.width=4, fig.height=4}
+dt <- DATA %>% 
+  filter(data_job_title %in% c("Business Analyst","Data Engineer","Data Analyst", "Data Scientist")) %>% 
+  group_by(data_job_title, year) %>% 
+  summarise(n = n()) %>% 
+  arrange(-n) 
+
+p1 <- dt %>% 
+  ggplot(aes(x = year, y = n))+
+  geom_point(aes(color = data_job_title), size = 2)+
+  geom_line(aes(color = data_job_title),size = 1.2)+
+  labs( y = "", x = "Year", title = "Applications Data related jobs", face = "bold", size = 14)+
+  scale_color_manual(values=c("#FC2967","#465881", "#00909e", "#00B2E4"), name = "") + 
+  theme_minimal() +
+  theme(legend.position = "top") +
+  theme(plot.title = element_text(hjust=0.5))
+p1
+  
+p2 <- dt %>% 
+  filter(job_title != "Business analyst") %>% 
+  ggplot(aes(x = year, y = n))+
+  geom_point(aes(color = job_title), size = 2)+
+  geom_line(aes(color = job_title),size = 1.5)+
+  labs( y = "", x = "Year")+
+  #scale_color_brewer(palette = Blues) +
+  scale_color_manual(values=c("#465881", "#00909e", "#00B2E4", "#6ba8a9", "#999999")) + 
+  theme_minimal() +
+  theme(legend.position = "none")
+p2
+
+p3 <- dt %>% 
+  filter(job_title == "Business analyst") %>% 
+  ggplot(aes(x = year, y = n))+
+  geom_point(aes(color = job_title), size = 2)+
+  geom_line(aes(color = job_title),size = 2)+
+  labs( y = "", x = "Year")+
+  scale_color_manual(values= "#FC2967") + 
+  theme_minimal() +
+  theme(legend.position = "none")
+
+
+figure <- ggarrange(p1, ggarrange(p3, p2, nrow = 2), nrow = 1, common.legend = TRUE)
+annotate_figure(figure,
+               top = text_grob("Applications Data related jobs", color = "black", face = "bold", size = 14),
+               left = "Number of Applications")
+
+```
+
+
+```{r}
+dt %>%
+#  filter(stem == 1) %>% 
+#  filter(soc_field == 15) %>% 
+  group_by(employer_name) %>% 
+  summarise(n = n()) %>% 
+  arrange(-n) %>% 
+  left_join(dt, by = "employer_name") %>% 
+  group_by(employer_name, worksite_city) %>% 
+  summarise(n = n()) %>% 
+  arrange(-n) %>% 
+  filter(str_detect(employer_name, "facebook"))
+
+dt %>% 
+  filter(worksite_city == "nashville")
+
+```
+
+
+```{r}
+h1b_df <- h1b_df %>% 
+  filter(case_status ==  "certified") %>% 
+  filter(stem == 1) %>% 
+  filter(soc_field == 15) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "business")& (str_detect(job_title, "analyst")|str_detect(job_title, "intelligence")) , "business analyst", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data")& (str_detect(job_title, "engineer")|str_detect(job_title, "warehouse")), "Data Engineer", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data")& str_detect(job_title, "scientist"), "Data Scientist", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data")& str_detect(job_title, "analyst|analytics"), "Data Analyst", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "machine|deep")& str_detect(job_title, "learning"), "Deep Learning & Machine Learning", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "product") & str_detect(job_title, "analyst|engineer|data"), "Data Product Analyst", job_title)) 
+
+h1b_facebook <- h1b_df %>% 
+  filter(employer_name == 'facebook') %>% 
+  group_by(job_title,year) %>% 
+  summarise(n=n()) %>% 
+  arrange(-n)
+  
+
+con=c("Data Scientist","software engineer","Data Engineer")
+
+ggplot(h1b_facebook, aes(x = year, y = n, group = job_title)) +
+  geom_line(alpha = 0.3, 
+            size = 0.2) +
+  labs(title = "H1B in Facebook",
+       x = "Year",
+       y = "Number",
+       col = 'Job Title') +
+  theme_light()+
+  theme(plot.title = element_text(hjust = 0.5))+
+   geom_line(data = subset(h1b_facebook, job_title %in% con),aes(col=job_title),size=0.7)+
+  theme(plot.title = element_text(size = 14, family = "Helvetica", face = "bold"),
+              text = element_text(size = 12, family = "Helvetica"),
+              axis.title = element_text(face="bold"),
+              axis.text.x=element_text(size = 11)) +
+  theme(legend.position = "top")
+```
+
+```{r}
+
+DATA %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "business")& (str_detect(job_title, "analyst")|str_detect(job_title, "intelligence")) , "business analyst", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data")& (str_detect(job_title, "engineer")|str_detect(job_title, "warehouse")), "data engineer", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data")& str_detect(job_title, "scientist"), "data scientist", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data")& str_detect(job_title, "analyst|analytics"), "data analyst", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "machine|deep")& str_detect(job_title, "learning"), "deep learning & machine learning", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "product") & str_detect(job_title, "analyst|engineer|data"), "data product analyst", job_title)) %>% 
+  filter(year == 2018) %>% 
+  filter(stem == 1) %>% 
+  group_by(job_title) %>% 
+  summarise(n = n()) %>%
+  arrange(-n) %>% 
+  slice(1:20) %>% 
+  ggbarplot("job_title", "n", fill = "#00B2E4", color = "white", alpha = 0.8, sort.val = "asc", orientation = "horiz") %>% 
+  labs(title = "stem program")
+```
+```{r}
+
+DATA %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "business")& (str_detect(job_title, "analyst")|str_detect(job_title, "intelligence")) , "business analyst", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data")& (str_detect(job_title, "engineer")|str_detect(job_title, "warehouse")), "data engineer", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data")& str_detect(job_title, "scientist"), "data scientist", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data")& str_detect(job_title, "analyst|analytics"), "data analyst", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "machine|deep")& str_detect(job_title, "learning"), "deep learning & machine learning", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "product") & str_detect(job_title, "analyst|engineer|data"), "data product analyst", job_title)) %>% 
+  filter(year == 2018) %>%
+ # filter(stem == 0) %>% 
+  group_by(job_title) %>% 
+  summarise(n = n()) %>%
+  arrange(-n) %>% 
+  slice(1:20) %>% 
+  ggbarplot("job_title", "n", fill = "#00B2E4", color = "white", alpha = 0.8, sort.val = "asc", orientation = "horiz") %>% 
+  labs(title = "non stem program")
+
+```
+
+
+```{r}
+DATA %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "business")& (str_detect(job_title, "analyst")|str_detect(job_title, "intelligence")) , "business analyst", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data")& (str_detect(job_title, "engineer")|str_detect(job_title, "warehouse")), "data engineer", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data")& str_detect(job_title, "scientist"), "data scientist", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data")& str_detect(job_title, "analyst|analytics"), "data analyst", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "machine|deep")& str_detect(job_title, "learning"), "deep learning & machine learning", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "product") & str_detect(job_title, "analyst|engineer|data"), "data product analyst", job_title)) %>% 
+  filter(data_relation == "data_related") %>%
+  filter(year == 2018) %>% 
+  group_by(employer_name, worksite) %>% 
+  summarise(n = n()) %>% 
+  arrange(-n)
+```
+
+```{r}
+vignette(topic = "ggalluvial", package = "ggalluvial")
+
+```
+
+
+
+```{r}
+
+filtered_data <- DATA %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "business")& (str_detect(job_title, "analyst")|str_detect(job_title, "intelligence")) , "business analyst", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data")& (str_detect(job_title, "engineer")|str_detect(job_title, "warehouse")), "data engineer", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data")& str_detect(job_title, "scientist"), "data scientist", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data")& str_detect(job_title, "analyst|analytics"), "data analyst", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "machine|deep")& str_detect(job_title, "learning"), "deep learning & machine learning", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "product") & str_detect(job_title, "analyst|engineer|data"), "data product analyst", job_title)) %>% 
+  mutate(job_cat = ifelse(job_title %in% c("business analyst","data engineer", "data scientist","data analyst", "deep learning & machine learning", "data product analyst"), job_title, "others")) %>% 
+  filter(data_relation == "data_related") %>%
+  filter(year == 2018)
+
+
+
+top_10_state <- filtered_data %>% 
+  group_by(worksite_state_abb) %>% 
+  summarise(count = n()) %>% 
+  arrange(desc(count)) %>% 
+  slice(1:10) 
+
+
+flows <- filtered_data %>% 
+  filter(worksite_state_abb %in% top_10_state$worksite_state_abb) %>% 
+  group_by(job_cat,
+           worksite_state_abb) %>%
+  summarise(count = n())
+
+
+library(ggalluvial)
+
+
+ggplot(flows, aes(y =count, axis1=job_cat, axis2=worksite_state_abb)) +
+  geom_alluvium()
+
+
+
+ggplot(flows, aes(y =count, axis1=job_cat, axis2=worksite_state_abb)) +
+  geom_alluvium(aes(fill = job_cat)) +
+  geom_stratum(width = 1/12, fill = "black", color = "grey") +
+  geom_label(stat = "stratum", label.strata = TRUE)
+```
+
+
+```{r}
+vignette(topic = "ggalluvial", package = "ggalluvial")
+
+```
+
+
+
+```{r fig.width=8, fig.height=6}
+
+filtered_job <- DATA %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "business")& (str_detect(job_title, "analyst")|str_detect(job_title, "intelligence")) , "Business Analyst", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data")& (str_detect(job_title, "engineer")|str_detect(job_title, "warehouse")), "Data Engineer", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data")& str_detect(job_title, "scientist"), "Data Scientist", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "data")& str_detect(job_title, "analyst|analytics"), "Data Analyst", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "machine|deep")& str_detect(job_title, "learning"), "Machine Learning", job_title)) %>% 
+  mutate(job_title = ifelse(str_detect(job_title, "product") & str_detect(job_title, "analyst|engineer|data"), "Product Analyst", job_title)) %>% 
+  filter(job_title %in% c("Business Analyst","Data Engineer", "Data Scientist","Data Analyst", "Machine Learning", "Product Analyst")) %>% 
+  #filter(data_relation == "data_related") %>%
+  filter(year == 2018)
+
+
+top_10_state <- filtered_job %>% 
+  group_by(worksite_state_abb) %>% 
+  summarise(count = n()) %>% 
+  arrange(desc(count)) %>% 
+  slice(1:10) 
+
+
+flows <- filtered_job %>% 
+  filter(worksite_state_abb %in% top_10_state$worksite_state_abb) %>% 
+  group_by(job_title,
+           worksite_state_abb) %>%
+  summarise(count = n())
+
+
+library(ggalluvial)
+
+ggplot(flows, aes(y =count, axis1=job_title, axis2=worksite_state_abb)) +
+  geom_alluvium(aes(fill = job_title)) +
+  geom_stratum(width = 1/8, fill = "black", color = "grey") +
+  geom_label(stat = "stratum", label.strata = TRUE, angle=c(45,45,45,45,45,45, 0,0,0,0,0,0,0,0,0,0)) +
+  theme_classic()+
+  theme(legend.position = "bottom") +
+  scale_fill_manual(values = c("#6ba8a9","#465881", "#00909e", "#00B2E4", "#FC2967", "#999999"))
+
+```
+
+
+
+
+```{r}
+TN <- DATA %>% 
+  filter(worksite_state_abb == 'tn')
+
+
+TN %>% 
+  filter(str_detect(employer_name, "vanderbilt")) %>% 
+  group_by(job_title) %>%
+  summarise(n = n()) %>% 
+  arrange(-n)
+
+```
+
+

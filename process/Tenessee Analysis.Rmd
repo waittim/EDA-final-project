@@ -1,0 +1,49 @@
+---
+title: "Tenessee Analysis"
+output: html_notebook
+---
+
+
+```{r}
+htmltools::includeHTML("rMaps.html")
+```
+
+2014: 3942
+2018: 6538
+
+```{r}
+TN <- DATA %>% 
+  filter(worksite_state_abb=='tn')
+```
+
+# city
+
+```{r}
+TN %>% 
+  group_by(worksite_city) %>% 
+  summarise(n=n()) %>% 
+  arrange(-n)
+```
+
+```{r}
+TN %>% 
+  group_by(employer_name) %>% 
+  summarise(n=n()) %>% 
+  arrange(-n)
+```
+
+## vanderbilt
+
+```{r}
+Vandy <- TN %>% 
+  mutate(employer_name = ifelse(str_detect(employer_name,'vanderbilt'),'vanderbilt',employer_name)) %>%
+  filter(employer_name == 'vanderbilt') %>% 
+  group_by(job_title) %>% 
+  summarise(n=n()) %>% 
+  arrange(-n)
+```
+
+```{r}
+Vandy
+```
+
