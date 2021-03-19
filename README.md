@@ -7,9 +7,9 @@ Helping the international data science students strategize job search, through a
 The datasets are from the [Department of Labor's](https://www.foreignlaborcert.doleta.gov/performancedata.cfm#dis) website. We collected five year's worth of H-1B petition data (2014 to 2018). There are over 3,000,000 observations in total.
 
 **Instructions On Running The Code**
-1. Extract the file "transformed.rar" manully in the `~/data` and save the file "transformed.csv" in the `~/data `
-2. Run the *import-feature-engineering.Rmd* file
-3. Run the final *report.Rmd*with  file as needed
+1. Extract the file `transformed.rar` manully in the `~/data` and save the file `transformed.csv` in the `~/data `
+2. Run the `import-feature-engineering.Rmd` file
+3. Run the final `report.Rmd` with  file as needed
 
 
 
