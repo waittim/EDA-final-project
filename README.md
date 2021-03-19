@@ -1,6 +1,6 @@
 # H1B Visa Application Analysis
 
-Provided employment guidance for international students in DS related majors.
+Helping the international data science students strategize job search, through an analysis of H1B visa data of 3 million observations from 2014 to 2018.
 
 **Source**
 
