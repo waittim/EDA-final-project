@@ -1,24 +1,21 @@
 # H1B Visa Application Analysis
 
-Helping the international data science students strategize job search, through an analysis of H1B visa data of 3 million observations from 2014 to 2018.
+This analysis aim to help the international data science students strategize job search, through an analysis of H1B visa data of 3 million observations from 2014 to 2018.
 
-**Source**
+The datasets used come from the [Department of Labor](https://www.foreignlaborcert.doleta.gov/performancedata.cfm#dis)'s website. We collected five year's worth of H-1B petition data (2014 to 2018). There are over 3,000,000 observations in total.
 
-The datasets are from the [Department of Labor's](https://www.foreignlaborcert.doleta.gov/performancedata.cfm#dis) website. We collected five year's worth of H-1B petition data (2014 to 2018). There are over 3,000,000 observations in total.
+The final report could be found here: [**Final Report: H1B Visa Analysis**](https://github.com/waittim/H1B-visas-analysis/blob/master/deliverables/EDA_Final_Report.pdf)
 
-**Instructions On Running The Code**
-1. Extract the file `transformed.rar` manully in the `~/data` and save the file `transformed.csv` in the `~/data `
-2. Run the `import-feature-engineering.Rmd` file
-3. Run the final `report.Rmd` with  file as needed
+The slides could be found here: [**Slides**](https://github.com/waittim/H1B-visas-analysis/blob/master/presentation-doc/)
+
+## Code Usage
+1. Extract the file **transformed.rar** manully in the `./data/` and save the file **transformed.csv** in the `./data/`
+2. Run the notebook **import-feature-engineering.Rmd** 
+3. Run the **final_report.Rmd** with file as needed
 
 
 
-## Report summary
-
-The final report could be found here: [Final Report: H1B Visa Analysis](https://github.com/waittim/H1B-visas-analysis/blob/master/deliverables/EDA_Final_Report.pdf)
-
-The slides could be found here: [Slides](https://github.com/waittim/H1B-visas-analysis/blob/master/presentation-doc/)
-
+## Report Content
 ### H1B
 
 - Requirements
@@ -35,6 +32,7 @@ The slides could be found here: [Slides](https://github.com/waittim/H1B-visas-an
 ### STEM
 
 - Top Jobs In STEM in 2018
+  
 ### Data Related Jobs Trends
 
 - Prevailing Wages Per Data Related Job Category
@@ -50,5 +48,6 @@ The slides could be found here: [Slides](https://github.com/waittim/H1B-visas-an
 - The Northeastern United States
 - The Midwestern United States
 - State of Tennessee
+  
 ### Conclusions
 
